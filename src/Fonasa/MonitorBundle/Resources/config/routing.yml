@@ -4,6 +4,28 @@ root:
         _controller: FrameworkBundle:Redirect:Redirect
         route: fos_user_security_login
         permanent: true
-monitor_homepage:
-    path:     /
-    defaults: { _controller: MonitorBundle:Default:index }
+
+mantencion_index:
+    path:     /mantencion
+    defaults: { _controller: "MonitorBundle:Mantencion:index" }
+    methods:  GET
+
+mantencion_show:
+    path:     /{id}/show
+    defaults: { _controller: "MonitorBundle:Mantencion:show" }
+    methods:  GET
+
+mantencion_new:
+    path:     /new
+    defaults: { _controller: "MonitorBundle:Mantencion:new" }
+    methods:  [GET, POST]
+
+mantencion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MonitorBundle:Mantencion:edit" }
+    methods:  [GET, POST]
+
+mantencion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MonitorBundle:Mantencion:delete" }
+    methods:  DELETE

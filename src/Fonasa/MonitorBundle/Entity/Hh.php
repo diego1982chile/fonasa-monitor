@@ -73,14 +73,14 @@ class Hh
      *
      * @ORM\ManyToOne(targetEntity="TareaUsuario", inversedBy="hhs")
      * @ORM\JoinColumns{(
-     *    @ORM\JoinColumn(name="ID_TAREAUSUARIO", referencedColumnName="id")
+     *    @ORM\JoinColumn(name="ID_TAREA", referencedColumnName="id")
      * })
      */
     protected $tareaUsuario;
     
     /**
      *      
-     * @ORM\Column(name="ID_TAREAUSUARIO", type="integer", nullable=true)               
+     * @ORM\Column(name="ID_TAREA", type="integer", nullable=true)               
      */
     private $idTareaUsuario;        
 

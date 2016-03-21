@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mantencion list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigointerno</th>
+                <th>Codigoexterno</th>
+                <th>Descripcion</th>
+                <th>Fechaingreso</th>
+                <th>Fechasalida</th>
+                <th>Anyo</th>
+                <th>Mes</th>
+                <th>Hhestimadas</th>
+                <th>Hhefectivas</th>
+                <th>Idsistema</th>
+                <th>Idorigen</th>
+                <th>Idtipo</th>
+                <th>Idestado</th>
+                <th>Idprioridad</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mantencion in mantencions %}
+            <tr>
+                <td><a href="{{ path('mantencion_show', { 'id': mantencion.id }) }}">{{ mantencion.id }}</a></td>
+                <td>{{ mantencion.codigoInterno }}</td>
+                <td>{{ mantencion.codigoExterno }}</td>
+                <td>{{ mantencion.descripcion }}</td>
+                <td>{% if mantencion.fechaIngreso %}{{ mantencion.fechaIngreso|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if mantencion.fechaSalida %}{{ mantencion.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ mantencion.anyo }}</td>
+                <td>{{ mantencion.mes }}</td>
+                <td>{{ mantencion.hhEstimadas }}</td>
+                <td>{{ mantencion.hhEfectivas }}</td>
+                <td>{{ mantencion.idSistema }}</td>
+                <td>{{ mantencion.idOrigen }}</td>
+                <td>{{ mantencion.idTipo }}</td>
+                <td>{{ mantencion.idEstado }}</td>
+                <td>{{ mantencion.idPrioridad }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('mantencion_show', { 'id': mantencion.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('mantencion_edit', { 'id': mantencion.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mantencion_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

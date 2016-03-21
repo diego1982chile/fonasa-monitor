@@ -41,6 +41,13 @@ class Mantencion
      * @ORM\Column(name="descripcion", type="string", length=1023)
      */
     private $descripcion;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_reporte", type="datetime")
+     */
+    private $fechaReporte;
 
     /**
      * @var \DateTime
@@ -98,7 +105,7 @@ class Mantencion
      *      
      * @ORM\Column(name="ID_SISTEMA", type="integer", nullable=true)               
      */
-    private $idSistema;     
+    protected $idSistema;     
     
     
     /**
@@ -115,23 +122,7 @@ class Mantencion
      *      
      * @ORM\Column(name="ID_ORIGEN", type="integer", nullable=true)               
      */
-    private $idOrigen;        
-        
-    /**
-     * @var \Tipo
-     *
-     * @ORM\ManyToOne(targetEntity="Tipo", inversedBy="mantenciones")
-     * @ORM\JoinColumns{(
-     *    @ORM\JoinColumn(name="ID_TIPO", referencedColumnName="id")
-     * })
-     */
-    protected $tipo;
-    
-    /**
-     *      
-     * @ORM\Column(name="ID_TIPO", type="integer", nullable=true)               
-     */
-    private $idTipo;         
+    protected $idOrigen;                      
     
     /**
      * @var \Estado
@@ -147,7 +138,7 @@ class Mantencion
      *      
      * @ORM\Column(name="ID_ESTADO", type="integer", nullable=true)               
      */
-    private $idEstado;       
+    protected $idEstado;       
 
     /**
      * @var \Prioridad
@@ -163,7 +154,40 @@ class Mantencion
      *      
      * @ORM\Column(name="ID_PRIORIDAD", type="integer", nullable=true)               
      */
-    private $idPrioridad;  
+    protected $idPrioridad;  
+    
+    /**
+     * @var \Servicio
+     *
+     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="mantenciones")
+     * @ORM\JoinColumns{(
+     *    @ORM\JoinColumn(name="ID_SERVICIO", referencedColumnName="id")
+     * })
+     */
+    protected $servicio;
+    
+    /**
+     *      
+     * @ORM\Column(name="ID_SERVICIO", type="integer", nullable=true)               
+     */
+    protected $idServicio;      
+    
+    
+    /**
+     * @var \Impacto
+     *
+     * @ORM\ManyToOne(targetEntity="Impacto", inversedBy="mantenciones")
+     * @ORM\JoinColumns{(
+     *    @ORM\JoinColumn(name="ID_IMPACTO", referencedColumnName="id")
+     * })
+     */
+    protected $impacto;
+    
+    /**
+     *      
+     * @ORM\Column(name="ID_IMPACTO", type="integer", nullable=true)               
+     */
+    protected $idImpacto;          
     
     
     /**          
@@ -256,9 +280,19 @@ class Mantencion
     public function getDescripcion()
     {
         return $this->descripcion;
-    }
+    }    
 
     /**
+     * Get fechaIngreso
+     *
+     * @return \DateTime
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
+    }
+    
+/**
      * Set fechaIngreso
      *
      * @param \DateTime $fechaIngreso
@@ -270,17 +304,41 @@ class Mantencion
         $this->fechaIngreso = $fechaIngreso;
 
         return $this;
-    }
-
+    }    
+    
     /**
-     * Get fechaIngreso
+     * Get fechaReporte
      *
      * @return \DateTime
      */
-    public function getFechaIngreso()
+    public function getFechaReporte()
     {
-        return $this->fechaIngreso;
+        return $this->fechaReporte;
+    }    
+    
+    /**
+     * Set fechaReporte
+     *
+     * @param \DateTime $fechaReporte
+     *
+     * @return Mantencion
+     */
+    public function setFechaReporte($fechaReporte)
+    {
+        $this->fechaReporte = $fechaReporte;
+
+        return $this;
     }
+
+    /**
+     * Get fechaSalida
+     *
+     * @return \DateTime
+     */
+    public function getFechaSalida()
+    {
+        return $this->fechaSalida;
+    }     
 
     /**
      * Set fechaSalida
@@ -294,17 +352,7 @@ class Mantencion
         $this->fechaSalida = $fechaSalida;
 
         return $this;
-    }
-
-    /**
-     * Get fechaSalida
-     *
-     * @return \DateTime
-     */
-    public function getFechaSalida()
-    {
-        return $this->fechaSalida;
-    } 
+    }    
 
     /**
      * Set anyo
@@ -466,40 +514,7 @@ class Mantencion
         $this->idOrigen = $idOrigen;
         
         return $this;
-    } 
-    
-    /**
-     * Get tipo
-     *
-     * @return \Fonasa\MonitorBundle\Entity\Tipo
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-    
-    /**
-     * Get idTipo
-     *
-     * @return int
-     */
-    public function getIdTipo()
-    {
-        return $this->idTipo;
-    }
-    
-    /**
-    * Set idTipo
-    *
-    * @param int $idTipo
-    * @return Mantencion
-    */
-    public function setIdTipo($idTipo)
-    {
-        $this->idTipo = $idTipo;
-        
-        return $this;
-    }      
+    }          
     
     /**
      * Get estado
@@ -566,5 +581,72 @@ class Mantencion
         
         return $this;
     }     
+    
+    /**
+     * Get servicio
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Servicio
+     */
+    public function getServicio()
+    {
+        return $this->servicio;
+    }
+    
+    /**
+     * Get idServicio
+     *
+     * @return int
+     */
+    public function getIdServicio()
+    {
+        return $this->idServicio;
+    }
+    
+    /**
+    * Set idServicio
+    *
+    * @param int $idServicio
+    * @return Mantencion
+    */
+    public function setIdServicio($idServicio)
+    {
+        $this->idServicio = $idServicio;
+        
+        return $this;
+    }         
+    
+    /**
+     * Get impacto
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Impacto
+     */
+    public function getImpacto()
+    {
+        return $this->impacto;
+    }
+    
+    /**
+     * Get idImpacto
+     *
+     * @return int
+     */
+    public function getIdImpacto()
+    {
+        return $this->idImpacto;
+    }
+    
+    /**
+    * Set idImpacto
+    *
+    * @param int $idImpacto
+    * @return Mantencion
+    */
+    public function setIdImpacto($idImpacto)
+    {
+        $this->idImpacto = $idImpacto;
+        
+        return $this;
+    }             
+    
 }
 

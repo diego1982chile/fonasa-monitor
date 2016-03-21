@@ -35,11 +35,10 @@ class Tipo
      */
     private $descripcion;
 
-    
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="tipo")          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="tipo")          
      */
-    protected $mantenciones;
+    protected $servicios; 
 
     /**
      * Get id

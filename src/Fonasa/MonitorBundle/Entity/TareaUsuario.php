@@ -22,20 +22,20 @@ class TareaUsuario
     private $id;
     
     /**
-     * @var \Usuario
+     * @var \Area
      *
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="tareasUsuario")
+     * @ORM\ManyToOne(targetEntity="Area", inversedBy="tareasArea")
      * @ORM\JoinColumns{(
-     *    @ORM\JoinColumn(name="ID_USUARIO", referencedColumnName="id")
+     *    @ORM\JoinColumn(name="ID_AREA", referencedColumnName="id")
      * })
      */
-    protected $usuario;    
+    protected $area;    
 
     /**
      *      
-     * @ORM\Column(name="ID_USUARIO", type="integer", nullable=true)               
+     * @ORM\Column(name="ID_AREA", type="integer", nullable=true)               
      */
-    private $idUsuario;    
+    private $idArea;    
     
     /**
      * @var \Tarea
@@ -54,10 +54,9 @@ class TareaUsuario
     private $idTarea;       
     
     /**          
-     * @ORM\OneToMany(targetEntity="TareaUsuario", mappedBy="tareaUsuario")          
+     * @ORM\OneToMany(targetEntity="Hh", mappedBy="tareaUsuario")          
      */
-    protected $hhs;      
-    
+    protected $hhs;                  
     
     /**
      * Get id
@@ -70,34 +69,34 @@ class TareaUsuario
     }
     
     /**
-     * Get usuario
+     * Get area
      *
-     * @return \Fonasa\MonitorBundle\Entity\Usuario
+     * @return \Fonasa\MonitorBundle\Entity\Area
      */
-    public function getUsuario()
+    public function getArea()
     {
-        return $this->usuario;
+        return $this->area;
     }
     
     /**
-     * Get idUsuario
+     * Get idArea
      *
      * @return int
      */
-    public function getIdUsuario()
+    public function getIdArea()
     {
-        return $this->idUsuario;
+        return $this->idArea;
     }
     
     /**
-    * Set idUsuario
+    * Set idArea
     *
-    * @param int $idUsuario
+    * @param int $idArea
     * @return TareaUsuario
     */
-    public function setIdUsuario($idUsuario)
+    public function setIdArea($idArea)
     {
-        $this->idUsuario = $idUsuario;
+        $this->idArea = $idArea;
         
         return $this;
     }

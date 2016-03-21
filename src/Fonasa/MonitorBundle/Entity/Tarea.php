@@ -38,7 +38,7 @@ class Tarea
     /**          
      * @ORM\OneToMany(targetEntity="TareaUsuario", mappedBy="tarea")          
      */
-    protected $tareasUsuario;              
+    protected $tareas;              
 
     /**
      * Get id

@@ -39,7 +39,11 @@ class Origen
      * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="origen")          
      */
     protected $mantenciones;         
-
+    
+    /**          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="origen")          
+     */
+    protected $servicios; 
 
     /**
      * Get id

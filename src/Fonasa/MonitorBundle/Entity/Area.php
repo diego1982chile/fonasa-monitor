@@ -40,6 +40,11 @@ class Area
      * @ORM\OneToMany(targetEntity="Usuario", mappedBy="area")          
      */
     protected $usuarios;    
+    
+    /**          
+     * @ORM\OneToMany(targetEntity="TareaUsuario", mappedBy="area")          
+     */
+    protected $tareasArea;       
 
     /**
      * Get id

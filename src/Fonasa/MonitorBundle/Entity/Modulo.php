@@ -5,12 +5,12 @@ namespace Fonasa\MonitorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Sistema
+ * Modulo
  *
- * @ORM\Table(name="sistema")
- * @ORM\Entity(repositoryClass="Fonasa\MonitorBundle\Repository\SistemaRepository")
+ * @ORM\Table(name="modulo")
+ * @ORM\Entity(repositoryClass="Fonasa\MonitorBundle\Repository\ModuloRepository")
  */
-class Sistema
+class Modulo
 {
     /**
      * @var int
@@ -34,16 +34,7 @@ class Sistema
      * @ORM\Column(name="descripcion", type="string", length=511, nullable=true)
      */
     private $descripcion;
-    
-    /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="sistema")          
-     */
-    protected $mantenciones;     
-    
-    /**          
-     * @ORM\OneToMany(targetEntity="ModuloSistema", mappedBy="sistema")          
-     */
-    protected $modulos;       
+
 
     /**
      * Get id
@@ -60,7 +51,7 @@ class Sistema
      *
      * @param string $nombre
      *
-     * @return Sistema
+     * @return Modulo
      */
     public function setNombre($nombre)
     {
@@ -84,7 +75,7 @@ class Sistema
      *
      * @param string $descripcion
      *
-     * @return Sistema
+     * @return Modulo
      */
     public function setDescripcion($descripcion)
     {
@@ -102,6 +93,10 @@ class Sistema
     {
         return $this->descripcion;
     }
-        
+    
+    /**          
+     * @ORM\OneToMany(targetEntity="Modulo", mappedBy="modulo")          
+     */
+    protected $modulos;     
 }
 

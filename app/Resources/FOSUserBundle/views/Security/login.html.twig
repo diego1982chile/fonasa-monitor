@@ -21,7 +21,9 @@
 
 	<button name="_submit" class="btn btn-large btn-primary" type="submit">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
 	{% if error %}
-    <div class="alert alert-error" style="margin-top: 20px;margin-bottom:0">{{ error|trans({}, 'FOSUserBundle') }}</div>
+            <div class="alert alert-error" style="margin-top: 20px;margin-bottom:0">                    
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
 	{% endif %}
     <a target="_blank" href="http://www.fonasa.cl"><img style="padding-top:10px;max-width:100%;max-height:100%;" src="{{ asset('bundles/fonasa-monitor/images/logofonasa.png') }}" alt="Cadem"></a>
     <a target="_blank" style="font-size:0.9em" href="#">Navegadores Soportados</a>

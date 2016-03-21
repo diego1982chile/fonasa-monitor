@@ -36,12 +36,7 @@ class Usuario extends BaseUser
      *      
      * @ORM\Column(name="ID_AREA", type="integer", nullable=true)               
      */
-    private $idArea;    
-    
-    /**          
-     * @ORM\OneToMany(targetEntity="TareaUsuario", mappedBy="usuario")          
-     */
-    protected $tareasUsuario;        
+    private $idArea;             
     
     /**          
      * @ORM\OneToMany(targetEntity="Hh", mappedBy="usuario")          
