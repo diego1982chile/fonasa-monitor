@@ -1,3 +1,9 @@
+root:
+    path:     /
+    defaults: 
+        _controller: FrameworkBundle:Redirect:Redirect
+        route: fos_user_security_login
+        permanent: true
 monitor_homepage:
     path:     /
     defaults: { _controller: MonitorBundle:Default:index }

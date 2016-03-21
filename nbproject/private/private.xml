@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/app/Resources/views/default/index.html.twig</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Hh.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Usuario.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Tarea.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Prioridad.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Area.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/app/Resources/views/base.html.twig</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Resources/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/composer.json</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Controller/DefaultController.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Origen.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Historial.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Mantencion.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Tipo.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/app/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Estado.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/TareaUsuario.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor/src/Fonasa/MonitorBundle/Entity/Sistema.php</file>
+        </group>
+    </open-files>
+</project-private>
