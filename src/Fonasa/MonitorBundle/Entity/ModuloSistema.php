@@ -64,6 +64,20 @@ class ModuloSistema
     }
     
     /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return ModuloSistema
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }        
+    
+    /**
      * Get sistema
      *
      * @return \Fonasa\MonitorBundle\Entity\Sistema
@@ -72,6 +86,19 @@ class ModuloSistema
     {
         return $this->sistema;
     }
+    
+    /**
+    * Set sistema
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Sistema
+    * @return ModuloSistema
+    */
+    public function setSistema($sistema)
+    {
+        $this->sistema = $sistema;
+        
+        return $this;
+    }      
     
     /**
      * Get idSistema
@@ -105,6 +132,19 @@ class ModuloSistema
     {
         return $this->modulo;
     }
+    
+    /**
+    * Set modulo
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Modulo
+    * @return ModuloSistema
+    */
+    public function setModulo($modulo)
+    {
+        $this->modulo = $modulo;
+        
+        return $this;
+    }          
     
     /**
      * Get idModulo

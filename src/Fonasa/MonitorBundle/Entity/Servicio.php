@@ -71,6 +71,20 @@ class Servicio
     }    
     
     /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Servicio
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }    
+    
+    /**
      * Get tipo
      *
      * @return \Fonasa\MonitorBundle\Entity\Tipo
@@ -89,6 +103,19 @@ class Servicio
     {
         return $this->idTipo;
     }
+    
+    /**
+    * Set tipo
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Tipo
+    * @return Servicio
+    */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+        
+        return $this;
+    }      
     
     /**
     * Set idTipo
@@ -122,6 +149,19 @@ class Servicio
     {
         return $this->idOrigen;
     }
+    
+    /**
+    * Set origen
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Origen
+    * @return Servicio
+    */
+    public function setOrigen($origen)
+    {
+        $this->origen = $origen;
+        
+        return $this;
+    }        
     
     /**
     * Set idOrigen

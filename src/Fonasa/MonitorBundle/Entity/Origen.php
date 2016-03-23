@@ -54,6 +54,20 @@ class Origen
     {
         return $this->id;
     }
+    
+    /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Origen
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Set nombre
@@ -102,5 +116,15 @@ class Origen
     {
         return $this->descripcion;
     }
+    
+    /**
+     * Get servicios
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServicios()
+    {
+        return $this->servicios;
+    }    
 }
 

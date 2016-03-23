@@ -50,6 +50,20 @@ class Prioridad
     {
         return $this->id;
     }
+    
+    /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Prioridad
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }    
 
     /**
      * Set nombre

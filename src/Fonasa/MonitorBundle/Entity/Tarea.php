@@ -51,6 +51,20 @@ class Tarea
     }
 
     /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Tarea
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }        
+    
+    /**
      * Set nombre
      *
      * @param string $nombre

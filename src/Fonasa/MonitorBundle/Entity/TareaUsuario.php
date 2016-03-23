@@ -69,6 +69,20 @@ class TareaUsuario
     }
     
     /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return TareaUsuario
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }        
+    
+    /**
      * Get area
      *
      * @return \Fonasa\MonitorBundle\Entity\Area
@@ -77,6 +91,19 @@ class TareaUsuario
     {
         return $this->area;
     }
+    
+    /**
+    * Set area
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Area
+    * @return TareaUsuario
+    */
+    public function setArea($area)
+    {
+        $this->area = $area;
+        
+        return $this;
+    }        
     
     /**
      * Get idArea
@@ -112,6 +139,19 @@ class TareaUsuario
     }
     
     /**
+    * Set tarea
+    *
+    * @param \Fonasa\MonitorBundle\Entity\Tarea
+    * @return TareaUsuario
+    */
+    public function setTarea($tarea)
+    {
+        $this->tarea = $tarea;
+        
+        return $this;
+    }            
+    
+    /**
      * Get idTarea
      *
      * @return int
@@ -119,7 +159,7 @@ class TareaUsuario
     public function getIdTarea()
     {
         return $this->idTarea;
-    }
+    }       
     
     /**
     * Set idTarea

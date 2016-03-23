@@ -37,6 +37,9 @@ class MantencionController extends Controller
     public function newAction(Request $request)
     {
         $mantencion = new Mantencion();
+        
+        $em = $this->getDoctrine()->getManager();        
+        
         $form = $this->createForm('Fonasa\MonitorBundle\Form\MantencionType', $mantencion);
         $form->handleRequest($request);
 

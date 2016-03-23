@@ -461,6 +461,18 @@ class Mantencion
     }
     
     /**
+     * Set sistema
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Mantencion
+     */
+    public function setSistema(\Fonasa\MonitorBundle\Entity\Sistema $sistema)
+    {
+        $this->sistema=$sistema;
+        
+        return $this;
+    }
+    
+    /**
      * Get idSistema
      *
      * @return int
@@ -491,6 +503,18 @@ class Mantencion
     public function getOrigen()
     {
         return $this->origen;
+    }
+    
+    /**
+     * Set origen
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Mantencion
+     */
+    public function setOrigen(\Fonasa\MonitorBundle\Entity\Origen $origen)
+    {
+        $this->origen=$origen;
+        
+        return $this;
     }
     
     /**
@@ -527,6 +551,18 @@ class Mantencion
     }
     
     /**
+     * Set estado
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Mantencion
+     */
+    public function setEstado(\Fonasa\MonitorBundle\Entity\Estado $estado)
+    {
+        $this->estado=$estado;
+        
+        return $this;
+    }    
+    
+    /**
      * Get idEstado
      *
      * @return int
@@ -558,6 +594,18 @@ class Mantencion
     {
         return $this->prioridad;
     }
+    
+    /**
+     * Set prioridad
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Mantencion
+     */
+    public function setPrioridad(\Fonasa\MonitorBundle\Entity\Prioridad $prioridad)
+    {
+        $this->prioridad=$prioridad;
+        
+        return $this;
+    }    
     
     /**
      * Get idEstado
