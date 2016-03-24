@@ -36,9 +36,9 @@ class Prioridad
     private $descripcion;
     
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="prioridad")          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="prioridad")          
      */
-    protected $mantenciones;
+    protected $servicios;
 
 
     /**

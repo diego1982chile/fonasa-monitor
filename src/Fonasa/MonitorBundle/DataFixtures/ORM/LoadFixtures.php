@@ -9,13 +9,13 @@ use Fonasa\MonitorBundle\Entity\Area;
 use Fonasa\MonitorBundle\Entity\Estado;
 use Fonasa\MonitorBundle\Entity\Origen;
 use Fonasa\MonitorBundle\Entity\Prioridad;
-use Fonasa\MonitorBundle\Entity\Sistema;
+use Fonasa\MonitorBundle\Entity\Componente;
 use Fonasa\MonitorBundle\Entity\Tarea;
 use Fonasa\MonitorBundle\Entity\TareaUsuario;
 use Fonasa\MonitorBundle\Entity\Tipo;
-use Fonasa\MonitorBundle\Entity\Servicio;
-use Fonasa\MonitorBundle\Entity\Modulo;
-use Fonasa\MonitorBundle\Entity\ModuloSistema;
+use Fonasa\MonitorBundle\Entity\TipoServicio;
+use Fonasa\MonitorBundle\Entity\TipoAlcance;
+use Fonasa\MonitorBundle\Entity\Alcance;
 use Fonasa\MonitorBundle\Entity\Impacto;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,7 +32,7 @@ class LoadFixtures extends Controller implements FixtureInterface
         $area1 = new Area();
                 
         $area1->setNombre("Análisis");
-        $area1->setDescripcion("Área encargada de analizar y gestionar los requerimientos y/o incidencias, generando mantenciones asociadas");        
+        $area1->setDescripcion("Área encargada de analizar y gestionar los requerimientos y/o incidencias, generando servicios asociados");        
         
         $manager->persist($area1);        
 
@@ -116,7 +116,7 @@ class LoadFixtures extends Controller implements FixtureInterface
         $manager->flush();         
                 
         $origen3 = new Origen();              
-        $origen3->setNombre("Mesa");
+        $origen3->setNombre("Mesa ayuda");
         $origen3->setDescripcion("Mesa de ayuda");                
         
         $manager->persist($origen3);
@@ -168,34 +168,34 @@ class LoadFixtures extends Controller implements FixtureInterface
         $manager->persist($impacto3);
         $manager->flush();                
         
-        $connection->exec("ALTER TABLE sistema AUTO_INCREMENT = 1;");                                        
+        $connection->exec("ALTER TABLE componente AUTO_INCREMENT = 1;");                                        
         
-        $sistema1 = new Sistema();
-        $sistema1->setNombre("SIGGES");
-        $sistema1->setDescripcion("Sistema de monitoreo de Garantias de Oportunidad");                
+        $componente1 = new Componente();
+        $componente1->setNombre("SIGGES");
+        $componente1->setDescripcion("Componente de monitoreo de Garantias de Oportunidad");                
         
-        $manager->persist($sistema1);
+        $manager->persist($componente1);
         $manager->flush();        
                 
-        $sistema2 = new Sistema();
-        $sistema2->setNombre("GGPF");
-        $sistema2->setDescripcion("Sistema de monitoreo de Garantias financieras");                                
+        $componente2 = new Componente();
+        $componente2->setNombre("GGPF");
+        $componente2->setDescripcion("Componente de monitoreo de Garantias financieras");                                
         
-        $manager->persist($sistema2);
+        $manager->persist($componente2);
         $manager->flush();                
         
-        $sistema3 = new Sistema();
-        $sistema3->setNombre("Préstamo Médico");
-        $sistema3->setDescripcion("Préstamo Médico");                                
+        $componente3 = new Componente();
+        $componente3->setNombre("Préstamo Médico");
+        $componente3->setDescripcion("Préstamo Médico");                                
         
-        $manager->persist($sistema3);
+        $manager->persist($componente3);
         $manager->flush();                
         
-        $sistema4 = new Sistema();
-        $sistema4->setNombre("DWH");
-        $sistema4->setDescripcion("DWH");                                
+        $componente4 = new Componente();
+        $componente4->setNombre("DWH");
+        $componente4->setDescripcion("DWH");                                
         
-        $manager->persist($sistema4);
+        $manager->persist($componente4);
         $manager->flush();                        
         
         $connection->exec("ALTER TABLE tipo AUTO_INCREMENT = 1;");                                                        
@@ -228,43 +228,60 @@ class LoadFixtures extends Controller implements FixtureInterface
         $manager->persist($tipo4);
         $manager->flush();                   
         
-        $connection->exec("ALTER TABLE servicio AUTO_INCREMENT = 1;");                                                        
+        $connection->exec("ALTER TABLE tipo_servicio AUTO_INCREMENT = 1;");                                                        
                         
-        $servicio1 = new Servicio();
-        $servicio1->setOrigen($origen1);
-        $servicio1->setIdOrigen($origen1->getId());        
-        $servicio1->setTipo($tipo1);
-        $servicio1->setIdTipo($tipo1->getId());        
+        $tipoServicio1 = new TipoServicio();
+        $tipoServicio1->setOrigen($origen1);
+        $tipoServicio1->setIdOrigen($origen1->getId());        
+        $tipoServicio1->setTipo($tipo1);
+        $tipoServicio1->setIdTipo($tipo1->getId());        
                 
-        $manager->persist($servicio1);
+        $manager->persist($tipoServicio1);
         $manager->flush();                       
         
-        $servicio2 = new Servicio();
-        $servicio2->setOrigen($origen1);
-        $servicio2->setIdOrigen($origen1->getId());        
-        $servicio2->setTipo($tipo2);
-        $servicio2->setIdTipo($tipo2->getId());                                     
+        $tipoServicio2 = new TipoServicio();
+        $tipoServicio2->setOrigen($origen1);
+        $tipoServicio2->setTipo($tipo2);
+        $tipoServicio2->setIdTipo($tipo2->getId());                                     
         
-        $manager->persist($servicio2);
+        $manager->persist($tipoServicio2);
         $manager->flush();                
         
-        $servicio3 = new Servicio();
-        $servicio3->setOrigen($origen2);
-        $servicio3->setIdOrigen($origen2->getId());        
-        $servicio3->setTipo($tipo2);
-        $servicio3->setIdTipo($tipo2->getId());                                              
+        $tipoServicio3 = new TipoServicio();
+        $tipoServicio3->setOrigen($origen2);
+        $tipoServicio3->setIdOrigen($origen2->getId());        
+        $tipoServicio3->setTipo($tipo2);
+        $tipoServicio3->setIdTipo($tipo2->getId());                                              
         
-        $manager->persist($servicio3);
+        $manager->persist($tipoServicio3);
         $manager->flush();      
         
-        $servicio4 = new Servicio();
-        $servicio4->setOrigen($origen2);
-        $servicio4->setIdOrigen($origen2->getId());        
-        $servicio4->setTipo($tipo3);
-        $servicio4->setIdTipo($tipo3->getId());                                             
+        $tipoServicio4 = new TipoServicio();
+        $tipoServicio4->setOrigen($origen2);
+        $tipoServicio4->setIdOrigen($origen2->getId());        
+        $tipoServicio4->setTipo($tipo3);
+        $tipoServicio4->setIdTipo($tipo3->getId());                                             
         
-        $manager->persist($servicio4);
+        $manager->persist($tipoServicio4);
         $manager->flush();            
+        
+        $tipoServicio5 = new TipoServicio();
+        $tipoServicio5->setOrigen($origen3);
+        $tipoServicio5->setIdOrigen($origen3->getId());        
+        $tipoServicio5->setTipo($tipo1);
+        $tipoServicio5->setIdTipo($tipo1->getId());                                             
+        
+        $manager->persist($tipoServicio5);
+        $manager->flush();                    
+        
+        $tipoServicio6 = new TipoServicio();
+        $tipoServicio6->setOrigen($origen3);
+        $tipoServicio6->setIdOrigen($origen3->getId());        
+        $tipoServicio6->setTipo($tipo2);
+        $tipoServicio6->setIdTipo($tipo2->getId());                                             
+        
+        $manager->persist($tipoServicio6);
+        $manager->flush();                            
 
         $connection->exec("ALTER TABLE tarea AUTO_INCREMENT = 1;");                                                                        
         
@@ -430,440 +447,440 @@ class LoadFixtures extends Controller implements FixtureInterface
         $manager->persist($tareaUsuario10);
         $manager->flush();                 
         
-        $connection->exec("ALTER TABLE modulo AUTO_INCREMENT = 1;");                
+        $connection->exec("ALTER TABLE tipo_alcance AUTO_INCREMENT = 1;");                
         
-        $modulo1 = new Modulo();
-        $modulo1->setNombre("ACR Consulta");
-        $modulo1->setDescripcion("ACR Consulta");                
+        $tipoAlcance1 = new TipoAlcance();
+        $tipoAlcance1->setNombre("ACR Consulta");
+        $tipoAlcance1->setDescripcion("ACR Consulta");                
         
-        $manager->persist($modulo1);
+        $manager->persist($tipoAlcance1);
         $manager->flush();                         
         
-        $modulo2 = new Modulo();   
-        $modulo2->setNombre("Adm. Establecimiento");
-        $modulo2->setDescripcion("Adm. Establecimiento");                
+        $tipoAlcance2 = new TipoAlcance();   
+        $tipoAlcance2->setNombre("Adm. Establecimiento");
+        $tipoAlcance2->setDescripcion("Adm. Establecimiento");                
         
-        $manager->persist($modulo2);
+        $manager->persist($tipoAlcance2);
         $manager->flush();                           
                 
-        $modulo3 = new Modulo();
-        $modulo3->setNombre("Adm. Colas");
-        $modulo3->setDescripcion("Adm. Colas");                
+        $tipoAlcance3 = new TipoAlcance();
+        $tipoAlcance3->setNombre("Adm. Colas");
+        $tipoAlcance3->setDescripcion("Adm. Colas");                
         
-        $manager->persist($modulo3);
+        $manager->persist($tipoAlcance3);
         $manager->flush();                 
                 
-        $modulo4 = new Modulo();
-        $modulo4->setNombre("Arancel");
-        $modulo4->setDescripcion("Arancel");                
+        $tipoAlcance4 = new TipoAlcance();
+        $tipoAlcance4->setNombre("Arancel");
+        $tipoAlcance4->setDescripcion("Arancel");                
         
-        $manager->persist($modulo4);
+        $manager->persist($tipoAlcance4);
         $manager->flush();              
                 
-        $modulo5 = new Modulo();
-        $modulo5->setNombre("Beneficiario");
-        $modulo5->setDescripcion("Beneficiario");                
+        $tipoAlcance5 = new TipoAlcance();
+        $tipoAlcance5->setNombre("Beneficiario");
+        $tipoAlcance5->setDescripcion("Beneficiario");                
         
-        $manager->persist($modulo5);
+        $manager->persist($tipoAlcance5);
         $manager->flush();                   
                 
-        $modulo6 = new Modulo();
-        $modulo6->setNombre("Búsqueda paciente");
-        $modulo6->setDescripcion("Búsqueda paciente");                
+        $tipoAlcance6 = new TipoAlcance();
+        $tipoAlcance6->setNombre("Búsqueda paciente");
+        $tipoAlcance6->setDescripcion("Búsqueda paciente");                
         
-        $manager->persist($modulo6);
+        $manager->persist($tipoAlcance6);
         $manager->flush();        
                 
-        $modulo7 = new Modulo();
-        $modulo7->setNombre("CAT");
-        $modulo7->setDescripcion("CAT");                
+        $tipoAlcance7 = new TipoAlcance();
+        $tipoAlcance7->setNombre("CAT");
+        $tipoAlcance7->setDescripcion("CAT");                
         
-        $manager->persist($modulo7);
+        $manager->persist($tipoAlcance7);
         $manager->flush();              
                 
-        $modulo8 = new Modulo();
-        $modulo8->setNombre("CUP");
-        $modulo8->setDescripcion("CUP");                
+        $tipoAlcance8 = new TipoAlcance();
+        $tipoAlcance8->setNombre("CUP");
+        $tipoAlcance8->setDescripcion("CUP");                
         
-        $manager->persist($modulo8);
+        $manager->persist($tipoAlcance8);
         $manager->flush();          
         
-        $modulo9 = new Modulo();
-        $modulo9->setNombre("Datamart");
-        $modulo9->setDescripcion("Datamart");                
+        $tipoAlcance9 = new TipoAlcance();
+        $tipoAlcance9->setNombre("Datamart");
+        $tipoAlcance9->setDescripcion("Datamart");                
         
-        $manager->persist($modulo9);
+        $manager->persist($tipoAlcance9);
         $manager->flush();               
                 
-        $modulo10 = new Modulo();
-        $modulo10->setNombre("DDE");
-        $modulo10->setDescripcion("DDE");                
+        $tipoAlcance10 = new TipoAlcance();
+        $tipoAlcance10->setNombre("DDE");
+        $tipoAlcance10->setDescripcion("DDE");                
         
-        $manager->persist($modulo10);
+        $manager->persist($tipoAlcance10);
         $manager->flush();          
         
-        $modulo11 = new Modulo();
-        $modulo11->setNombre("Desbloqueo prev. fallecido");
-        $modulo11->setDescripcion("Desbloqueo prev. fallecido");                
+        $tipoAlcance11 = new TipoAlcance();
+        $tipoAlcance11->setNombre("Desbloqueo prev. fallecido");
+        $tipoAlcance11->setDescripcion("Desbloqueo prev. fallecido");                
         
-        $manager->persist($modulo11);
+        $manager->persist($tipoAlcance11);
         $manager->flush();                  
                 
-        $modulo12 = new Modulo();
-        $modulo12->setNombre("ENDECA");
-        $modulo12->setDescripcion("ENDECA");                
+        $tipoAlcance12 = new TipoAlcance();
+        $tipoAlcance12->setNombre("ENDECA");
+        $tipoAlcance12->setDescripcion("ENDECA");                
         
-        $manager->persist($modulo12);
+        $manager->persist($tipoAlcance12);
         $manager->flush();                  
                 
-        $modulo13 = new Modulo();
-        $modulo13->setNombre("Extracción");
-        $modulo13->setDescripcion("Extracción");                
+        $tipoAlcance13 = new TipoAlcance();
+        $tipoAlcance13->setNombre("Extracción");
+        $tipoAlcance13->setDescripcion("Extracción");                
         
-        $manager->persist($modulo13);
+        $manager->persist($tipoAlcance13);
         $manager->flush();                     
                 
-        $modulo14 = new Modulo();
-        $modulo14->setNombre("EXTRAEGGPF");
-        $modulo14->setDescripcion("EXTRAEGGPF");                
+        $tipoAlcance14 = new TipoAlcance();
+        $tipoAlcance14->setNombre("EXTRAEGGPF");
+        $tipoAlcance14->setDescripcion("EXTRAEGGPF");                
         
-        $manager->persist($modulo14);
+        $manager->persist($tipoAlcance14);
         $manager->flush();                         
                 
-        $modulo15 = new Modulo();
-        $modulo15->setNombre("Facturación");
-        $modulo15->setDescripcion("Facturación");                
+        $tipoAlcance15 = new TipoAlcance();
+        $tipoAlcance15->setNombre("Facturación");
+        $tipoAlcance15->setDescripcion("Facturación");                
         
-        $manager->persist($modulo15);
+        $manager->persist($tipoAlcance15);
         $manager->flush();                  
                 
-        $modulo16 = new Modulo();
-        $modulo16->setNombre("Parametrización eventos GO");
-        $modulo16->setDescripcion("Parametrización eventos GO");                
+        $tipoAlcance16 = new TipoAlcance();
+        $tipoAlcance16->setNombre("Parametrización eventos GO");
+        $tipoAlcance16->setDescripcion("Parametrización eventos GO");                
         
-        $manager->persist($modulo16);
+        $manager->persist($tipoAlcance16);
         $manager->flush();                  
                 
-        $modulo17 = new Modulo();
-        $modulo17->setNombre("IFL");
-        $modulo17->setDescripcion("IFL");                
+        $tipoAlcance17 = new TipoAlcance();
+        $tipoAlcance17->setNombre("IFL");
+        $tipoAlcance17->setDescripcion("IFL");                
         
-        $manager->persist($modulo17);
+        $manager->persist($tipoAlcance17);
         $manager->flush();                 
                 
-        $modulo18 = new Modulo();
-        $modulo18->setNombre("Manuales");
-        $modulo18->setDescripcion("Manuales");                
+        $tipoAlcance18 = new TipoAlcance();
+        $tipoAlcance18->setNombre("Manuales");
+        $tipoAlcance18->setDescripcion("Manuales");                
         
-        $manager->persist($modulo18);
+        $manager->persist($tipoAlcance18);
         $manager->flush();                         
                 
-        $modulo19 = new Modulo();
-        $modulo19->setNombre("Monitoreo y consultas");
-        $modulo19->setDescripcion("Monitoreo y consultas");                
+        $tipoAlcance19 = new TipoAlcance();
+        $tipoAlcance19->setNombre("Monitoreo y consultas");
+        $tipoAlcance19->setDescripcion("Monitoreo y consultas");                
         
-        $manager->persist($modulo19);
+        $manager->persist($tipoAlcance19);
         $manager->flush();                       
                 
-        $modulo20 = new Modulo();
-        $modulo20->setNombre("Reporte OFF-Line");
-        $modulo20->setDescripcion("Reporte OFF-Line");                
+        $tipoAlcance20 = new TipoAlcance();
+        $tipoAlcance20->setNombre("Reporte OFF-Line");
+        $tipoAlcance20->setDescripcion("Reporte OFF-Line");                
         
-        $manager->persist($modulo20);
+        $manager->persist($tipoAlcance20);
         $manager->flush();                               
                 
-        $modulo21 = new Modulo();
-        $modulo21->setNombre("RNP");
-        $modulo21->setDescripcion("RNP");                
+        $tipoAlcance21 = new TipoAlcance();
+        $tipoAlcance21->setNombre("RNP");
+        $tipoAlcance21->setDescripcion("RNP");                
         
-        $manager->persist($modulo21);
+        $manager->persist($tipoAlcance21);
         $manager->flush();                               
                 
-        $modulo22 = new Modulo();    
-        $modulo22->setNombre("POII-POIM");
-        $modulo22->setDescripcion("POII-POIM");                
+        $tipoAlcance22 = new TipoAlcance();    
+        $tipoAlcance22->setNombre("POII-POIM");
+        $tipoAlcance22->setDescripcion("POII-POIM");                
         
-        $manager->persist($modulo22);
+        $manager->persist($tipoAlcance22);
         $manager->flush();          
                 
-        $modulo23 = new Modulo();
-        $modulo23->setNombre("Recálculo GO");
-        $modulo23->setDescripcion("Recálculo GO");                
+        $tipoAlcance23 = new TipoAlcance();
+        $tipoAlcance23->setNombre("Recálculo GO");
+        $tipoAlcance23->setDescripcion("Recálculo GO");                
         
-        $manager->persist($modulo23);
+        $manager->persist($tipoAlcance23);
         $manager->flush();                  
                 
-        $modulo24 = new Modulo();
-        $modulo24->setNombre("Revalorizar");
-        $modulo24->setDescripcion("Revalorizar");                
+        $tipoAlcance24 = new TipoAlcance();
+        $tipoAlcance24->setNombre("Revalorizar");
+        $tipoAlcance24->setDescripcion("Revalorizar");                
         
-        $manager->persist($modulo24);
+        $manager->persist($tipoAlcance24);
         $manager->flush();                          
                 
-        $modulo25 = new Modulo();
-        $modulo25->setNombre("Proceso CAC");
-        $modulo25->setDescripcion("Proceso CAC");                
+        $tipoAlcance25 = new TipoAlcance();
+        $tipoAlcance25->setNombre("Proceso CAC");
+        $tipoAlcance25->setDescripcion("Proceso CAC");                
         
-        $manager->persist($modulo25);
+        $manager->persist($tipoAlcance25);
         $manager->flush();                          
                 
-        $modulo26 = new Modulo();
-        $modulo26->setNombre("VIH");
-        $modulo26->setDescripcion("VIH");                
+        $tipoAlcance26 = new TipoAlcance();
+        $tipoAlcance26->setNombre("VIH");
+        $tipoAlcance26->setDescripcion("VIH");                
         
-        $manager->persist($modulo26);
+        $manager->persist($tipoAlcance26);
         $manager->flush();                          
                 
-        $modulo27 = new Modulo();
-        $modulo27->setNombre("WS Certificador Prev.");
-        $modulo27->setDescripcion("WS Certificador Prev.");                
+        $tipoAlcance27 = new TipoAlcance();
+        $tipoAlcance27->setNombre("WS Certificador Prev.");
+        $tipoAlcance27->setDescripcion("WS Certificador Prev.");                
         
-        $manager->persist($modulo27);
+        $manager->persist($tipoAlcance27);
         $manager->flush();                  
         
-        $connection->exec("ALTER TABLE modulo_sistema AUTO_INCREMENT = 1;");                                
+        $connection->exec("ALTER TABLE alcance AUTO_INCREMENT = 1;");                                
                         
-        $moduloSistema1 = new ModuloSistema();
-        $moduloSistema1->setSistema($sistema1);
-        $moduloSistema1->setIdSistema($sistema1->getId());
-        $moduloSistema1->setModulo($modulo1);        
-        $moduloSistema1->setIdModulo($modulo1->getId());
+        $alcance1 = new Alcance();
+        $alcance1->setComponente($componente1);
+        $alcance1->setIdComponente($componente1->getId());
+        $alcance1->setTipoAlcance($tipoAlcance1);        
+        $alcance1->setIdTipoAlcance($tipoAlcance1->getId());
         
-        $manager->persist($moduloSistema1);
+        $manager->persist($alcance1);
         $manager->flush();                          
         
-        $moduloSistema2 = new ModuloSistema();
-        $moduloSistema2->setSistema($sistema1);
-        $moduloSistema2->setIdSistema($sistema1->getId());
-        $moduloSistema2->setModulo($modulo2);        
-        $moduloSistema2->setIdModulo($modulo2->getId());                
+        $alcance2 = new Alcance();
+        $alcance2->setComponente($componente1);
+        $alcance2->setIdComponente($componente1->getId());
+        $alcance2->setTipoAlcance($tipoAlcance2);        
+        $alcance2->setIdTipoAlcance($tipoAlcance2->getId());                
         
-        $manager->persist($moduloSistema2);
+        $manager->persist($alcance2);
         $manager->flush();                      
                 
-        $moduloSistema3 = new ModuloSistema();
-        $moduloSistema3->setSistema($sistema1);
-        $moduloSistema3->setIdSistema($sistema1->getId());
-        $moduloSistema3->setModulo($modulo3);        
-        $moduloSistema3->setIdModulo($modulo3->getId());        
+        $alcance3 = new Alcance();
+        $alcance3->setComponente($componente1);
+        $alcance3->setIdComponente($componente1->getId());
+        $alcance3->setTipoAlcance($tipoAlcance3);        
+        $alcance3->setIdTipoAlcance($tipoAlcance3->getId());        
         
-        $manager->persist($moduloSistema3);
+        $manager->persist($alcance3);
         $manager->flush();         
         
-        $moduloSistema4 = new ModuloSistema();
-        $moduloSistema4->setSistema($sistema1);
-        $moduloSistema4->setIdSistema($sistema1->getId());
-        $moduloSistema4->setModulo($modulo4);        
-        $moduloSistema4->setIdModulo($modulo4->getId());                
+        $alcance4 = new Alcance();
+        $alcance4->setComponente($componente1);
+        $alcance4->setIdComponente($componente1->getId());
+        $alcance4->setTipoAlcance($tipoAlcance4);        
+        $alcance4->setIdTipoAlcance($tipoAlcance4->getId());                
         
-        $manager->persist($moduloSistema4);
+        $manager->persist($alcance4);
         $manager->flush();         
         
-        $moduloSistema5 = new ModuloSistema();
-        $moduloSistema5->setSistema($sistema1);
-        $moduloSistema5->setIdSistema($sistema1->getId());
-        $moduloSistema5->setModulo($modulo5);        
-        $moduloSistema5->setIdModulo($modulo5->getId());                        
+        $alcance5 = new Alcance();
+        $alcance5->setComponente($componente1);
+        $alcance5->setIdComponente($componente1->getId());
+        $alcance5->setTipoAlcance($tipoAlcance5);        
+        $alcance5->setIdTipoAlcance($tipoAlcance5->getId());                        
         
-        $manager->persist($moduloSistema5);
+        $manager->persist($alcance5);
         $manager->flush();         
         
-        $moduloSistema6 = new ModuloSistema();
-        $moduloSistema6->setSistema($sistema1);
-        $moduloSistema6->setIdSistema($sistema1->getId());
-        $moduloSistema6->setModulo($modulo6);        
-        $moduloSistema6->setIdModulo($modulo6->getId());                        
+        $alcance6 = new Alcance();
+        $alcance6->setComponente($componente1);
+        $alcance6->setIdComponente($componente1->getId());
+        $alcance6->setTipoAlcance($tipoAlcance6);        
+        $alcance6->setIdTipoAlcance($tipoAlcance6->getId());                        
         
-        $manager->persist($moduloSistema6);
+        $manager->persist($alcance6);
         $manager->flush();         
         
-        $moduloSistema7 = new ModuloSistema();
-        $moduloSistema7->setSistema($sistema1);
-        $moduloSistema7->setIdSistema($sistema1->getId());
-        $moduloSistema7->setModulo($modulo7);        
-        $moduloSistema7->setIdModulo($modulo7->getId());                        
+        $alcance7 = new Alcance();
+        $alcance7->setComponente($componente1);
+        $alcance7->setIdComponente($componente1->getId());
+        $alcance7->setTipoAlcance($tipoAlcance7);        
+        $alcance7->setIdTipoAlcance($tipoAlcance7->getId());                        
         
-        $manager->persist($moduloSistema7);
+        $manager->persist($alcance7);
         $manager->flush();         
         
-        $moduloSistema8 = new ModuloSistema();
-        $moduloSistema8->setSistema($sistema1);
-        $moduloSistema8->setIdSistema($sistema1->getId());
-        $moduloSistema8->setModulo($modulo8);        
-        $moduloSistema8->setIdModulo($modulo8->getId());                        
+        $alcance8 = new Alcance();
+        $alcance8->setComponente($componente1);
+        $alcance8->setIdComponente($componente1->getId());
+        $alcance8->setTipoAlcance($tipoAlcance8);        
+        $alcance8->setIdTipoAlcance($tipoAlcance8->getId());                        
         
-        $manager->persist($moduloSistema8);
+        $manager->persist($alcance8);
         $manager->flush();         
         
-        $moduloSistema9 = new ModuloSistema();
-        $moduloSistema9->setSistema($sistema1);
-        $moduloSistema9->setIdSistema($sistema1->getId());
-        $moduloSistema9->setModulo($modulo9);        
-        $moduloSistema9->setIdModulo($modulo9->getId());                        
+        $alcance9 = new Alcance();
+        $alcance9->setComponente($componente1);
+        $alcance9->setIdComponente($componente1->getId());
+        $alcance9->setTipoAlcance($tipoAlcance9);        
+        $alcance9->setIdTipoAlcance($tipoAlcance9->getId());                        
         
-        $manager->persist($moduloSistema9);
+        $manager->persist($alcance9);
         $manager->flush();         
         
-        $moduloSistema10 = new ModuloSistema();
-        $moduloSistema10->setSistema($sistema1);
-        $moduloSistema10->setIdSistema($sistema1->getId());
-        $moduloSistema10->setModulo($modulo10);        
-        $moduloSistema10->setIdModulo($modulo10->getId());        
+        $alcance10 = new Alcance();
+        $alcance10->setComponente($componente1);
+        $alcance10->setIdComponente($componente1->getId());
+        $alcance10->setTipoAlcance($tipoAlcance10);        
+        $alcance10->setIdTipoAlcance($tipoAlcance10->getId());        
                 
-        $manager->persist($moduloSistema10);
+        $manager->persist($alcance10);
         $manager->flush();          
         
-        $moduloSistema11 = new ModuloSistema();
-        $moduloSistema11->setSistema($sistema1);
-        $moduloSistema11->setIdSistema($sistema1->getId());
-        $moduloSistema11->setModulo($modulo11);        
-        $moduloSistema11->setIdModulo($modulo11->getId());                        
+        $alcance11 = new Alcance();
+        $alcance11->setComponente($componente1);
+        $alcance11->setIdComponente($componente1->getId());
+        $alcance11->setTipoAlcance($tipoAlcance11);        
+        $alcance11->setIdTipoAlcance($tipoAlcance11->getId());                        
         
-        $manager->persist($moduloSistema11);
+        $manager->persist($alcance11);
         $manager->flush();          
         
-        $moduloSistema12 = new ModuloSistema();
-        $moduloSistema12->setSistema($sistema1);
-        $moduloSistema12->setIdSistema($sistema1->getId());
-        $moduloSistema12->setModulo($modulo12);        
-        $moduloSistema12->setIdModulo($modulo12->getId());                                
+        $alcance12 = new Alcance();
+        $alcance12->setComponente($componente1);
+        $alcance12->setIdComponente($componente1->getId());
+        $alcance12->setTipoAlcance($tipoAlcance12);        
+        $alcance12->setIdTipoAlcance($tipoAlcance12->getId());                                
         
-        $manager->persist($moduloSistema12);
+        $manager->persist($alcance12);
         $manager->flush();         
         
-        $moduloSistema13 = new ModuloSistema();
-        $moduloSistema13->setSistema($sistema1);
-        $moduloSistema13->setIdSistema($sistema1->getId());
-        $moduloSistema13->setModulo($modulo13);        
-        $moduloSistema13->setIdModulo($modulo13->getId());                        
+        $alcance13 = new Alcance();
+        $alcance13->setComponente($componente1);
+        $alcance13->setIdComponente($componente1->getId());
+        $alcance13->setTipoAlcance($tipoAlcance13);        
+        $alcance13->setIdTipoAlcance($tipoAlcance13->getId());                        
         
-        $manager->persist($moduloSistema13);
+        $manager->persist($alcance13);
         $manager->flush();      
         
-        $moduloSistema14 = new ModuloSistema();
-        $moduloSistema14->setSistema($sistema1);
-        $moduloSistema14->setIdSistema($sistema1->getId());
-        $moduloSistema14->setModulo($modulo14);        
-        $moduloSistema14->setIdModulo($modulo14->getId());                       
+        $alcance14 = new Alcance();
+        $alcance14->setComponente($componente1);
+        $alcance14->setIdComponente($componente1->getId());
+        $alcance14->setTipoAlcance($tipoAlcance14);        
+        $alcance14->setIdTipoAlcance($tipoAlcance14->getId());                       
         
-        $manager->persist($moduloSistema14);
+        $manager->persist($alcance14);
         $manager->flush();          
         
-        $moduloSistema15 = new ModuloSistema();
-        $moduloSistema15->setSistema($sistema1);
-        $moduloSistema15->setIdSistema($sistema1->getId());
-        $moduloSistema15->setModulo($modulo15);        
-        $moduloSistema15->setIdModulo($modulo15->getId());                                
+        $alcance15 = new Alcance();
+        $alcance15->setComponente($componente1);
+        $alcance15->setIdComponente($componente1->getId());
+        $alcance15->setTipoAlcance($tipoAlcance15);        
+        $alcance15->setIdTipoAlcance($tipoAlcance15->getId());                                
         
-        $manager->persist($moduloSistema15);
+        $manager->persist($alcance15);
         $manager->flush();          
         
-        $moduloSistema16 = new ModuloSistema();
-        $moduloSistema16->setSistema($sistema1);
-        $moduloSistema16->setIdSistema($sistema1->getId());
-        $moduloSistema16->setModulo($modulo16);        
-        $moduloSistema16->setIdModulo($modulo16->getId());                                
+        $alcance16 = new Alcance();
+        $alcance16->setComponente($componente1);
+        $alcance16->setIdComponente($componente1->getId());
+        $alcance16->setTipoAlcance($tipoAlcance16);        
+        $alcance16->setIdTipoAlcance($tipoAlcance16->getId());                                
         
-        $manager->persist($moduloSistema16);
+        $manager->persist($alcance16);
         $manager->flush();          
         
-        $moduloSistema17 = new ModuloSistema();
-        $moduloSistema17->setSistema($sistema1);
-        $moduloSistema17->setIdSistema($sistema1->getId());
-        $moduloSistema17->setModulo($modulo17);        
-        $moduloSistema17->setIdModulo($modulo17->getId());                                
+        $alcance17 = new Alcance();
+        $alcance17->setComponente($componente1);
+        $alcance17->setIdComponente($componente1->getId());
+        $alcance17->setTipoAlcance($tipoAlcance17);        
+        $alcance17->setIdTipoAlcance($tipoAlcance17->getId());                                
         
-        $manager->persist($moduloSistema17);
+        $manager->persist($alcance17);
         $manager->flush();          
         
-        $moduloSistema18 = new ModuloSistema();
-        $moduloSistema18->setSistema($sistema1);
-        $moduloSistema18->setIdSistema($sistema1->getId());
-        $moduloSistema18->setModulo($modulo18);        
-        $moduloSistema18->setIdModulo($modulo18->getId());                                
+        $alcance18 = new Alcance();
+        $alcance18->setComponente($componente1);
+        $alcance18->setIdComponente($componente1->getId());
+        $alcance18->setTipoAlcance($tipoAlcance18);        
+        $alcance18->setIdTipoAlcance($tipoAlcance18->getId());                                
         
-        $manager->persist($moduloSistema18);
+        $manager->persist($alcance18);
         $manager->flush();          
         
-        $moduloSistema19 = new ModuloSistema();
-        $moduloSistema19->setSistema($sistema1);
-        $moduloSistema19->setIdSistema($sistema1->getId());
-        $moduloSistema19->setModulo($modulo19);        
-        $moduloSistema19->setIdModulo($modulo19->getId());                                
+        $alcance19 = new Alcance();
+        $alcance19->setComponente($componente1);
+        $alcance19->setIdComponente($componente1->getId());
+        $alcance19->setTipoAlcance($tipoAlcance19);        
+        $alcance19->setIdTipoAlcance($tipoAlcance19->getId());                                
         
-        $manager->persist($moduloSistema19);
+        $manager->persist($alcance19);
         $manager->flush();                 
         
-        $moduloSistema20 = new ModuloSistema();
-        $moduloSistema20->setSistema($sistema1);
-        $moduloSistema20->setIdSistema($sistema1->getId());
-        $moduloSistema20->setModulo($modulo20);        
-        $moduloSistema20->setIdModulo($modulo20->getId());                               
+        $alcance20 = new Alcance();
+        $alcance20->setComponente($componente1);
+        $alcance20->setIdComponente($componente1->getId());
+        $alcance20->setTipoAlcance($tipoAlcance20);        
+        $alcance20->setIdTipoAlcance($tipoAlcance20->getId());                               
         
-        $manager->persist($moduloSistema20);
+        $manager->persist($alcance20);
         $manager->flush();          
         
-        $moduloSistema21 = new ModuloSistema();
-        $moduloSistema21->setSistema($sistema1);
-        $moduloSistema21->setIdSistema($sistema1->getId());
-        $moduloSistema21->setModulo($modulo21);        
-        $moduloSistema21->setIdModulo($modulo21->getId());                                               
+        $alcance21 = new Alcance();
+        $alcance21->setComponente($componente1);
+        $alcance21->setIdComponente($componente1->getId());
+        $alcance21->setTipoAlcance($tipoAlcance21);        
+        $alcance21->setIdTipoAlcance($tipoAlcance21->getId());                                               
         
-        $manager->persist($moduloSistema21);
+        $manager->persist($alcance21);
         $manager->flush();          
         
-        $moduloSistema22 = new ModuloSistema();
-        $moduloSistema22->setSistema($sistema1);
-        $moduloSistema22->setIdSistema($sistema1->getId());
-        $moduloSistema22->setModulo($modulo22);        
-        $moduloSistema22->setIdModulo($modulo22->getId());                                                       
+        $alcance22 = new Alcance();
+        $alcance22->setComponente($componente1);
+        $alcance22->setIdComponente($componente1->getId());
+        $alcance22->setTipoAlcance($tipoAlcance22);        
+        $alcance22->setIdTipoAlcance($tipoAlcance22->getId());                                                       
         
-        $manager->persist($moduloSistema22);
+        $manager->persist($alcance22);
         $manager->flush();          
         
-        $moduloSistema23 = new ModuloSistema();
-        $moduloSistema23->setSistema($sistema1);
-        $moduloSistema23->setIdSistema($sistema1->getId());
-        $moduloSistema23->setModulo($modulo23);        
-        $moduloSistema23->setIdModulo($modulo23->getId());                                                       
+        $alcance23 = new Alcance();
+        $alcance23->setComponente($componente1);
+        $alcance23->setIdComponente($componente1->getId());
+        $alcance23->setTipoAlcance($tipoAlcance23);        
+        $alcance23->setIdTipoAlcance($tipoAlcance23->getId());                                                       
         
-        $manager->persist($moduloSistema23);
+        $manager->persist($alcance23);
         $manager->flush();          
         
-        $moduloSistema24 = new ModuloSistema();
-        $moduloSistema24->setSistema($sistema1);
-        $moduloSistema24->setIdSistema($sistema1->getId());
-        $moduloSistema24->setModulo($modulo24);        
-        $moduloSistema24->setIdModulo($modulo24->getId());                                                       
+        $alcance24 = new Alcance();
+        $alcance24->setComponente($componente1);
+        $alcance24->setIdComponente($componente1->getId());
+        $alcance24->setTipoAlcance($tipoAlcance24);        
+        $alcance24->setIdTipoAlcance($tipoAlcance24->getId());                                                       
         
-        $manager->persist($moduloSistema24);
+        $manager->persist($alcance24);
         $manager->flush();          
         
-        $moduloSistema25 = new ModuloSistema();
-        $moduloSistema25->setSistema($sistema1);
-        $moduloSistema25->setIdSistema($sistema1->getId());
-        $moduloSistema25->setModulo($modulo25);        
-        $moduloSistema25->setIdModulo($modulo25->getId());                                                       
+        $alcance25 = new Alcance();
+        $alcance25->setComponente($componente1);
+        $alcance25->setIdComponente($componente1->getId());
+        $alcance25->setTipoAlcance($tipoAlcance25);        
+        $alcance25->setIdTipoAlcance($tipoAlcance25->getId());                                                       
         
-        $manager->persist($moduloSistema25);
+        $manager->persist($alcance25);
         $manager->flush();          
         
-        $moduloSistema26 = new ModuloSistema();
-        $moduloSistema26->setSistema($sistema1);
-        $moduloSistema26->setIdSistema($sistema1->getId());
-        $moduloSistema26->setModulo($modulo26);        
-        $moduloSistema26->setIdModulo($modulo26->getId());                                                               
+        $alcance26 = new Alcance();
+        $alcance26->setComponente($componente1);
+        $alcance26->setIdComponente($componente1->getId());
+        $alcance26->setTipoAlcance($tipoAlcance26);        
+        $alcance26->setIdTipoAlcance($tipoAlcance26->getId());                                                               
         
-        $manager->persist($moduloSistema26);
+        $manager->persist($alcance26);
         $manager->flush();          
         
-        $moduloSistema27 = new ModuloSistema();
-        $moduloSistema27->setSistema($sistema1);
-        $moduloSistema27->setIdSistema($sistema1->getId());
-        $moduloSistema27->setModulo($modulo27);        
-        $moduloSistema27->setIdModulo($modulo27->getId());                                               
+        $alcance27 = new Alcance();
+        $alcance27->setComponente($componente1);
+        $alcance27->setIdComponente($componente1->getId());
+        $alcance27->setTipoAlcance($tipoAlcance27);        
+        $alcance27->setIdTipoAlcance($tipoAlcance27->getId());                                               
         
-        $manager->persist($moduloSistema27);
+        $manager->persist($alcance27);
         $manager->flush();     
         
     }

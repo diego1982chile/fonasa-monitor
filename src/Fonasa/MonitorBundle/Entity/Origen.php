@@ -36,9 +36,9 @@ class Origen
     private $descripcion;
     
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="origen")          
+     * @ORM\OneToMany(targetEntity="TipoServicio", mappedBy="origen")          
      */
-    protected $mantenciones;         
+    protected $tiposServicio;         
     
     /**          
      * @ORM\OneToMany(targetEntity="Servicio", mappedBy="origen")          
@@ -118,13 +118,13 @@ class Origen
     }
     
     /**
-     * Get servicios
+     * Get tiposServicios
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServicios()
+    public function getTiposServicio()
     {
-        return $this->servicios;
+        return $this->tiposServicio;
     }    
 }
 

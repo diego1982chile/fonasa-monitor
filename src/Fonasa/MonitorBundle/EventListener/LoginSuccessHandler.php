@@ -36,13 +36,13 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 		}
 		else if ($this->security->isGranted('ROLE_ADMIN'))
 		{                    
-                    $response = new RedirectResponse($this->router->generate('mantencion_index'));
+                    $response = new RedirectResponse($this->router->generate('servicio_index'));
 		} 
 		else if ($this->security->isGranted('ROLE_USER'))
 		{
                     // redirect the user to where they were before the login process begun.
                     // $referer_url = $request->headers->get('referer');                    
-                    $referer_url = $this->router->generate('mantencion_index');
+                    $referer_url = $this->router->generate('servicio_index');
 
                     $response = new RedirectResponse($referer_url);
 		}

@@ -36,9 +36,9 @@ class Tipo
     private $descripcion;
 
     /**          
-     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="tipo")          
+     * @ORM\OneToMany(targetEntity="TipoServicio", mappedBy="tipo")          
      */
-    protected $servicios; 
+    protected $tiposServicio; 
 
     /**
      * Get id

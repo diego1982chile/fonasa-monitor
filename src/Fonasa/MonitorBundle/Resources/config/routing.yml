@@ -5,27 +5,27 @@ root:
         route: fos_user_security_login
         permanent: true
 
-mantencion_index:
-    path:     /mantencion
-    defaults: { _controller: "MonitorBundle:Mantencion:index" }
+servicio_index:
+    path:     /servicio
+    defaults: { _controller: "MonitorBundle:Servicio:index" }
     methods:  GET
 
-mantencion_show:
+servicio_show:
     path:     /{id}/show
-    defaults: { _controller: "MonitorBundle:Mantencion:show" }
+    defaults: { _controller: "MonitorBundle:Servicio:show" }
     methods:  GET
 
-mantencion_new:
+servicio_new:
     path:     /new
-    defaults: { _controller: "MonitorBundle:Mantencion:new" }
+    defaults: { _controller: "MonitorBundle:Servicio:new" }
     methods:  [GET, POST]
 
-mantencion_edit:
+servicio_edit:
     path:     /{id}/edit
-    defaults: { _controller: "MonitorBundle:Mantencion:edit" }
+    defaults: { _controller: "MonitorBundle:Servicio:edit" }
     methods:  [GET, POST]
 
-mantencion_delete:
+servicio_delete:
     path:     /{id}/delete
-    defaults: { _controller: "MonitorBundle:Mantencion:delete" }
+    defaults: { _controller: "MonitorBundle:Servicio:delete" }
     methods:  DELETE

@@ -36,20 +36,20 @@ class Hh
     private $hora;
 
     /**
-     * @var \Mantencion
+     * @var \Servicio
      *
-     * @ORM\ManyToOne(targetEntity="Mantencion", inversedBy="hhs")
+     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="hhs")
      * @ORM\JoinColumns{(
-     *    @ORM\JoinColumn(name="ID_MANTENCION", referencedColumnName="id")
+     *    @ORM\JoinColumn(name="ID_SERVICIO", referencedColumnName="id")
      * })
      */
-    protected $mantencion;
+    protected $servicio;
     
     /**
      *      
-     * @ORM\Column(name="ID_MANTENCION", type="integer", nullable=true)               
+     * @ORM\Column(name="ID_SERVICIO", type="integer", nullable=true)               
      */
-    private $idMantencion;  
+    private $idServicio;  
     
     /**
      * @var \Usuario
@@ -143,34 +143,34 @@ class Hh
     }
     
     /**
-     * Get mantencion
+     * Get servicio
      *
-     * @return \Fonasa\MonitorBundle\Entity\Mantencion
+     * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function getMantencion()
+    public function getServicio()
     {
-        return $this->mantencion;
+        return $this->servicio;
     }
     
     /**
-     * Get idMantencion
+     * Get idServicio
      *
      * @return int
      */
-    public function getIdMantencion()
+    public function getIdServicio()
     {
-        return $this->idMantencion;
+        return $this->idServicio;
     }
     
     /**
-    * Set idMantencion
+    * Set idServicio
     *
-    * @param int $idMantencion
+    * @param int $idServicio
     * @return Hh
     */
-    public function setIdMantencion($idMantencion)
+    public function setIdServicio($idServicio)
     {
-        $this->idMantencion = $idMantencion;
+        $this->idServicio = $idServicio;
         
         return $this;
     }      

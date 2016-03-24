@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block body %}
+    <h1>Servicio creation</h1>
+    <div style="width:60%">
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+    </div>
+    <ul>
+        <li>
+            <a href="{{ path('servicio_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+<script>
+var $origen = $('#servicio_origen');
+// When sport gets selected ...
+$origen.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected sport value.
+  var data = {};
+  data[$origen.attr('name')] = $origen.val();  
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data,
+    success: function(html) {
+      // Replace current position field ...
+      $('#servicio_tipoServicio').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html).find('#servicio_tipoServicio')
+      );
+      // Position field now displays the appropriate positions.
+    }
+  });
+});
+
+var $componente = $('#servicio_componente');
+// When sport gets selected ...
+$componente.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected sport value.
+  var data = {};
+  data[$componente.attr('name')] = $componente.val(); 
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data,
+    success: function(html) {
+      // Replace current position field ...
+      $('#servicio_alcance').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html).find('#servicio_alcance')
+      );
+      // Position field now displays the appropriate positions.
+    }
+  });
+});
+</script>
+{% endblock %}

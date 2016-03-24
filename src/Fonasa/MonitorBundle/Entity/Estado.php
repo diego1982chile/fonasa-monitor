@@ -36,9 +36,9 @@ class Estado
     private $descripcion;
 
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="estado")          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="estado")          
      */
-    protected $mantenciones;
+    protected $servicios;
     
     /**          
      * @ORM\OneToMany(targetEntity="Historial", mappedBy="estado")          

@@ -5,12 +5,12 @@ namespace Fonasa\MonitorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Sistema
+ * Componente
  *
- * @ORM\Table(name="sistema")
- * @ORM\Entity(repositoryClass="Fonasa\MonitorBundle\Repository\SistemaRepository")
+ * @ORM\Table(name="componente")
+ * @ORM\Entity(repositoryClass="Fonasa\MonitorBundle\Repository\ComponenteRepository")
  */
-class Sistema
+class Componente
 {
     /**
      * @var int
@@ -36,14 +36,14 @@ class Sistema
     private $descripcion;
     
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="sistema")          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="componente")          
      */
-    protected $mantenciones;     
+    protected $servicios;     
     
     /**          
-     * @ORM\OneToMany(targetEntity="ModuloSistema", mappedBy="sistema")          
+     * @ORM\OneToMany(targetEntity="Alcance", mappedBy="componente")          
      */
-    protected $modulos;       
+    protected $alcances;       
 
     /**
      * Get id
@@ -60,7 +60,7 @@ class Sistema
      *
      * @param string $id
      *
-     * @return Sistema
+     * @return Componente
      */
     public function setId($id)
     {
@@ -74,7 +74,7 @@ class Sistema
      *
      * @param string $nombre
      *
-     * @return Sistema
+     * @return Componente
      */
     public function setNombre($nombre)
     {
@@ -98,7 +98,7 @@ class Sistema
      *
      * @param string $descripcion
      *
-     * @return Sistema
+     * @return Componente
      */
     public function setDescripcion($descripcion)
     {
@@ -117,5 +117,14 @@ class Sistema
         return $this->descripcion;
     }
         
+    /**
+     * Get alcances
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlcances()
+    {
+        return $this->alcances;
+    }        
 }
 

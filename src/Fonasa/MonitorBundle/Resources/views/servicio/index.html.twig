@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Servicio list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigointerno</th>
+                <th>Codigoexterno</th>
+                <th>Descripcion</th>
+                <th>Fechaingreso</th>
+                <th>Fechasalida</th>
+                <th>Anyo</th>
+                <th>Mes</th>
+                <th>Hhestimadas</th>
+                <th>Hhefectivas</th>
+                <th>Idcomponente</th>
+                <th>Idorigen</th>
+                <th>Idtipo</th>
+                <th>Idestado</th>
+                <th>Idprioridad</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for servicio in servicios %}
+            <tr>
+                <td><a href="{{ path('servicio_show', { 'id': servicio.id }) }}">{{ servicio.id }}</a></td>
+                <td>{{ servicio.codigoInterno }}</td>
+                <td>{{ servicio.codigoExterno }}</td>
+                <td>{{ servicio.descripcion }}</td>
+                <td>{% if servicio.fechaIngreso %}{{ servicio.fechaIngreso|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ servicio.anyo }}</td>
+                <td>{{ servicio.mes }}</td>
+                <td>{{ servicio.hhEstimadas }}</td>
+                <td>{{ servicio.hhEfectivas }}</td>
+                <td>{{ servicio.idComponente }}</td>
+                <td>{{ servicio.idOrigen }}</td>
+                <td>{{ servicio.idTipo }}</td>
+                <td>{{ servicio.idEstado }}</td>
+                <td>{{ servicio.idPrioridad }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('servicio_show', { 'id': servicio.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('servicio_edit', { 'id': servicio.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('servicio_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

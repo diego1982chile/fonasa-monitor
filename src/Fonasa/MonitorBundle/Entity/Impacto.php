@@ -36,9 +36,9 @@ class Impacto
     private $descripcion;
 
     /**          
-     * @ORM\OneToMany(targetEntity="Mantencion", mappedBy="impacto")          
+     * @ORM\OneToMany(targetEntity="Servicio", mappedBy="impacto")          
      */
-    protected $mantenciones;       
+    protected $servicios;       
 
     /**
      * Get id
