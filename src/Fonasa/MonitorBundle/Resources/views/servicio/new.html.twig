@@ -5,7 +5,7 @@
     <div style="width:60%">
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" class='btn btn-primary' value="Create" />
     {{ form_end(form) }}
     </div>
     <ul>
@@ -16,10 +16,18 @@
 {% endblock %}
 {% block javascripts %}
 <script>
+$(function() {
+    $( "#servicio_fechaReporte_date" ).datepicker();
+});  
+$('form[name="servicio"').submit(function(){
+   alert($('#servicio_codigoInterno').val());
+});
 var $origen = $('#servicio_origen');
 // When sport gets selected ...
 $origen.change(function() {
   // ... retrieve the corresponding form.
+  $('#servicio_tipoServicio').parent().children(':eq(0)')
+    .append('<img class="loader" alt="" style=";margin-left:10px" src="{{ asset('bundles/fonasa-monitor/images/loader-minitrans.gif') }}">');
   var $form = $(this).closest('form');
   // Simulate form data, but only include the selected sport value.
   var data = {};
@@ -30,19 +38,57 @@ $origen.change(function() {
     type: $form.attr('method'),
     data : data,
     success: function(html) {
-      // Replace current position field ...
+      // Replace current position field ...      
       $('#servicio_tipoServicio').replaceWith(
-        // ... with the returned one from the AJAX response.
+        // ... with the returned one from the AJAX response.        
         $(html).find('#servicio_tipoServicio')
       );
+      $('.loader').remove();
       // Position field now displays the appropriate positions.
+      
+        var $tipoServicio = $('#servicio_tipoServicio');
+        // When sport gets selected ...
+        $tipoServicio.change(function() {          
+          // ... retrieve the corresponding form.
+          $('#servicio_codigoInterno').parent().children(':eq(0)')
+            .append('<img class="loader" alt="" style=";margin-left:10px" src="{{ asset('bundles/fonasa-monitor/images/loader-minitrans.gif') }}">');                              
+                    
+          switch($tipoServicio.find('option:selected').attr('idtipo'))
+          {
+            case '1':                
+                $('#servicio_codigoInterno').val('Ticket');
+                $('#servicio_codigoInterno').prop('disabled',false);
+                break;
+            case '2':
+                $('#servicio_codigoInterno').val('SIGG-MC');
+                $('#servicio_codigoInterno').prop('disabled',false);
+                break;                  
+            case '3':
+                $('#servicio_codigoInterno').val('SIGG-ME');
+                $('#servicio_codigoInterno').prop('disabled',false);
+                break;                  
+            case '4':
+                $('#servicio_codigoInterno').val('RFC');
+                $('#servicio_codigoInterno').prop('disabled',false);
+                break;                  
+            default:
+                $('#servicio_codigoInterno').val('');
+                $('#servicio_codigoInterno').prop('disabled',true);
+                break;
+          }
+          // Submit data via AJAX to the form's action path.          
+          $('.loader').remove();              
+        });            
     }
   });
 });
 
+
 var $componente = $('#servicio_componente');
 // When sport gets selected ...
 $componente.change(function() {
+  $('#servicio_alcance').parent().children(':eq(0)')
+    .append('<img class="loader" alt="" style=";margin-left:10px" src="{{ asset('bundles/fonasa-monitor/images/loader-minitrans.gif') }}">');    
   // ... retrieve the corresponding form.
   var $form = $(this).closest('form');
   // Simulate form data, but only include the selected sport value.
@@ -57,9 +103,10 @@ $componente.change(function() {
       // Replace current position field ...
       $('#servicio_alcance').replaceWith(
         // ... with the returned one from the AJAX response.
-        $(html).find('#servicio_alcance')
+        $(html).find('#servicio_alcance')                
       );
       // Position field now displays the appropriate positions.
+      $('.loader').remove();
     }
   });
 });

@@ -13,7 +13,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('bundles/fonasa-monitor/css/bootstrap.min.css') }}" rel="stylesheet">
-    
+    <!-- Jquery-ui core CSS -->
+    <link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
@@ -50,7 +51,10 @@
     </div><!-- /.container -->
     <script src="{{ asset('bundles/fonasa-monitor/js/jquery-1.12.1.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/bootstrap.min.js') }}"></script>
-    {% block javascripts %}{% endblock %}
+    <script src="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fonasa-monitor/js/datepicker-es.js') }}"></script>
+    {% block javascripts %}
+    {% endblock %}
   
   </body>
 </html>

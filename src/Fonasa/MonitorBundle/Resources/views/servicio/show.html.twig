@@ -1,9 +1,8 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'base.html.twig' %}  
 {% block body %}
     <h1>Servicio</h1>
-
-    <table>
+    <div style="width:60%">
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -30,14 +29,6 @@
                 <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Anyo</th>
-                <td>{{ servicio.anyo }}</td>
-            </tr>
-            <tr>
-                <th>Mes</th>
-                <td>{{ servicio.mes }}</td>
-            </tr>
-            <tr>
                 <th>Hhestimadas</th>
                 <td>{{ servicio.hhEstimadas }}</td>
             </tr>
@@ -55,7 +46,7 @@
             </tr>
             <tr>
                 <th>Idtipo</th>
-                <td>{{ servicio.idTipo }}</td>
+                <td>{{ servicio.idTipoServicio }}</td>
             </tr>
             <tr>
                 <th>Idestado</th>
@@ -67,7 +58,7 @@
             </tr>
         </tbody>
     </table>
-
+    </div>
     <ul>
         <li>
             <a href="{{ path('servicio_index') }}">Back to the list</a>

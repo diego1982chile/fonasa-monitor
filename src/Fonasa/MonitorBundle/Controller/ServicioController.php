@@ -24,7 +24,19 @@ class ServicioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $servicios = $em->getRepository('MonitorBundle:Servicio')->findAll();        
+        $servicios = $em->getRepository('MonitorBundle:Servicio')
+                ->createQueryBuilder('s')                
+                ->join('s.tipoServicio', 'ts')
+                ->join('ts.tipo', 't')
+                ->join('s.estado', 'e')
+                ->join('s.componente', 'c')
+                ->join('s.prioridad', 'p')
+                ->join('s.origen', 'o')
+                ->where('e.nombre = ?1')
+                ->setParameter(1, 'En Cola')
+                ->getQuery()
+                ->getResult();                
+        
         return $this->render('MonitorBundle:servicio:index.html.twig', array(
             'servicios' => $servicios,
         ));
@@ -41,11 +53,25 @@ class ServicioController extends Controller
         $em = $this->getDoctrine()->getManager();        
         
         $form = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio);
-        $form->handleRequest($request);
+        $form->handleRequest($request);                                
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $codigoInterno=$request->request->get('servicio')['codigoInterno'];
+            $fechaIngreso=new\DateTime('now');
+            $estado= $em->getRepository('MonitorBundle:Estado')
+                ->createQueryBuilder('e')                                
+                ->where('e.nombre = ?1')
+                ->setParameter(1, 'En Cola')
+                ->getQuery()
+                ->getResult();
+            
+            $servicio->setEstado($estado[0]);
+            $servicio->setIdEstado($estado[0]->getId());
+            $servicio->setCodigoInterno($codigoInterno);
+            $servicio->setFechaIngreso($fechaIngreso);
+            
             $em = $this->getDoctrine()->getManager();
-            $em->persist($servicio);
+            $servicioList= $em->persist($servicio);                                    
             $em->flush();
 
             return $this->redirectToRoute('servicio_show', array('id' => $servicio->getId()));

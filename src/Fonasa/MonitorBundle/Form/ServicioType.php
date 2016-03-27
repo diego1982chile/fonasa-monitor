@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -21,6 +22,8 @@ use Fonasa\MonitorBundle\Entity\Tipo;
 use Fonasa\MonitorBundle\Entity\TipoServicio;
 use Fonasa\MonitorBundle\Entity\Componente;
 
+use Doctrine\ORM\EntityRepository;
+
 class ServicioType extends AbstractType
 {   
     
@@ -31,58 +34,89 @@ class ServicioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {   
         
-        $builder                                    
-            ->add('componente', EntityType::class, array(
-                  'class' => 'MonitorBundle:Componente',
-                  'choice_label' => 'nombre',
-                  'placeholder' => 'Seleccione una opción...',
-                  'position' => 'first'
-            ))          
+        $builder        
             ->add('origen', EntityType::class, array(
                 'class' => 'MonitorBundle:Origen',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                              ->orderBy('u.nombre', 'ASC');
+                },
                 'choice_label' => 'nombre',
+                //'expanded' => true,
+                //'multiple' => false,
                 'placeholder' => 'Seleccione una opción...',
-                'position' => array('after' => 'componente')
-            ));        
+                'position' => 'first',
+                //'attr' => array('class' => 'form-inline')
+            ))                  
+            ->add('componente', EntityType::class, array(
+                  'class' => 'MonitorBundle:Componente',
+                  'choice_label' => 'nombre',                   
+                  'placeholder' => 'Seleccione una opción...',
+                  'position' => array('after' => 'codigoInterno')
+            ))
+            ->add('codigoInterno', TextType::class, array(
+                  'position' => array('after' => 'tipoServicio'),
+                  'disabled' => true,
+                ));
         ;
         
         $formModifierTipoServicio = function (FormInterface $form, Origen $origen = null) {
+                                    
+            $tiposServicio = null === $origen ? array() : $origen->getTiposServicio();                                     
             
-            $tiposServicio = null === $origen ? array() : $origen->getTiposServicio(); 
-            $tipos = array();
+            $placeHolder= 'No hay opciones';
+            $disabled = true;
             
-            foreach ($tiposServicio as $r)
-            {                
-                array_push($tipos,$r->getTipo());
+            if($origen!=null){
+                $disabled = false;
+                $placeHolder= 'Seleccione una opción...';
             }
 
             $form->add('tipoServicio', EntityType::class, array(
-                       'class'       => 'MonitorBundle:Tipo',
-                       'placeholder' => '',
-                       'choices'     => $tipos,
-                       'choice_label' => 'nombre',
-                       'placeholder' => 'Seleccione una opción...',
+                       'class'       => 'MonitorBundle:TipoServicio',                       
+                       'choices'     => $tiposServicio,
+                       'choice_label' => function($tipoServicio, $key, $index) {
+                            /** @var Category $category */
+                            return $tipoServicio->getTipo()->getNombre();
+                        },
+                       'choices_as_values' => true,
+                       'choice_attr' => function($val, $key, $index) {
+                            // adds a class like attending_yes, attending_no, etc
+                            return ['idTipo' => $val->getTipo()->getId()];
+                        },                                
+                       'placeholder' => $placeHolder,                       
+                       'disabled' => $disabled,
                        'position' => array('after' => 'origen')
             ));            
         };        
         
         $formModifierAlcance = function (FormInterface $form, Componente $componente = null) {
             
-            $alcances = null === $componente ? array() : $componente->getAlcances(); 
-            $tiposAlcance = array();
+            $alcances = null === $componente ? array() : $componente->getAlcances();             
             
-            foreach ($alcances as $r)
-            {                
-                array_push($tiposAlcance,$r->getTipoAlcance());
+            $placeHolder= 'No hay opciones';
+            $disabled = true;
+            
+            if($componente!=null){
+                $disabled = false;
+                $placeHolder= 'Seleccione una opción...';
             }
 
             $form->add('alcance', EntityType::class, array(
-                       'class'       => 'MonitorBundle:TipoAlcance',
-                       'placeholder' => '',
-                       'choices'     => $tiposAlcance,
-                       'choice_label' => 'nombre',
-                       'placeholder' => 'Seleccione una opción...',
-                       'position' => array('after' => 'tipoServicio')
+                       'class'       => 'MonitorBundle:Alcance',
+                       'choices'     => $alcances,
+                       'choice_label' => function($alcance, $key, $index) {
+                            /** @var Category $category */
+                            return $alcance->getTipoAlcance()->getNombre();
+                        },
+                       'choices_as_values' => true,
+                       'choice_attr' => function($val, $key, $index) {
+                            // adds a class like attending_yes, attending_no, etc
+                            return ['idTipoAlcance' => $val->getTipoAlcance()->getId()];
+                        },                                                     
+                       'placeholder' => $placeHolder,
+                       'disabled' => $disabled,
+                       'position' => array('after' => 'componente')
             ));            
         };        
         
@@ -126,11 +160,20 @@ class ServicioType extends AbstractType
                 }
             );            
         
-        $builder                                        
-            ->add('codigoInterno')
-            ->add('fechaReporte', DateTimeType::class)    
-            ->add('descripcion', TextareaType::class)                    
-            //->add('prioridad')
+        $builder                                                    
+            ->add('fechaReporte', DateTimeType::class, array(
+            'date_widget'=> 'single_text',
+            'date_format'=>'d/M/y' ))
+            ->add('prioridad', EntityType::class, array(
+                'class' => 'MonitorBundle:Prioridad',                
+                'choice_label' => 'nombre',
+                //'expanded' => true,
+                //'multiple' => false,
+                'placeholder' => 'Seleccione una opción...',
+                'position' => 'first',
+                //'attr' => array('class' => 'form-inline')
+            ))  
+            ->add('descripcion', TextareaType::class)                                
         ;
     }
     

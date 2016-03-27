@@ -3,45 +3,32 @@
 {% block body %}
     <h1>Servicio list</h1>
 
-    <table>
+    <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Codigointerno</th>
-                <th>Codigoexterno</th>
-                <th>Descripcion</th>
-                <th>Fechaingreso</th>
-                <th>Fechasalida</th>
-                <th>Anyo</th>
-                <th>Mes</th>
-                <th>Hhestimadas</th>
-                <th>Hhefectivas</th>
-                <th>Idcomponente</th>
-                <th>Idorigen</th>
-                <th>Idtipo</th>
-                <th>Idestado</th>
-                <th>Idprioridad</th>
-                <th>Actions</th>
+            <tr>                
+                <th width="8%">N°Servicio</th>                                
+                <th width="11%">Fecha Reporte</th>
+                <th width="11%">Fecha Salida</th>                                
+                <th width="10%">Componente</th>
+                <th width="10%">Origen</th>
+                <th width="10%">Tipo Servicio</th>
+                <th width="10%">Estado</th>
+                <th width="10%">Prioridad</th>
+                <th width="5%">Actions</th>
+                <th width="15%"></th>
             </tr>
         </thead>
         <tbody>
         {% for servicio in servicios %}
-            <tr>
-                <td><a href="{{ path('servicio_show', { 'id': servicio.id }) }}">{{ servicio.id }}</a></td>
-                <td>{{ servicio.codigoInterno }}</td>
-                <td>{{ servicio.codigoExterno }}</td>
-                <td>{{ servicio.descripcion }}</td>
-                <td>{% if servicio.fechaIngreso %}{{ servicio.fechaIngreso|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ servicio.anyo }}</td>
-                <td>{{ servicio.mes }}</td>
-                <td>{{ servicio.hhEstimadas }}</td>
-                <td>{{ servicio.hhEfectivas }}</td>
-                <td>{{ servicio.idComponente }}</td>
-                <td>{{ servicio.idOrigen }}</td>
-                <td>{{ servicio.idTipo }}</td>
-                <td>{{ servicio.idEstado }}</td>
-                <td>{{ servicio.idPrioridad }}</td>
+            <tr>                
+                <td>{{ servicio.codigoInterno }}</td>                                
+                <td>{% if servicio.fechaReporte %}{{ servicio.fechaReporte|date('d/m/Y H:i') }}{% endif %}</td>
+                <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('d/m/Y H:i') }}{% endif %}</td>                                
+                <td>{{ servicio.componente.nombre }}</td>
+                <td>{{ servicio.origen.nombre }}</td>
+                <td>{{ servicio.tipoServicio.tipo.nombre }}</td>
+                <td>{{ servicio.estado.nombre }}</td>
+                <td>{{ servicio.prioridad.nombre }}</td>
                 <td>
                     <ul>
                         <li>

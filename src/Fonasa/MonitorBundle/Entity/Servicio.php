@@ -61,26 +61,12 @@ class Servicio
      *
      * @ORM\Column(name="fecha_salida", type="datetime", nullable=true)
      */
-    private $fechaSalida;
+    private $fechaSalida;   
 
     /**
      * @var int
      *
-     * @ORM\Column(name="anyo", type="integer")
-     */
-    private $anyo;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="mes", type="integer")
-     */
-    private $mes;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="hh_estimadas", type="integer")
+     * @ORM\Column(name="hh_estimadas", type="integer", nullable=true)
      */
     private $hhEstimadas;
 
@@ -370,55 +356,7 @@ class Servicio
 
         return $this;
     }    
-
-    /**
-     * Set anyo
-     *
-     * @param integer $anyo
-     *
-     * @return Servicio
-     */
-    public function setAnyo($anyo)
-    {
-        $this->anyo = $anyo;
-
-        return $this;
-    }
-
-    /**
-     * Get anyo
-     *
-     * @return int
-     */
-    public function getAnyo()
-    {
-        return $this->anyo;
-    }
-
-    /**
-     * Set mes
-     *
-     * @param integer $mes
-     *
-     * @return Servicio
-     */
-    public function setMes($mes)
-    {
-        $this->mes = $mes;
-
-        return $this;
-    }
-
-    /**
-     * Get mes
-     *
-     * @return int
-     */
-    public function getMes()
-    {
-        return $this->mes;
-    }
-
+    
     /**
      * Set hhEstimadas
      *
@@ -708,7 +646,7 @@ class Servicio
     
     /**
      * Get servicio
-     *
+     * @param \Fonasa\MonitorBundle\Entity\TipoServicio $tipoServicio
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
     public function setTipoServicio(\Fonasa\MonitorBundle\Entity\TipoServicio $tipoServicio)
