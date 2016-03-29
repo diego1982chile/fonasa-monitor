@@ -2,13 +2,20 @@
 
 namespace Fonasa\MonitorBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Servicio
  *
  * @ORM\Table(name="servicio")
  * @ORM\Entity(repositoryClass="Fonasa\MonitorBundle\Repository\ServicioRepository")
+ * @UniqueEntity(
+ *     fields={"codigoInterno"},
+ *     message="This payment source is already in use.",
+ *     ignoreNull=false
+ * )
  */
 class Servicio
 {
@@ -24,8 +31,8 @@ class Servicio
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo_interno", type="string", length=255, unique=true)
-     */
+     * @ORM\Column(name="codigo_interno", type="string", length=255, unique=true)         
+     */     
     private $codigoInterno;
 
     /**

@@ -9,6 +9,7 @@ use Fonasa\MonitorBundle\Entity\Servicio;
 use Fonasa\MonitorBundle\Form\ServicioType;
 
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Servicio controller.
@@ -154,5 +155,34 @@ class ServicioController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+    
+    public function checkAction(Request $request){
+                
+        $codigoInterno= $request->request->get('codigoInterno');
+        $error = false;
+        $message = "";        
+        
+        if (!preg_match('(^Ticket[0-9]+|^SIGG-MC[0-9]+|^SIGG-ME[0-9]+|^RFC[0-9]+)',$codigoInterno)){ 
+            $error = true;
+            $message = 'Código de formato no válido';            
+        }             
+        
+        if(!$error){
+            $em = $this->getDoctrine()->getManager();        
+            $servicio= $em->getRepository('MonitorBundle:Servicio')
+                            ->createQueryBuilder('s')                                
+                            ->where('s.codigoInterno = ?1')
+                            ->setParameter(1, $codigoInterno)
+                            ->getQuery()
+                            ->getResult();
+
+            if(!empty($servicio)){
+                $error = true;
+                $message = 'Ya existe un servicio con este código';                
+            }                    
+        }
+        
+        return new JsonResponse(array('error' => $error, 'message' => $message));                
     }
 }

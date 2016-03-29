@@ -22,6 +22,8 @@ use Fonasa\MonitorBundle\Entity\Tipo;
 use Fonasa\MonitorBundle\Entity\TipoServicio;
 use Fonasa\MonitorBundle\Entity\Componente;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Doctrine\ORM\EntityRepository;
 
 class ServicioType extends AbstractType
@@ -52,7 +54,8 @@ class ServicioType extends AbstractType
                   'class' => 'MonitorBundle:Componente',
                   'choice_label' => 'nombre',                   
                   'placeholder' => 'Seleccione una opción...',
-                  'position' => array('after' => 'codigoInterno')
+                  'position' => array('after' => 'codigoInterno'),
+                  //'disabled' => true, 
             ))
             ->add('codigoInterno', TextType::class, array(
                   'position' => array('after' => 'tipoServicio'),
@@ -95,9 +98,9 @@ class ServicioType extends AbstractType
             $alcances = null === $componente ? array() : $componente->getAlcances();             
             
             $placeHolder= 'No hay opciones';
-            $disabled = true;
+            $disabled = true;                        
             
-            if($componente!=null){
+            if($componente!=null){                
                 $disabled = false;
                 $placeHolder= 'Seleccione una opción...';
             }
@@ -155,15 +158,17 @@ class ServicioType extends AbstractType
                     $componente = $event->getForm()->getData();
 
                     // since we've added the listener to the child, we'll have to pass on
-                    // the parent to the callback functions!
+                    // the parent to the callback functions!                    
                     $formModifierAlcance($event->getForm()->getParent(), $componente);                    
                 }
             );            
         
         $builder                                                    
             ->add('fechaReporte', DateTimeType::class, array(
-            'date_widget'=> 'single_text',
-            'date_format'=>'d/M/y' ))
+                'date_widget'=> 'single_text',
+                'date_format'=>'d/M/y',
+                //'disabled' => true
+            ))
             ->add('prioridad', EntityType::class, array(
                 'class' => 'MonitorBundle:Prioridad',                
                 'choice_label' => 'nombre',
@@ -171,9 +176,12 @@ class ServicioType extends AbstractType
                 //'multiple' => false,
                 'placeholder' => 'Seleccione una opción...',
                 'position' => 'first',
+                //'disabled' => true
                 //'attr' => array('class' => 'form-inline')
             ))  
-            ->add('descripcion', TextareaType::class)                                
+            ->add('descripcion', TextareaType::class, array(
+                //'disabled' => true
+            ))                                
         ;
     }
     
@@ -183,7 +191,9 @@ class ServicioType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array('data_class' => 'Fonasa\MonitorBundle\Entity\Servicio'));
+            ->setDefaults(array('data_class' => 'Fonasa\MonitorBundle\Entity\Servicio',
+                                'constraints' => array(new UniqueEntity(array('fields' => array('codigoInterno'))))
+            ));
     }
        
     

@@ -1,0 +1,4 @@
+# src/Fonasa/MonitorBundle/Resources/config/validation.yml
+Fonasa\MonitorBundle\Entity\Servicio:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: codigoInterno    

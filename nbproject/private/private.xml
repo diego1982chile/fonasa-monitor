@@ -13,10 +13,12 @@
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Tests/Controller/MantencionControllerTest.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Impacto.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/views/servicio/show.html.twig</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/RequestListener.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/config/services.yml</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/views/servicio/new.html.twig</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Estado.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Controller/ServicioController.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/ControllerListener.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/ServicioRepository.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/AppKernel.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Area.php</file>
@@ -27,6 +29,7 @@
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Origen.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Hh.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Alcance.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/ResponseListener.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/Resources/FOSUserBundle/views/layout.html.twig</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/ComponenteRepository.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/AreaRepository.php</file>
@@ -37,6 +40,7 @@
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Prioridad.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/config/routing.yml</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/AlcanceRepository.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/LogoutHandler.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/MonitorBundle.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Componente.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/config/parameters.yml.dist</file>

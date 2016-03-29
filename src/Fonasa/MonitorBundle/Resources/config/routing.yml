@@ -29,3 +29,8 @@ servicio_delete:
     path:     /{id}/delete
     defaults: { _controller: "MonitorBundle:Servicio:delete" }
     methods:  DELETE
+    
+servicio_check:
+    path:     /check
+    defaults: { _controller: "MonitorBundle:Servicio:check" }
+    methods:  [POST]    

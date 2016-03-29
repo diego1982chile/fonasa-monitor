@@ -1,33 +1,28 @@
 {% extends 'base.html.twig' %}
-
+{% set url_body_action = path(body_action) %}
 {% block body %}
     <h1>Servicio list</h1>
 
-    <table class="table table-striped">
+    <table id="servicios" class="table table-striped">
         <thead>
             <tr>                
                 <th width="8%">N°Servicio</th>                                
-                <th width="11%">Fecha Reporte</th>
-                <th width="11%">Fecha Salida</th>                                
+                <th width="11%">Fecha Reporte</th>                             
                 <th width="10%">Componente</th>
                 <th width="10%">Origen</th>
-                <th width="10%">Tipo Servicio</th>
-                <th width="10%">Estado</th>
+                <th width="10%">Tipo Servicio</th>                
                 <th width="10%">Prioridad</th>
-                <th width="5%">Actions</th>
-                <th width="15%"></th>
+                <th width="5%">Show/Edit</th>                
             </tr>
         </thead>
         <tbody>
         {% for servicio in servicios %}
             <tr>                
                 <td>{{ servicio.codigoInterno }}</td>                                
-                <td>{% if servicio.fechaReporte %}{{ servicio.fechaReporte|date('d/m/Y H:i') }}{% endif %}</td>
-                <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('d/m/Y H:i') }}{% endif %}</td>                                
+                <td>{% if servicio.fechaReporte %}{{ servicio.fechaReporte|date('d/m/Y H:i') }}{% endif %}</td>                
                 <td>{{ servicio.componente.nombre }}</td>
                 <td>{{ servicio.origen.nombre }}</td>
-                <td>{{ servicio.tipoServicio.tipo.nombre }}</td>
-                <td>{{ servicio.estado.nombre }}</td>
+                <td>{{ servicio.tipoServicio.tipo.nombre }}</td>                
                 <td>{{ servicio.prioridad.nombre }}</td>
                 <td>
                     <ul>
@@ -49,4 +44,14 @@
             <a href="{{ path('servicio_new') }}">Create a new entry</a>
         </li>
     </ul>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $('#servicios').dataTable({
+        bPaginate: false,
+        bJQueryUI: true,
+        bServerSide: true,
+        sAjaxSource: '{{ url_body_action }}',
+    });
+</script>
 {% endblock %}
