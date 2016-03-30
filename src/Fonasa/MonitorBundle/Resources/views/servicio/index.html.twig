@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% set url_body_action = path(body_action) %}
 {% block body %}
     <h1>Servicio list</h1>
 
@@ -12,30 +11,11 @@
                 <th width="10%">Origen</th>
                 <th width="10%">Tipo Servicio</th>                
                 <th width="10%">Prioridad</th>
+                <th width="10%">Algo</th>
                 <th width="5%">Show/Edit</th>                
             </tr>
         </thead>
-        <tbody>
-        {% for servicio in servicios %}
-            <tr>                
-                <td>{{ servicio.codigoInterno }}</td>                                
-                <td>{% if servicio.fechaReporte %}{{ servicio.fechaReporte|date('d/m/Y H:i') }}{% endif %}</td>                
-                <td>{{ servicio.componente.nombre }}</td>
-                <td>{{ servicio.origen.nombre }}</td>
-                <td>{{ servicio.tipoServicio.tipo.nombre }}</td>                
-                <td>{{ servicio.prioridad.nombre }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('servicio_show', { 'id': servicio.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('servicio_edit', { 'id': servicio.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+        <tbody>        
         </tbody>
     </table>
 
@@ -47,11 +27,21 @@
 {% endblock %}
 {% block javascripts %}
 <script>
+    
     $('#servicios').dataTable({
         bPaginate: false,
-        bJQueryUI: true,
+        bJQueryUI: false,
         bServerSide: true,
-        sAjaxSource: '{{ url_body_action }}',
+        sAjaxSource: '{{ path('servicio_body') }}',
+        sServerMethod: 'POST',
+        bProcessing: true,
+        aoColumnDefs: [
+                {
+                aTargets: [0,1,2,3,4,5,6],
+                class: 'cols'
+                }                
+            ]
     });
+    
 </script>
 {% endblock %}

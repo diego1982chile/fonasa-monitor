@@ -59,7 +59,7 @@ class ServicioType extends AbstractType
             ))
             ->add('codigoInterno', TextType::class, array(
                   'position' => array('after' => 'tipoServicio'),
-                  'disabled' => true,
+                  //'disabled' => true,
                 ));
         ;
         
@@ -68,7 +68,7 @@ class ServicioType extends AbstractType
             $tiposServicio = null === $origen ? array() : $origen->getTiposServicio();                                     
             
             $placeHolder= 'No hay opciones';
-            $disabled = true;
+            $disabled = false;
             
             if($origen!=null){
                 $disabled = false;
@@ -98,7 +98,7 @@ class ServicioType extends AbstractType
             $alcances = null === $componente ? array() : $componente->getAlcances();             
             
             $placeHolder= 'No hay opciones';
-            $disabled = true;                        
+            $disabled = false;                        
             
             if($componente!=null){                
                 $disabled = false;
