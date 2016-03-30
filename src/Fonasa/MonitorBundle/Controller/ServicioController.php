@@ -53,7 +53,7 @@ class ServicioController extends Controller
         
         $em = $this->getDoctrine()->getManager();        
         
-        $form = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio);
+        $form = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio, array('assign' => false));
         $form->handleRequest($request);                                
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +97,7 @@ class ServicioController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
+    
     /**
      * Displays a form to edit an existing Servicio entity.
      *
@@ -105,8 +105,11 @@ class ServicioController extends Controller
     public function editAction(Request $request, Servicio $servicio)
     {
         $deleteForm = $this->createDeleteForm($servicio);
-        $editForm = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio);
+        
+        $editForm = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio, array('assign' => false));                        
+        
         $editForm->handleRequest($request);
+                
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -121,6 +124,61 @@ class ServicioController extends Controller
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
+    }     
+
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function assignAction(Request $request, Servicio $servicio)
+    {                       
+        $editForm = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio, array('assign' => true));                        
+        $editForm->handleRequest($request);                
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {                         
+            // Por defecto un servicio es asignado al area de desarrollo
+            $estado= $em->getRepository('MonitorBundle:Estado')
+                ->createQueryBuilder('e')                                
+                ->where('e.nombre = ?1')
+                ->setParameter(1, 'Desarrollo')
+                ->getQuery()
+                ->getResult();
+                                                
+            $servicio->setEstado($estado[0]);
+            $servicio->setIdEstado($estado[0]->getId());                
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($servicio);
+            $em->flush();
+            
+            // Guardar el historial del cambio de estado               
+            $fechaAsignado=new\DateTime('now');            
+            $historial = new Historial();
+            
+            $historial->setServicio($servicio);                     
+            $historial->setIdServicio($servicio->getId());
+            $historial->setEstado($estado);
+            $historial->setIdEstado($estado->getId());            
+            $historial->setInicio($fechaAsignado);
+            
+            $estado= $em->getRepository('MonitorBundle:Historial')
+                ->createQueryBuilder('h')                                
+                ->where('e.nombre = ?1')
+                ->setParameter(1, 'Desarrollo')
+                ->getQuery()
+                ->getResult();            
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($historial);
+            $em->flush();
+            
+            return $this->redirectToRoute('servicio_show', array('id' => $servicio->getId()));            
+        }                
+        
+        return $this->render('MonitorBundle:servicio:assign.html.twig', array(
+            'servicio' => $servicio,
+            'edit_form' => $editForm->createView(),            
+        ));        
     }
 
     /**
@@ -161,7 +219,7 @@ class ServicioController extends Controller
                 
         $codigoInterno= $request->request->get('codigoInterno');
         $error = false;
-        $message = "";        
+        $message = "Código válido";        
         
         if (!preg_match('(^Ticket[0-9]+|^SIGG-MC[0-9]+|^SIGG-ME[0-9]+|^RFC[0-9]+)',$codigoInterno)){ 
             $error = true;
@@ -183,7 +241,7 @@ class ServicioController extends Controller
             }                    
         }        
         return new JsonResponse(array('error' => $error, 'message' => $message));                
-    }
+    }        
     
     public function bodyAction(Request $request){
         

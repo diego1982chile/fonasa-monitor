@@ -38,9 +38,9 @@ servicio_check:
 servicio_body:
     path:   /servicio/body
     defaults: { _controller: "MonitorBundle:Servicio:body" }
-    methods:  [POST]    
+    methods:  [GET]    
     
 servicio_assign:
-    path:   /servicio/assign
+    path:   /{id}/assign
     defaults: { _controller: "MonitorBundle:Servicio:assign" }
-    methods:  [POST]        
+    methods:  [GET,POST]        

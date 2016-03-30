@@ -1,22 +1,33 @@
 {% extends 'base.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 {% block body %}
-    <h1>Servicio edit</h1>
+    <h1>Servicio Assign</h1>
     <div style="width:60%">
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    {{ form_start(edit_form) }}      
+        {{ form_errors(edit_form) }}
+        {{ form_row(edit_form.origen) }}
+        {{ form_row(edit_form.tipoServicio) }}                   
+        {{ form_label(edit_form.codigoInterno) }}
+        <div class="form-group input-group">        
+            {{ form_widget(edit_form.codigoInterno) }}
+            <span class="input-group-btn">
+                <button id="validar" class="btn btn-secondary" type="button">Validar</button>
+            </span>
+        </div>
+        {{ form_row(edit_form.componente) }}
+        {{ form_row(edit_form.alcance) }}
+        {{ form_row(edit_form.prioridad) }}
+        {{ form_row(edit_form.fechaReporte) }}
+        {{ form_row(edit_form.descripcion) }}     
+        {{ form_row(edit_form.hhEstimadas) }}     
+        <input type="submit" class='btn btn-primary' style="display:none" value="Edit" />
+        <button id="validate_form" class="btn btn-primary" type="button">Asignar</button>        
     {{ form_end(edit_form) }}
     </div>
     <ul>
         <li>
             <a href="{{ path('servicio_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
+        </li>        
     </ul>
 {% endblock %}
 {% block javascripts %}
@@ -37,7 +48,7 @@ $origen.change(function() {
   var $form = $(this).closest('form');
   // Simulate form data, but only include the selected sport value.
   var data = {};
-  data[$origen.attr('name')] = $origen.val();  
+  data[$origen.attr('name')] = $origen.val();    
   // Submit data via AJAX to the form's action path.
   $.ajax({
     url : $form.attr('action'),

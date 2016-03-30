@@ -142,32 +142,35 @@ $validar.click(function(){
   data['codigoInterno'] = $('#servicio_codigoInterno').val(); 
   // Submit data via AJAX to the form's action path.
   $.post("{{ path('servicio_check') }}",data,function(data){
-      if(data.error){          
-          $('#servicio_codigoInterno').focus();
-          $('#servicio_codigoInterno').qtip({ // Grab some elements to apply the tooltip to
-                content: {
-                    text: '<img alt="" style="width:20px;height:20px" src="{{ asset('bundles/fonasa-monitor/images/exclamation_2.png') }}"> '+data.message
-                },
-                show: {
-                    ready: true,
-                    delay: 50
-                },
-                style: {
-                    classes: 'ui-state-error',
-                    def: false,                    
-                },            
-                position: {
-                        my: 'top left',  // Position my top left...
-                        at: 'bottom center', // at the bottom right of...
-                        target: $('#servicio_codigoInterno') // my target
-                    }                
-            });
-          //$('#servicio_codigoInterno').before('<ul class="errors"><li>'+data.message+'</li></ul>');                    
-      } 
-      else{
-        $('.qtip').remove();
-        $('#servicio_componente').prop('disabled',false);
-      }
+        var src;
+        var css;
+        if(data.error){          
+            src="{{ asset('bundles/fonasa-monitor/images/exclamation_2.png') }}";
+            css='ui-state-error';
+            $('#servicio_codigoInterno').focus();                    
+        } 
+        else{
+            src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}";            
+            css='ui-state-highlight';
+        }
+        $('#servicio_codigoInterno').qtip({ // Grab some elements to apply the tooltip to
+            content: {
+                text: '<img alt="" style="width:20px;height:20px" src='+src+'> '+data.message
+            },
+            show: {
+                ready: true,
+                delay: 50
+            },
+            style: {
+                classes: css,
+                def: false,                    
+            },            
+            position: {
+                    my: 'top left',  // Position my top left...
+                    at: 'bottom center', // at the bottom right of...
+                    target: $('#servicio_codigoInterno') // my target
+                }                
+        });      
       // Position field now displays the appropriate positions.
       $('.loader').remove();    
   });    

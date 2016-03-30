@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -34,8 +35,7 @@ class ServicioType extends AbstractType
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {   
-        
+    {                               
         $builder        
             ->add('origen', EntityType::class, array(
                 'class' => 'MonitorBundle:Origen',
@@ -66,7 +66,7 @@ class ServicioType extends AbstractType
         $formModifierTipoServicio = function (FormInterface $form, Origen $origen = null) {
                                     
             $tiposServicio = null === $origen ? array() : $origen->getTiposServicio();                                     
-            
+                                    
             $placeHolder= 'No hay opciones';
             $disabled = false;
             
@@ -90,7 +90,7 @@ class ServicioType extends AbstractType
                        'placeholder' => $placeHolder,                       
                        'disabled' => $disabled,
                        'position' => array('after' => 'origen')
-            ));            
+            ));                     
         };        
         
         $formModifierAlcance = function (FormInterface $form, Componente $componente = null) {
@@ -183,6 +183,12 @@ class ServicioType extends AbstractType
                 //'disabled' => true
             ))                                
         ;
+        
+        if($options['assign']==true){
+            $builder                                                    
+                ->add('hhEstimadas', NumberType::class
+            );
+        }
     }
     
     /**
@@ -192,7 +198,8 @@ class ServicioType extends AbstractType
     {
         $resolver
             ->setDefaults(array('data_class' => 'Fonasa\MonitorBundle\Entity\Servicio',
-                                'constraints' => array(new UniqueEntity(array('fields' => array('codigoInterno'))))
+                                'constraints' => array(new UniqueEntity(array('fields' => array('codigoInterno')))),
+                                'assign' => [false,true]
             ));
     }
        

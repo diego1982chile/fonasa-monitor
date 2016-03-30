@@ -427,8 +427,8 @@ class Servicio
      *
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function setComponente(\Fonasa\MonitorBundle\Entity\Componente $componente)
-    {
+    public function setComponente(\Fonasa\MonitorBundle\Entity\Componente $componente = null)
+    {        
         $this->componente=$componente;
         
         return $this;
@@ -474,7 +474,7 @@ class Servicio
      *
      * @return \Fonasa\MonitorBundle\Entity\Alcance
      */
-    public function setAlcance(\Fonasa\MonitorBundle\Entity\Alcance $alcance)
+    public function setAlcance(\Fonasa\MonitorBundle\Entity\Alcance $alcance = null)
     {
         $this->alcance=$alcance;
         
@@ -521,7 +521,7 @@ class Servicio
      *
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function setOrigen(\Fonasa\MonitorBundle\Entity\Origen $origen)
+    public function setOrigen(\Fonasa\MonitorBundle\Entity\Origen $origen = null)
     {
         $this->origen=$origen;
         
@@ -566,7 +566,7 @@ class Servicio
      *
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function setEstado(\Fonasa\MonitorBundle\Entity\Estado $estado)
+    public function setEstado(\Fonasa\MonitorBundle\Entity\Estado $estado = null)
     {
         $this->estado=$estado;
         
@@ -611,7 +611,7 @@ class Servicio
      *
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function setPrioridad(\Fonasa\MonitorBundle\Entity\Prioridad $prioridad)
+    public function setPrioridad(\Fonasa\MonitorBundle\Entity\Prioridad $prioridad = null)
     {
         $this->prioridad=$prioridad;
         
@@ -656,7 +656,7 @@ class Servicio
      * @param \Fonasa\MonitorBundle\Entity\TipoServicio $tipoServicio
      * @return \Fonasa\MonitorBundle\Entity\Servicio
      */
-    public function setTipoServicio(\Fonasa\MonitorBundle\Entity\TipoServicio $tipoServicio)
+    public function setTipoServicio(\Fonasa\MonitorBundle\Entity\TipoServicio $tipoServicio = null)
     {
         $this->tipoServicio=$tipoServicio;
         
