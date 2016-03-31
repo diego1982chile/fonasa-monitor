@@ -1,60 +1,52 @@
 {% extends 'base.html.twig' %}  
+{% block stylesheets %}
+<link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
+    {% for flash_message in app.session.flashbag.get('notice') %}
+    <div class="flash-notice ui-state-highlight">
+        {{ flash_message }}
+    </div>
+    {% endfor %}
     <h1>Servicio</h1>
-    <div style="width:60%">
-    <table class="table table-striped">
+    <div style="width:100%">
+    <table class="table table-striped display">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ servicio.id }}</td>
+                <th width="10%">N°Servicio</th>
+                <td width="20%">{{ servicio.codigoInterno }}</td>
+                <th width="10%">Origen</th>
+                <td width="20%">{{ servicio.origen.nombre }}</td>
+                <th width="10%">Tipo Servicio</th>
+                <td width="20%">{{ servicio.tipoServicio.tipo.nombre }}</td>
             </tr>
             <tr>
-                <th>Codigointerno</th>
-                <td>{{ servicio.codigoInterno }}</td>
+                <th width="10%">Componente</th>
+                <td width="20%">{{ servicio.componente.nombre }}</td>                
+                <th width="10%">Alcance</th>
+                <td width="20%">{{ servicio.alcance.tipoAlcance.nombre }}</td>                
+                <th width="10%">Estado</th>
+                <td width="20%">{{ servicio.estado.nombre }}</td>                                
             </tr>
             <tr>
-                <th>Codigoexterno</th>
-                <td>{{ servicio.codigoExterno }}</td>
-            </tr>
+                <th width="10%">Fecha Reporte</th>
+                <td width="20%">{% if servicio.fechaReporte %}{{ servicio.fechaReporte|date('Y-m-d H:i') }}{% endif %}</td>                
+                <th width="10%">Fecha Ingreso</th>
+                <td width="20%">{% if servicio.fechaIngreso %}{{ servicio.fechaIngreso|date('Y-m-d H:i') }}{% endif %}</td>                
+                <th width="10%">Fecha Salida</th>
+                <td width="20%">{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('Y-m-d H:i') }}{% endif %}</td>                                
+            </tr>            
             <tr>
-                <th>Descripcion</th>
-                <td>{{ servicio.descripcion }}</td>
-            </tr>
+                <th width="10%">Prioridad</th>
+                <td width="20%">{{ servicio.prioridad.nombre }}</td>                
+                <th width="10%">HH Estimadas</th>
+                <td width="20%">{{ servicio.hhEstimadas }}</td>                
+                <th width="10%">HH Efectivas</th>
+                <td width="20%">{{ servicio.hhEfectivas }}</td>                                
+            </tr>                        
             <tr>
-                <th>Fechaingreso</th>
-                <td>{% if servicio.fechaIngreso %}{{ servicio.fechaIngreso|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Fechasalida</th>
-                <td>{% if servicio.fechaSalida %}{{ servicio.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Hhestimadas</th>
-                <td>{{ servicio.hhEstimadas }}</td>
-            </tr>
-            <tr>
-                <th>Hhefectivas</th>
-                <td>{{ servicio.hhEfectivas }}</td>
-            </tr>
-            <tr>
-                <th>Idcomponente</th>
-                <td>{{ servicio.idComponente }}</td>
-            </tr>
-            <tr>
-                <th>Idorigen</th>
-                <td>{{ servicio.idOrigen }}</td>
-            </tr>
-            <tr>
-                <th>Idtipo</th>
-                <td>{{ servicio.idTipoServicio }}</td>
-            </tr>
-            <tr>
-                <th>Idestado</th>
-                <td>{{ servicio.idEstado }}</td>
-            </tr>
-            <tr>
-                <th>Idprioridad</th>
-                <td>{{ servicio.idPrioridad }}</td>
+                <th width="10%">Descripción</th>
+                <td colspan="5">{{ servicio.descripcion }}</td>                
             </tr>
         </tbody>
     </table>
@@ -68,7 +60,7 @@
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" value="Eliminar" class="btn btn-danger">
             {{ form_end(delete_form) }}
         </li>
     </ul>

@@ -6,8 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Fonasa\MonitorBundle\Entity\Servicio;
-use Fonasa\MonitorBundle\Form\ServicioType;
+use Fonasa\MonitorBundle\Entity\Historial;
+use Fonasa\MonitorBundle\Entity\Estado;
 
+use Fonasa\MonitorBundle\Form\ServicioType;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -23,6 +25,7 @@ class ServicioController extends Controller
      */
     public function indexAction()
     {
+        /*
         $em = $this->getDoctrine()->getManager();
 
         $servicios = $em->getRepository('MonitorBundle:Servicio')
@@ -40,7 +43,9 @@ class ServicioController extends Controller
         
         return $this->render('MonitorBundle:servicio:index.html.twig', array(
             'servicios' => $servicios,
-        ));
+        ));         
+        */
+        return $this->render('MonitorBundle:servicio:index.html.twig');         
     }
 
     /**
@@ -74,6 +79,19 @@ class ServicioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $servicioList= $em->persist($servicio);                                    
             $em->flush();
+            
+            if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
+                $this->addFlash(
+                    'notice',
+                    'Se ha ingresado un nuevo servicio de tipo Resolución de Incidencia. El servicio ha sido encolado y puede ser asignado en el panel principal.'
+                );   
+            }   
+            else{
+                $this->addFlash(
+                    'notice',
+                    'Se ha ingresado un nuevo servicio de tipo Mantención. El servicio ha sido encolado y puede ser asignado en el panel principal.'
+                );   
+            }
 
             return $this->redirectToRoute('servicio_show', array('id' => $servicio->getId()));
         }
@@ -135,14 +153,27 @@ class ServicioController extends Controller
         $editForm = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio, array('assign' => true));                        
         $editForm->handleRequest($request);                
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {                         
-            // Por defecto un servicio es asignado al area de desarrollo
-            $estado= $em->getRepository('MonitorBundle:Estado')
-                ->createQueryBuilder('e')                                
-                ->where('e.nombre = ?1')
-                ->setParameter(1, 'Desarrollo')
-                ->getQuery()
-                ->getResult();
+        if ($editForm->isSubmitted() && $editForm->isValid()) {  
+            $em = $this->getDoctrine()->getManager();
+            
+            if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
+            // Por defecto un servicio de tipo resolucion incidencia es asignado al area de analisis
+                $estado= $em->getRepository('MonitorBundle:Estado')
+                    ->createQueryBuilder('e')                                
+                    ->where('e.nombre = ?1')
+                    ->setParameter(1, 'Análisis')
+                    ->getQuery()
+                    ->getResult();
+            }
+            else{
+                // Por defecto un servicio de tipo mantencion es asignado al area de desarrollo
+                $estado= $em->getRepository('MonitorBundle:Estado')
+                    ->createQueryBuilder('e')                                
+                    ->where('e.nombre = ?1')
+                    ->setParameter(1, 'Desa')
+                    ->getQuery()
+                    ->getResult();
+            }            
                                                 
             $servicio->setEstado($estado[0]);
             $servicio->setIdEstado($estado[0]->getId());                
@@ -157,20 +188,26 @@ class ServicioController extends Controller
             
             $historial->setServicio($servicio);                     
             $historial->setIdServicio($servicio->getId());
-            $historial->setEstado($estado);
-            $historial->setIdEstado($estado->getId());            
-            $historial->setInicio($fechaAsignado);
-            
-            $estado= $em->getRepository('MonitorBundle:Historial')
-                ->createQueryBuilder('h')                                
-                ->where('e.nombre = ?1')
-                ->setParameter(1, 'Desarrollo')
-                ->getQuery()
-                ->getResult();            
+            $historial->setEstado($estado[0]);
+            $historial->setIdEstado($estado[0]->getId());            
+            $historial->setInicio($fechaAsignado);                   
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($historial);
             $em->flush();
+            
+            if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
+                $this->addFlash(
+                    'notice',
+                    'Se ha asignado un nuevo servicio de tipo Resolución de Incidencia. El servicio esta actualmente en resolución y puede ser finalizado en el panel principal.'
+                );   
+            }   
+            else{
+                $this->addFlash(
+                    'notice',
+                    'Se ha asignado un nuevo servicio de tipo Mantención. El servicio está actualmente asignado a desarrollo y puede cambiar su estado en el panel principal'
+                );   
+            }
             
             return $this->redirectToRoute('servicio_show', array('id' => $servicio->getId()));            
         }                
@@ -218,6 +255,8 @@ class ServicioController extends Controller
     public function checkAction(Request $request){
                 
         $codigoInterno= $request->request->get('codigoInterno');
+        $id= $request->request->get('id');
+        
         $error = false;
         $message = "Código válido";        
         
@@ -227,13 +266,26 @@ class ServicioController extends Controller
         }             
         
         if(!$error){
-            $em = $this->getDoctrine()->getManager();        
-            $servicio= $em->getRepository('MonitorBundle:Servicio')
-                            ->createQueryBuilder('s')                                
-                            ->where('s.codigoInterno = ?1')
-                            ->setParameter(1, $codigoInterno)
-                            ->getQuery()
-                            ->getResult();
+            $em = $this->getDoctrine()->getManager();                    
+            //Si se esta editando o asignando un servicio se debe proveer el id del servicio
+            if($id != null){                
+                $servicio= $em->getRepository('MonitorBundle:Servicio')
+                ->createQueryBuilder('s')                                
+                ->where('s.codigoInterno = ?1')
+                ->andWhere('s.id <> ?2')
+                ->setParameter(1, $codigoInterno)
+                ->setParameter(2, $id)                        
+                ->getQuery()
+                ->getResult();
+            }
+            else{
+                $servicio= $em->getRepository('MonitorBundle:Servicio')
+                ->createQueryBuilder('s')                                
+                ->where('s.codigoInterno = ?1')
+                ->setParameter(1, $codigoInterno)
+                ->getQuery()
+                ->getResult();                
+            }                        
 
             if(!empty($servicio)){
                 $error = true;
@@ -263,13 +315,15 @@ class ServicioController extends Controller
                 ->join('s.componente', 'c')
                 ->join('s.prioridad', 'p')
                 ->join('s.origen', 'o')
-                ->where('e.nombre = ?1')
-                ->setParameter(1, 'En Cola')
+                ->where('e.nombre in (?1)')
+                ->setParameter(1, ['En Cola','Análisis','Desa','Test','PaP'])
                 ->getQuery()
                 ->getResult();   
         
         $estados = $em->getRepository('MonitorBundle:Estado')
                 ->createQueryBuilder('e')                                
+                ->where('e.nombre in (?1)')
+                ->setParameter(1, ['Desa','Test','PaP'])
                 ->getQuery()
                 ->getResult();   
         
@@ -281,29 +335,41 @@ class ServicioController extends Controller
             
             array_push($fila,$servicio->getCodigoInterno());
             array_push($fila,$servicio->getFechaReporte()->format('d/m/Y H:i'));
-            array_push($fila,$servicio->getComponente()->getNombre());
+            //array_push($fila,$servicio->getComponente()->getNombre());
             array_push($fila,$servicio->getOrigen()->getNombre());
             array_push($fila,$servicio->getTipoServicio()->getTipo()->getNombre());
-            array_push($fila,$servicio->getPrioridad()->getNombre());
-            if($servicio->getTipoServicio()->getTipo()->getNombre()=='Incidencia')
-                array_push($fila,'<button id="'.$servicio->getId().'" type="button" class="btn btn-success">Resuelta</button>');
-            else
-            {
-                if(in_array($servicio->getEstado()->getNombre(),['En Cola','Terminada']))
-                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');
-                else
-                {
+            array_push($fila,$servicio->getPrioridad()->getNombre());                                                
+            
+            switch($servicio->getEstado()->getNombre()){
+
+                case 'En Cola':
+                    array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="black-font">'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
+                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');                                        
+                    break;
+                case 'Análisis':                        
+                    array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
+                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-success">Finalizar</button>');                    
+                    break;
+                case 'Desa':
+                case 'test':
+                case 'PaP':
+                    array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     $html='<div class="btn-group">';
-                    foreach($estados as $estado)
+                    foreach($estados as $estado)                        
                     {
-                        $html=$html.'<button type="button" class="btn btn-primary">'.$estado->getNombre().'</button>';
+                        if($estado->getNombre()==$servicio->getEstado()->getNombre())
+                            $class='btn btn-sm btn-primary';
+                        else
+                            $class='btn btn-sm btn-default';
+                        $html=$html.'<button type="button" class="'.$class.'">'.$estado->getNombre().'</button>';
                     }
                     $html=$html.'</div>';
-                    
-                    array_push($fila,$html);
-                }
-                    
-            }                            
+
+                    array_push($fila,$html);                        
+
+                    break;
+            }                   
+            
             array_push($fila,'<ul><li><a href="'.$this->generateUrl('servicio_show', array('id' => $servicio->getId())).'">ver</a></li><li><a href="'.$this->generateUrl('servicio_edit', array('id' => $servicio->getId())).'">editar</a></li></ul>');
             
             array_push($body, $fila);

@@ -1,3 +1,6 @@
+{% block stylesheets %}
+<link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
 {% extends 'base.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block body %}
@@ -139,7 +142,8 @@ $validar.click(function(){
   // ... retrieve the corresponding form.  
   // Simulate form data, but only include the selected sport value.
   var data = {};
-  data['codigoInterno'] = $('#servicio_codigoInterno').val(); 
+  data['codigoInterno'] = $('#servicio_codigoInterno').val();
+  data['id'] = $('#servicio_id').val();
   // Submit data via AJAX to the form's action path.
   $.post("{{ path('servicio_check') }}",data,function(data){
         var src;
@@ -180,6 +184,7 @@ $('#validate_form').click(function(){
   var error = false;
   var data = {};
   data['codigoInterno'] = $('#servicio_codigoInterno').val(); 
+  data['id'] = $('#servicio_id').val();
   // Submit data via AJAX to the form's action path.
   $('.form-group').each(function(){           
        $field=$(this).find('input,select,textarea');              

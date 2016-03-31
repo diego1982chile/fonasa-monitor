@@ -209,6 +209,19 @@ class Servicio
      * @ORM\OneToMany(targetEntity="Hh", mappedBy="servicio")          
      */
     protected $hhs;        
+    
+    /**
+     * Set id
+     * @param int $id
+     * @return Servicio
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        
+        return $this;
+        
+    }
 
     /**
      * Get id
@@ -218,7 +231,7 @@ class Servicio
     public function getId()
     {
         return $this->id;
-    }
+    }        
 
     /**
      * Set codigoInterno

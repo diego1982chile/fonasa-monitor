@@ -1,3 +1,6 @@
+{% block stylesheets %}
+<link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
 {% extends 'base.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 {% block body %}
@@ -5,7 +8,7 @@
     <div style="width:60%">
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" value="Editar" class="btn btn-primary" />
     {{ form_end(edit_form) }}
     </div>
     <ul>
@@ -14,7 +17,7 @@
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" value="Eliminar" class="btn btn-danger">
             {{ form_end(delete_form) }}
         </li>
     </ul>
@@ -130,6 +133,7 @@ $validar.click(function(){
   // Simulate form data, but only include the selected sport value.
   var data = {};
   data['codigoInterno'] = $('#servicio_codigoInterno').val(); 
+  data['id'] = $('#servicio_id').val();
   // Submit data via AJAX to the form's action path.
   $.post("{{ path('servicio_check') }}",data,function(data){
       if(data.error){          
@@ -167,6 +171,7 @@ $('#validate_form').click(function(){
   var error = false;
   var data = {};
   data['codigoInterno'] = $('#servicio_codigoInterno').val(); 
+  data['id'] = $('#servicio_id').val();
   // Submit data via AJAX to the form's action path.
   $('.form-group').each(function(){           
        $field=$(this).find('input,select,textarea');              

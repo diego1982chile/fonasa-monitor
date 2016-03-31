@@ -40,7 +40,7 @@ class Historial
      *
      * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="historiales")
      * @ORM\JoinColumns{(
-     *    @ORM\JoinColumn(name="ID_SERVICIO", referencedColumnName="id")
+     *    @ORM\JoinColumn(name="ID_SERVICIO", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $servicio;
@@ -138,6 +138,18 @@ class Historial
     }
     
     /**
+     * Set servicio
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Historial      
+     */
+    public function setServicio(\Fonasa\MonitorBundle\Entity\Servicio $servicio = null)
+    {
+        $this->servicio = $servicio;
+        
+        return $this;
+    }            
+    
+    /**
      * Get idServicio
      *
      * @return int
@@ -159,5 +171,52 @@ class Historial
         
         return $this;
     }      
+    
+    //-----------------------------------------------------------
+    
+    /**
+     * Get estado
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Estado
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    /**
+     * Set estado
+     *
+     * @return \Fonasa\MonitorBundle\Entity\Historial
+     */
+    public function setEstado(\Fonasa\MonitorBundle\Entity\Estado $estado = null)
+    {
+        $this->estado = $estado;
+        
+        return $this;
+    }            
+    
+    /**
+     * Get idEstado
+     *
+     * @return int
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
+    
+    /**
+    * Set idEstado
+    *
+    * @param int $idEstado
+    * @return Historial
+    */
+    public function setIdEstado($idEstado)
+    {
+        $this->idEstado = $idEstado;
+        
+        return $this;
+    }  
 }
 

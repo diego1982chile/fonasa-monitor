@@ -59,44 +59,51 @@ class LoadFixtures extends Controller implements FixtureInterface
         
         $estado1 = new Estado();                
         $estado1->setNombre("En Cola");
-        $estado1->setDescripcion("Por asignar a desarrollo");                
+        $estado1->setDescripcion("en cola");                
         
         $manager->persist($estado1);
         $manager->flush();   
         
-        $estado1 = new Estado();              
-        $estado1->setNombre("Desarrollo");
-        $estado1->setDescripcion("Asignada a desarrollo");                
+        $estado1 = new Estado();                
+        $estado1->setNombre("Análisis");
+        $estado1->setDescripcion("en resolución");                
         
         $manager->persist($estado1);
-        $manager->flush();               
-                
+        $manager->flush();           
+        
         $estado2 = new Estado();              
-        $estado2->setNombre("Testing");
-        $estado2->setDescripcion("En testing");                
+        $estado2->setNombre("Desa");
+        $estado2->setDescripcion("en desarrollo");                
         
         $manager->persist($estado2);
-        $manager->flush();                 
+        $manager->flush();               
                 
         $estado3 = new Estado();              
-        $estado3->setNombre("Explotación");
-        $estado3->setDescripcion("En certificación");                
+        $estado3->setNombre("Test");
+        $estado3->setDescripcion("en testing");                
         
         $manager->persist($estado3);
-        $manager->flush();                       
+        $manager->flush();                 
                 
         $estado4 = new Estado();              
-        $estado4->setNombre("Pendiente PaP");
-        $estado4->setDescripcion("Pendiente aprobación PaP");                
+        $estado4->setNombre("Explotación");
+        $estado4->setDescripcion("en certificación");                
         
         $manager->persist($estado4);
-        $manager->flush();           
+        $manager->flush();                       
                 
         $estado5 = new Estado();              
-        $estado5->setNombre("Terminada");
-        $estado5->setDescripcion("Terminada");                
+        $estado5->setNombre("PaP");
+        $estado5->setDescripcion("pendiente_PaP");                
         
         $manager->persist($estado5);
+        $manager->flush();           
+                
+        $estado6 = new Estado();              
+        $estado6->setNombre("Terminada");
+        $estado6->setDescripcion("Terminada");                
+        
+        $manager->persist($estado6);
         $manager->flush();     
         
         $connection->exec("ALTER TABLE origen AUTO_INCREMENT = 1;");
@@ -201,8 +208,8 @@ class LoadFixtures extends Controller implements FixtureInterface
         $connection->exec("ALTER TABLE tipo AUTO_INCREMENT = 1;");                                                        
         
         $tipo1 = new Tipo();
-        $tipo1->setNombre("Incidencia");
-        $tipo1->setDescripcion("Incidencia");                
+        $tipo1->setNombre("Resolución Incidencia");
+        $tipo1->setDescripcion("Resolución Incidencia");                
         
         $manager->persist($tipo1);
         $manager->flush();  

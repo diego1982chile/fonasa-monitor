@@ -13,8 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('bundles/fonasa-monitor/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Jquery-ui core CSS -->
-    <link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+    <!-- Jquery-ui core CSS -->    
     <link href="{{ asset('bundles/fonasa-monitor/css/jquery.qtip.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/fonasa-monitor/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/fonasa-monitor/css/dataTables.bootstrap.css') }}" rel="stylesheet">        
@@ -29,6 +28,29 @@
             .cols {
                 text-align: center;
             }
+            
+            /**
+            * Progress bars with centered text
+            */
+
+           .progress {
+               position: relative;
+               margin-bottom: 0px;
+               border: 1px solid black;               
+           }
+           
+           /*
+           .btn{
+               border: 1px solid black;               
+           }
+           */
+
+            .progress span.black-font {
+                position: absolute;
+                display: block;
+                width: 100%;
+                color: black;
+             }
         </style>
   </head>
 
