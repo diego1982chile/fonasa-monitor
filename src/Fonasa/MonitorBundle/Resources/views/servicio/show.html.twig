@@ -3,9 +3,31 @@
 <link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
-    {% for flash_message in app.session.flashbag.get('notice') %}
-    <div class="flash-notice ui-state-highlight">
-        {{ flash_message }}
+        {% for flash_message in app.session.flashbag.get('notice') %}            
+    <div id="panel" class="flash-notice ui-state-highlight collapse in" style="padding:5px">
+        <table width="100%">
+            <tr>
+                <td width="3%">
+                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:20px;width:20px" />
+                </td>
+                <td width="94%">
+                    <h3 style="margin:0px">Operación realizada con éxito</h3>        
+                </td>
+                <td width="3%">
+                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/close_3.png') }}" data-toggle="collapse" style="height:20px;width:20px;cursor:pointer" />        
+                </td>
+            </tr>
+        </table>
+        <div>
+            <ul>
+                {% set foo = flash_message|split('|') %}
+                {% for var in foo %}                            
+                <li style="margin:10px">                    
+                    {{ var }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endfor %}
     <h1>Servicio</h1>

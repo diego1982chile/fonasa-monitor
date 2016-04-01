@@ -94,7 +94,7 @@ class LoadFixtures extends Controller implements FixtureInterface
                 
         $estado5 = new Estado();              
         $estado5->setNombre("PaP");
-        $estado5->setDescripcion("pendiente_PaP");                
+        $estado5->setDescripcion("pendiente PaP");                
         
         $manager->persist($estado5);
         $manager->flush();           

@@ -83,13 +83,13 @@ class ServicioController extends Controller
             if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
                 $this->addFlash(
                     'notice',
-                    'Se ha ingresado un nuevo servicio de tipo Resolución de Incidencia. El servicio ha sido encolado y puede ser asignado en el panel principal.'
+                    'Se ha ingresado un nuevo servicio de tipo Resolución de Incidencia.| El servicio ha sido encolado y puede ser asignado en el panel principal.'
                 );   
             }   
             else{
                 $this->addFlash(
                     'notice',
-                    'Se ha ingresado un nuevo servicio de tipo Mantención. El servicio ha sido encolado y puede ser asignado en el panel principal.'
+                    'Se ha ingresado un nuevo servicio de tipo Mantención.| El servicio ha sido encolado y puede ser asignado en el panel principal.'
                 );   
             }
 
@@ -199,13 +199,13 @@ class ServicioController extends Controller
             if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
                 $this->addFlash(
                     'notice',
-                    'Se ha asignado un nuevo servicio de tipo Resolución de Incidencia. El servicio esta actualmente en resolución y puede ser finalizado en el panel principal.'
+                    'Se ha asignado un nuevo servicio de tipo Resolución de Incidencia.| El servicio esta actualmente en resolución y puede ser finalizado en el panel principal.'
                 );   
             }   
             else{
                 $this->addFlash(
                     'notice',
-                    'Se ha asignado un nuevo servicio de tipo Mantención. El servicio está actualmente asignado a desarrollo y puede cambiar su estado en el panel principal'
+                    'Se ha asignado un nuevo servicio de tipo Mantención.| El servicio está actualmente asignado a desarrollo y puede cambiar su estado en el panel principal'
                 );   
             }
             
@@ -217,6 +217,220 @@ class ServicioController extends Controller
             'edit_form' => $editForm->createView(),            
         ));        
     }
+    
+    
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function finishAction($id)
+    {                                           
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicio= $em->getRepository('MonitorBundle:Servicio')
+            ->createQueryBuilder('s')                                
+            ->where('s.id = ?1')
+            ->setParameter(1, $id)
+            ->getQuery()
+            ->getResult();                            
+                
+        $estado= $em->getRepository('MonitorBundle:Estado')
+            ->createQueryBuilder('e')                                
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'Terminada')
+            ->getQuery()
+            ->getResult();                    
+
+        $servicio[0]->setEstado($estado[0]);
+        $servicio[0]->setIdEstado($estado[0]->getId());                
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($servicio[0]);
+        $em->flush();
+
+        // Guardar el historial del cambio de estado               
+        $fechaTerminado=new\DateTime('now');            
+        $historial = new Historial();
+
+        $historial->setServicio($servicio[0]);                     
+        $historial->setIdServicio($servicio[0]->getId());
+        $historial->setEstado($estado[0]);
+        $historial->setIdEstado($estado[0]->getId());            
+        $historial->setInicio($fechaTerminado);                   
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($historial);
+        $em->flush();
+
+ 
+        $this->addFlash(
+            'notice',
+            'Se ha finalizado el servicio '.$servicio[0]->getCodigoInterno().' de tipo Resolución de Incidencia.| El servicio puede ser visualizado en el panel principal mediante el filto "Finalizados".'
+        );   
+        
+        
+        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+    }    
+        
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function desaAction($id)
+    {                                           
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicio= $em->getRepository('MonitorBundle:Servicio')
+            ->createQueryBuilder('s')                                
+            ->where('s.id = ?1')
+            ->setParameter(1, $id)
+            ->getQuery()
+            ->getResult();                            
+                
+        $estado= $em->getRepository('MonitorBundle:Estado')
+            ->createQueryBuilder('e')                                
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'Desa')
+            ->getQuery()
+            ->getResult();                    
+
+        $servicio[0]->setEstado($estado[0]);
+        $servicio[0]->setIdEstado($estado[0]->getId());                
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($servicio[0]);
+        $em->flush();
+
+        // Guardar el historial del cambio de estado               
+        $fechaTerminado=new\DateTime('now');            
+        $historial = new Historial();
+
+        $historial->setServicio($servicio[0]);                     
+        $historial->setIdServicio($servicio[0]->getId());
+        $historial->setEstado($estado[0]);
+        $historial->setIdEstado($estado[0]->getId());            
+        $historial->setInicio($fechaTerminado);                   
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($historial);
+        $em->flush();
+
+ 
+        $this->addFlash(
+            'notice',
+            'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido asignado al área de desarrollo.'
+        );   
+                
+        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+    }    
+        
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function testAction($id)
+    {                                           
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicio= $em->getRepository('MonitorBundle:Servicio')
+            ->createQueryBuilder('s')                                
+            ->where('s.id = ?1')
+            ->setParameter(1, $id)
+            ->getQuery()
+            ->getResult();                            
+                
+        $estado= $em->getRepository('MonitorBundle:Estado')
+            ->createQueryBuilder('e')                                
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'Test')
+            ->getQuery()
+            ->getResult();                    
+
+        $servicio[0]->setEstado($estado[0]);
+        $servicio[0]->setIdEstado($estado[0]->getId());                
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($servicio[0]);
+        $em->flush();
+
+        // Guardar el historial del cambio de estado               
+        $fechaTerminado=new\DateTime('now');            
+        $historial = new Historial();
+
+        $historial->setServicio($servicio[0]);                     
+        $historial->setIdServicio($servicio[0]->getId());
+        $historial->setEstado($estado[0]);
+        $historial->setIdEstado($estado[0]->getId());            
+        $historial->setInicio($fechaTerminado);                   
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($historial);
+        $em->flush();
+
+ 
+        $this->addFlash(
+            'notice',
+            'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido asignado al área de testing.'
+        );   
+                
+        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+    }
+    
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function papAction($id)
+    {                                           
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicio= $em->getRepository('MonitorBundle:Servicio')
+            ->createQueryBuilder('s')                                
+            ->where('s.id = ?1')
+            ->setParameter(1, $id)
+            ->getQuery()
+            ->getResult();                            
+                
+        $estado= $em->getRepository('MonitorBundle:Estado')
+            ->createQueryBuilder('e')                                
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'PaP')
+            ->getQuery()
+            ->getResult();                    
+
+        $servicio[0]->setEstado($estado[0]);
+        $servicio[0]->setIdEstado($estado[0]->getId());                
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($servicio[0]);
+        $em->flush();
+
+        // Guardar el historial del cambio de estado               
+        $fechaTerminado=new\DateTime('now');            
+        $historial = new Historial();
+
+        $historial->setServicio($servicio[0]);                     
+        $historial->setIdServicio($servicio[0]->getId());
+        $historial->setEstado($estado[0]);
+        $historial->setIdEstado($estado[0]->getId());            
+        $historial->setInicio($fechaTerminado);                   
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($historial);
+        $em->flush();
+
+ 
+        $this->addFlash(
+            'notice',
+            'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido agregado a la cola de servicios pendientes por PaP.| Todos los servicios pendientes por PaP pueden ser finalizados en el panel principal.'
+        );   
+                
+        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+    }        
 
     /**
      * Deletes a Servicio entity.
@@ -348,10 +562,10 @@ class ServicioController extends Controller
                     break;
                 case 'Análisis':                        
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-success">Finalizar</button>');                    
+                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-success">Finalizar</button>');                    
                     break;
                 case 'Desa':
-                case 'test':
+                case 'Test':
                 case 'PaP':
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     $html='<div class="btn-group">';
@@ -361,7 +575,7 @@ class ServicioController extends Controller
                             $class='btn btn-sm btn-primary';
                         else
                             $class='btn btn-sm btn-default';
-                        $html=$html.'<button type="button" class="'.$class.'">'.$estado->getNombre().'</button>';
+                        $html=$html.'<a href="'.$this->generateUrl('servicio_'.strtolower($estado->getNombre()), array('id' => $servicio->getId())).'" role="button" class="'.$class.'">'.$estado->getNombre().'</button>';
                     }
                     $html=$html.'</div>';
 

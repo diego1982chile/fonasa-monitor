@@ -44,3 +44,23 @@ servicio_assign:
     path:   /{id}/assign
     defaults: { _controller: "MonitorBundle:Servicio:assign" }
     methods:  [GET,POST]        
+    
+servicio_finish:
+    path:   /{id}/finish
+    defaults: { _controller: "MonitorBundle:Servicio:finish" }
+    methods:  [GET,POST]    
+    
+servicio_desa:
+    path:   /{id}/desa
+    defaults: { _controller: "MonitorBundle:Servicio:desa" }
+    methods:  [GET,POST]      
+    
+servicio_test:
+    path:   /{id}/test
+    defaults: { _controller: "MonitorBundle:Servicio:test" }
+    methods:  [GET,POST]      
+    
+servicio_pap:
+    path:   /{id}/pap
+    defaults: { _controller: "MonitorBundle:Servicio:pap" }
+    methods:  [GET,POST]      
