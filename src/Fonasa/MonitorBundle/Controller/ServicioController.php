@@ -512,16 +512,16 @@ class ServicioController extends Controller
     public function bodyAction(Request $request){
         
         //Obtener parámetros
-        $sSearch= $request->request->get('codigoInterno');
-        $iSortCol= $request->request->get('codigoInterno');
-        $sSortDir= $request->request->get('codigoInterno');
-        $codigoInterno= $request->request->get('codigoInterno');
-        $codigoInterno= $request->request->get('codigoInterno');
+        $sSearch= $request->query->get('sSearch');
+        $iSortCol= $request->query->get('iSortCol_0');
+        $sSortDir= $request->query->get('sSortDir_0');        
         //////////////////
         
         $em = $this->getDoctrine()->getManager();
+        
+        $parameters = array();
 
-        $servicios = $em->getRepository('MonitorBundle:Servicio')
+        $qb = $em->getRepository('MonitorBundle:Servicio')
                 ->createQueryBuilder('s')                
                 ->join('s.tipoServicio', 'ts')
                 ->join('ts.tipo', 't')
@@ -529,10 +529,51 @@ class ServicioController extends Controller
                 ->join('s.componente', 'c')
                 ->join('s.prioridad', 'p')
                 ->join('s.origen', 'o')
-                ->where('e.nombre in (?1)')
-                ->setParameter(1, ['En Cola','Análisis','Desa','Test','PaP'])
-                ->getQuery()
-                ->getResult();   
+                ->where('e.nombre in (?1)');
+        
+        $parameters[1]=['En Cola','Análisis','Desa','Test','PaP'];
+    
+        if($sSearch != null){            
+            $qb->andWhere(
+            $qb->expr()->orx(
+            $qb->expr()->like('s.codigoInterno', '?2'),
+            $qb->expr()->like('t.nombre', '?2'),
+            $qb->expr()->like('s.fechaReporte', '?2'),
+            $qb->expr()->like('o.nombre', '?2'),            
+            $qb->expr()->like('p.nombre', '?2'),
+            $qb->expr()->like('e.descripcion', '?2')
+           ));
+            
+           $parameters[2]='%'.$sSearch.'%'; 
+        }
+        
+        if($iSortCol != null){
+            
+            switch($iSortCol){
+                case '0':
+                    $qb->orderBy('s.codigoInterno', $sSortDir);
+                    break;
+                case '1':
+                    $qb->orderBy('s.fechaReporte', $sSortDir);
+                    break;                
+                case '2':
+                    $qb->orderBy('o.nombre', $sSortDir);
+                    break;
+                case '3':
+                    $qb->orderBy('t.nombre', $sSortDir);
+                    break;
+                case '4':
+                    $qb->orderBy('p.nombre', $sSortDir);
+                    break;
+                case '5':
+                    $qb->orderBy('e.descripcion', $sSortDir);
+                    break;
+            }
+        }
+                
+        $servicios= $qb->setParameters($parameters)
+                    ->getQuery()
+                    ->getResult();   
         
         $estados = $em->getRepository('MonitorBundle:Estado')
                 ->createQueryBuilder('e')                                

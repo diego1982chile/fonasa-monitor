@@ -240,16 +240,16 @@ class LoadFixtures extends Controller implements FixtureInterface
         $tipoServicio1 = new TipoServicio();
         $tipoServicio1->setOrigen($origen1);
         $tipoServicio1->setIdOrigen($origen1->getId());        
-        $tipoServicio1->setTipo($tipo1);
-        $tipoServicio1->setIdTipo($tipo1->getId());        
+        $tipoServicio1->setTipo($tipo2);
+        $tipoServicio1->setIdTipo($tipo2->getId());        
                 
         $manager->persist($tipoServicio1);
         $manager->flush();                       
         
         $tipoServicio2 = new TipoServicio();
         $tipoServicio2->setOrigen($origen1);
-        $tipoServicio2->setTipo($tipo2);
-        $tipoServicio2->setIdTipo($tipo2->getId());                                     
+        $tipoServicio2->setTipo($tipo3);
+        $tipoServicio2->setIdTipo($tipo3->getId());                                     
         
         $manager->persist($tipoServicio2);
         $manager->flush();                

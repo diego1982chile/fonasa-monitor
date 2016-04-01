@@ -63,4 +63,9 @@ servicio_test:
 servicio_pap:
     path:   /{id}/pap
     defaults: { _controller: "MonitorBundle:Servicio:pap" }
+    methods:  [GET,POST]   
+    
+servicio_complete:
+    path:   /complete
+    defaults: { _controller: "MonitorBundle:Servicio:complete" }
     methods:  [GET,POST]      
