@@ -13,6 +13,7 @@
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Tests/Controller/MantencionControllerTest.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Impacto.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/views/servicio/show.html.twig</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Twig/GlobalFiltersExtension.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/RequestListener.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/config/services.yml</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/views/servicio/new.html.twig</file>
@@ -42,12 +43,12 @@
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Resources/views/servicio/assign.html.twig</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/AlcanceRepository.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/EventListener/LogoutHandler.php</file>
+            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Helper/FiltersHelper.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/MonitorBundle.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Entity/Componente.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/config/parameters.yml.dist</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Repository/TipoServicioRepository.php</file>
             <file>file:/C:/xampp/htdocs/fonasa-monitor2/app/config/parameters.yml</file>
-            <file>file:/C:/xampp/htdocs/fonasa-monitor2/src/Fonasa/MonitorBundle/Controller/DefaultController.php</file>
         </group>
     </open-files>
 </project-private>

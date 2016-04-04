@@ -13,6 +13,7 @@ use Fonasa\MonitorBundle\Form\ServicioType;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+
 /**
  * Servicio controller.
  *
@@ -550,15 +551,20 @@ class ServicioController extends Controller
     
     public function bodyAction(Request $request){
         
-        //Obtener parámetros
+        //Obtener parámetros de DataTables
         $sSearch= $request->query->get('sSearch');
         $iSortCol= $request->query->get('iSortCol_0');
         $sSortDir= $request->query->get('sSortDir_0');        
-        //////////////////
         
-        $em = $this->getDoctrine()->getManager();
+        //Obtener parámetros de filtros
+        $anio= $request->query->get('anio');
+        $mes= $request->query->get('mes');
+        $estado= $request->query->get('estado');        
+        //////////////////                
         
-        $parameters = array();
+        $em = $this->getDoctrine()->getManager();                
+        
+        $parameters = array();                
 
         $qb = $em->getRepository('MonitorBundle:Servicio')
                 ->createQueryBuilder('s')                
@@ -568,22 +574,31 @@ class ServicioController extends Controller
                 ->join('s.componente', 'c')
                 ->join('s.prioridad', 'p')
                 ->join('s.origen', 'o')
-                ->where('e.nombre in (?1)');
+                ->where('YEAR(s.fechaReporte) = ?1')
+                ->andWhere('MONTH(s.fechaReporte) = ?2')
+                ->andWhere('e.nombre in (?3)');
         
-        $parameters[1]=['En Cola','Análisis','Desa','Test','PaP'];
+        $parameters[1] = $anio;
+        
+        $parameters[2] = $mes;
+        
+        if($estado == 1)
+            $parameters[3]=['En Cola','Análisis','Desa','Test','PaP'];
+        else
+            $parameters[3]=['Terminada'];
     
         if($sSearch != null){            
             $qb->andWhere(
             $qb->expr()->orx(
-            $qb->expr()->like('s.codigoInterno', '?2'),
-            $qb->expr()->like('t.nombre', '?2'),
-            $qb->expr()->like('s.fechaReporte', '?2'),
-            $qb->expr()->like('o.nombre', '?2'),            
-            $qb->expr()->like('p.nombre', '?2'),
-            $qb->expr()->like('e.descripcion', '?2')
+            $qb->expr()->like('s.codigoInterno', '?4'),
+            $qb->expr()->like('t.nombre', '?4'),
+            $qb->expr()->like('s.fechaReporte', '?4'),
+            $qb->expr()->like('o.nombre', '?4'),            
+            $qb->expr()->like('p.nombre', '?4'),
+            $qb->expr()->like('e.descripcion', '?4')
            ));
             
-           $parameters[2]='%'.$sSearch.'%'; 
+           $parameters[4]='%'.$sSearch.'%'; 
         }
         
         if($iSortCol != null){
@@ -644,7 +659,7 @@ class ServicioController extends Controller
                     break;
                 case 'Análisis':                        
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-success">Finalizar</button>');                    
+                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-warning">Finalizar</button>');                    
                     break;
                 case 'Desa':
                 case 'Test':
@@ -666,6 +681,18 @@ class ServicioController extends Controller
                     array_push($fila,$html);                        
 
                     break;
+                case 'Terminada':
+                    array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
+                    $html='<div class="btn-group">';
+                    foreach($estados as $estado)                        
+                    {
+                        
+                        $class='btn btn-sm btn-default';
+                        $html=$html.'<a href="'.$this->generateUrl('servicio_'.strtolower($estado->getNombre()), array('id' => $servicio->getId())).'" role="button" class="'.$class.'">'.$estado->getNombre().'</button>';
+                    }
+                    $html=$html.'</div>';
+
+                    array_push($fila,$html);                        
             }                   
             
             array_push($fila,'<ul><li><a href="'.$this->generateUrl('servicio_show', array('id' => $servicio->getId())).'">ver</a></li><li><a href="'.$this->generateUrl('servicio_edit', array('id' => $servicio->getId())).'">editar</a></li></ul>');

@@ -28,7 +28,7 @@ class FiltersHelper {
         $anyo = date("Y");
         $anyos = array();
         for($i=0;$i<10;++$i)
-            $anyos[]=$anyo-$i;    
+            $anyos[$anyo-$i] = $anyo-$i;        
         
         $meses = array(
                     'Enero' => 1,
@@ -44,10 +44,15 @@ class FiltersHelper {
                     'Noviembre' => 11,
                     'Diciembre' => 12);
         
+        $estados = array(            
+                    'Activas' => 1,
+                    'Finalizadas' => 2                    
+        );                
+        
         return $form_filtros = $this->formFactory->createBuilder()
-            ->add('Anio', ChoiceType::class, array('choices' => $anyos))
-            ->add('Mes', ChoiceType::class, array('choices' => $meses))
-            ->add('Estado', ChoiceType::class, array('choices' => $anyos))
+            ->add('Anio', ChoiceType::class, array('choices' => $anyos, 'data' => intval(date("Y"))))
+            ->add('Mes', ChoiceType::class, array('choices' => $meses, 'choices_as_values' => true, 'data' => intval(date("m"))))
+            ->add('Estado', ChoiceType::class, array('choices' => $estados, 'expanded' => true, 'data' => 1))
             ->getForm()->createView();                    
     }
 }

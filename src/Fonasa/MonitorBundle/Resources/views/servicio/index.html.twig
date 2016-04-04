@@ -4,7 +4,8 @@
 {% endblock %}
 {% block title %}Monitor Fonasa{% endblock %}
 {% block filtro %}
-    <form id="filtros" action="" method="post" >                  
+    <form id="filtros" action="" method="post" >      
+        <h3>Filtros</h3>
         {{ form_widget(GlobalFilters) }}        
     <input class="btn btn-primary" type="submit" value="Filtrar" />    
 {% endblock %}
@@ -58,7 +59,11 @@
         $('#servicios th').removeClass('ui-state-default');                                    
     }); 
     
-    $('#servicios').dataTable({
+    var $anio = $('#form_Anio');
+    var $mes = $('#form_Mes');
+    var $estado = $('#form_Estado');
+    
+    var oTable = $('#servicios').dataTable({
             bPaginate: false,
             bJQueryUI: false,
             bServerSide: true,
@@ -77,7 +82,10 @@
             },
             fnServerData: function ( sSource, aoData, fnCallback ) {
 			/* Add some extra data to the sender */
-			//aoData.push( { "name": "more_data", "value": "my_value" } );
+			aoData.push( { "name": "anio", "value": $anio.val() } );
+                        aoData.push( { "name": "mes", "value": $mes.val() } );
+                        aoData.push( { "name": "estado", "value": $estado.find(':checked').val() } );
+                        
 			$.getJSON( sSource, aoData, function (json) { 
 				/* Do whatever additional processing you want on the callback, then tell DataTables */                                
                                 $('div.toolbar').html(json.pap);
@@ -85,6 +93,18 @@
 			} );
             }                    
         });        
+        
+        $anio.change(function() {
+            oTable.fnDraw();
+        });
+        
+        $mes.change(function() {
+            oTable.fnDraw();
+        });
+        
+        $estado.change(function() {
+            oTable.fnDraw();
+        });
     
 </script>
 {% endblock %}

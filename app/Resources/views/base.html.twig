@@ -87,8 +87,9 @@
 	<div class="row">
             <!--left-->
             {% if app.request.attributes.get('_route') in ['servicio_index'] %}
-            <div class="col-md-2" id="leftCol" style='padding:30px'>
-                  {% block filtro %}{% endblock %}
+            <div class="col-md-2" id="leftCol">
+                  {% block filtro %}                      
+                  {% endblock %}
             </div><!--/left-->
             <!--right-->
             {% endif %}

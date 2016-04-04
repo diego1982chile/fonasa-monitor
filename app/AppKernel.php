@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Fonasa\MonitorBundle\MonitorBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Ivory\OrderedFormBundle\IvoryOrderedFormBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
