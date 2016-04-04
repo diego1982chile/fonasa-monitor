@@ -1,23 +1,21 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-<link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% form_theme GlobalFilters 'bootstrap_3_layout.html.twig' %}
+{% block stylesheets %}    
+{% endblock %}
+{% block title %}Monitor Fonasa{% endblock %}
+{% block filtro %}
+    <form id="filtros" action="" method="post" >                  
+        {{ form_widget(GlobalFilters) }}        
+    <input class="btn btn-primary" type="submit" value="Filtrar" />    
 {% endblock %}
 {% block body %}
     {% for flash_message in app.session.flashbag.get('notice') %}            
-    <div id="panel" class="flash-notice ui-state-highlight collapse in" style="padding:10px">
-        <table width="100%">
-            <tr>
-                <td width="3%">
-                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:20px;width:20px" />
-                </td>
-                <td width="94%">
-                    <h3 style="margin:0px">Operación realizada con éxito</h3>        
-                </td>
-                <td width="3%">
-                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/close_3.png') }}" data-toggle="collapse" style="height:25px;width:25px;cursor:pointer" />        
-                </td>
-            </tr>
-        </table>
+    <div class="alert alert-success alert-dismissible" role="alert">                
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 style="margin:0px">
+            <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:24px;width:24px" />
+            &nbspOperación realizada con éxito
+        </h3>
         <div>
             <ul>
                 {% set foo = flash_message|split('|') %}
@@ -28,21 +26,21 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
+    </div>                    
     {% endfor %}
     <h1>Servicio list</h1>
 
     <table id="servicios" class="display table-striped">
         <thead>
             <tr>                
-                <th width="8%">N°Servicio</th>                                
-                <th width="12%">Fecha Reporte</th>                                             
+                <th width="10%">N°Servicio</th>                                
+                <th width="10%">Fecha Reporte</th>                                             
                 <th width="10%">Origen</th>
                 <th width="12%">Tipo Servicio</th>                
-                <th width="10%">Prioridad</th>
+                <th width="8%">Prioridad</th>
                 <th width="8%">Estado</th>
-                <th width="15%">Acciones</th>
-                <th width="5%">Show/Edit</th>                
+                <th width="20%">Acciones</th>
+                <th width="4%">Show/Edit</th>                
             </tr>
         </thead>
         <tbody>        
@@ -57,26 +55,36 @@
 {% block javascripts %}
 <script>
     $(function() {
-        $('#servicios th').removeClass('ui-state-default');
+        $('#servicios th').removeClass('ui-state-default');                                    
     }); 
     
     $('#servicios').dataTable({
-        bPaginate: false,
-        bJQueryUI: false,
-        bServerSide: true,
-        sAjaxSource: '{{ path('servicio_body') }}',
-        sServerMethod: 'GET',
-        bProcessing: true,
-        aoColumnDefs: [
-                {
-                aTargets: [0,1,2,3,4,5,6],
-                class: 'cols'                
-                }                
-            ],
-        fnDrawCallback: function( oSettings ) {
-            $('#servicios th').removeClass('ui-state-default');
-        }
-    });
+            bPaginate: false,
+            bJQueryUI: false,
+            bServerSide: true,
+            sAjaxSource: '{{ path('servicio_body') }}',
+            sServerMethod: 'GET',
+            bProcessing: true,
+            aoColumnDefs: [
+                    {
+                    aTargets: [0,1,2,3,4,5,6],
+                    class: 'cols'                
+                    }                
+                ],
+            dom: 'frtip<"toolbar">',
+            fnDrawCallback: function( oSettings ) {
+                $('#servicios th').removeClass('ui-state-default');
+            },
+            fnServerData: function ( sSource, aoData, fnCallback ) {
+			/* Add some extra data to the sender */
+			//aoData.push( { "name": "more_data", "value": "my_value" } );
+			$.getJSON( sSource, aoData, function (json) { 
+				/* Do whatever additional processing you want on the callback, then tell DataTables */                                
+                                $('div.toolbar').html(json.pap);
+				fnCallback(json)
+			} );
+            }                    
+        });        
     
 </script>
 {% endblock %}

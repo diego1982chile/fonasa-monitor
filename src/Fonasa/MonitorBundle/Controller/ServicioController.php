@@ -24,27 +24,7 @@ class ServicioController extends Controller
      *
      */
     public function indexAction()
-    {
-        /*
-        $em = $this->getDoctrine()->getManager();
-
-        $servicios = $em->getRepository('MonitorBundle:Servicio')
-                ->createQueryBuilder('s')                
-                ->join('s.tipoServicio', 'ts')
-                ->join('ts.tipo', 't')
-                ->join('s.estado', 'e')
-                ->join('s.componente', 'c')
-                ->join('s.prioridad', 'p')
-                ->join('s.origen', 'o')
-                ->where('e.nombre = ?1')
-                ->setParameter(1, 'En Cola')
-                ->getQuery()
-                ->getResult();                
-        
-        return $this->render('MonitorBundle:servicio:index.html.twig', array(
-            'servicios' => $servicios,
-        ));         
-        */
+    {                
         return $this->render('MonitorBundle:servicio:index.html.twig');         
     }
 
@@ -268,9 +248,9 @@ class ServicioController extends Controller
             'notice',
             'Se ha finalizado el servicio '.$servicio[0]->getCodigoInterno().' de tipo Resolución de Incidencia.| El servicio puede ser visualizado en el panel principal mediante el filto "Finalizados".'
         );   
-        
-        
-        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+                
+        //return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        return $this->redirectToRoute('servicio_index');
     }    
         
     /**
@@ -323,7 +303,8 @@ class ServicioController extends Controller
             'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido asignado al área de desarrollo.'
         );   
                 
-        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        //return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        return $this->redirectToRoute('servicio_index');
     }    
         
     /**
@@ -376,7 +357,8 @@ class ServicioController extends Controller
             'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido asignado al área de testing.'
         );   
                 
-        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        //return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        return $this->redirectToRoute('servicio_index');
     }
     
     /**
@@ -429,8 +411,65 @@ class ServicioController extends Controller
             'El servicio '.$servicio[0]->getCodigoInterno().' de tipo Mantención ha sido agregado a la cola de servicios pendientes por PaP.| Todos los servicios pendientes por PaP pueden ser finalizados en el panel principal.'
         );   
                 
-        return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        return $this->redirectToRoute('servicio_index');
+        //return $this->render('MonitorBundle:servicio:index.html.twig');                         
     }        
+    
+    /**
+     * Displays a form to edit an existing Servicio entity.
+     *
+     */
+    public function completeAction()
+    {                                           
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicios= $em->getRepository('MonitorBundle:Servicio')
+            ->createQueryBuilder('s')                             
+            ->join('s.estado', 'e')            
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'PaP')
+            ->getQuery()
+            ->getResult();                            
+                
+        $estado= $em->getRepository('MonitorBundle:Estado')
+            ->createQueryBuilder('e')                                
+            ->where('e.nombre = ?1')
+            ->setParameter(1, 'Terminada')
+            ->getQuery()
+            ->getResult();        
+        
+        foreach($servicios as $servicio){
+            $servicio->setEstado($estado[0]);
+            $servicio->setIdEstado($estado[0]->getId());                
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($servicio);
+            $em->flush();
+
+            // Guardar el historial del cambio de estado               
+            $fechaTerminado=new\DateTime('now');            
+            $historial = new Historial();
+
+            $historial->setServicio($servicio);                     
+            $historial->setIdServicio($servicio->getId());
+            $historial->setEstado($estado[0]);
+            $historial->setIdEstado($estado[0]->getId());            
+            $historial->setInicio($fechaTerminado);                   
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($historial);
+            $em->flush();    
+        }        
+ 
+        $this->addFlash(
+            'notice',
+            'Todos los servicios en la cola de PaP han sido finalizados.| Estos pueden ser visualizados mediante el filtro finalizados en el panel principal.'
+        );   
+                
+        //return $this->render('MonitorBundle:servicio:index.html.twig');                         
+        return $this->redirectToRoute('servicio_index');
+    }            
 
     /**
      * Deletes a Servicio entity.
@@ -585,6 +624,8 @@ class ServicioController extends Controller
         $body = array();              
         $cont = 0;
         
+        $hayPaP = false;
+        
         foreach($servicios as $servicio){
             $fila = array();  
             
@@ -594,7 +635,7 @@ class ServicioController extends Controller
             array_push($fila,$servicio->getOrigen()->getNombre());
             array_push($fila,$servicio->getTipoServicio()->getTipo()->getNombre());
             array_push($fila,$servicio->getPrioridad()->getNombre());                                                
-            
+                        
             switch($servicio->getEstado()->getNombre()){
 
                 case 'En Cola':
@@ -608,6 +649,8 @@ class ServicioController extends Controller
                 case 'Desa':
                 case 'Test':
                 case 'PaP':
+                    if($servicio->getEstado()->getNombre()=='PaP')
+                        $hayPaP=true;
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     $html='<div class="btn-group">';
                     foreach($estados as $estado)                        
@@ -629,14 +672,19 @@ class ServicioController extends Controller
             
             array_push($body, $fila);
             $cont++;
-        } 
+        }
+        
+        $pap = null;
                         
+        if($hayPaP)
+            $pap = '<a href="'.$this->generateUrl('servicio_complete').'" role="button" class="btn btn-link">Finalizar servicios pendientes para PaP</button>';
         
         $output= array(
           'sEcho' => intval($request->request->get('sEcho')),
           'iTotalRecords' => $cont,
           'iTotalDisplayRecords' => $cont,  
-          'aaData' => $body
+          'aaData' => $body,
+          'pap' => $pap
         );
         
         return new JsonResponse($output);

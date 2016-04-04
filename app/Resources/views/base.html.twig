@@ -13,10 +13,12 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('bundles/fonasa-monitor/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/fonasa-monitor/css/simple-sidebar.css') }}" rel="stylesheet">
     <!-- Jquery-ui core CSS -->    
     <link href="{{ asset('bundles/fonasa-monitor/css/jquery.qtip.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/fonasa-monitor/css/jquery.dataTables.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/fonasa-monitor/css/dataTables.bootstrap.css') }}" rel="stylesheet">        
+    <link href="{{ asset('bundles/fonasa-monitor/css/dataTables.bootstrap.css') }}" rel="stylesheet">  
+    <link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <style type="text/css">
@@ -38,7 +40,7 @@
                margin-bottom: 0px;
                border: 1px solid black;               
            }
-           
+                                 
            /*
            .btn{
                border: 1px solid black;               
@@ -51,11 +53,15 @@
                 width: 100%;
                 color: black;
              }
+             
+            .toolbar{
+                float: right;                
+            }
                           
         </style>
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#myScrollspy" data-offset="150">
 
     <nav class="navbar navbar-inverse">
       <div class="container">
@@ -76,14 +82,25 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
+                   
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
+	<div class="row">
+            <!--left-->
+            {% if app.request.attributes.get('_route') in ['servicio_index'] %}
+            <div class="col-md-2" id="leftCol" style='padding:30px'>
+                  {% block filtro %}{% endblock %}
+            </div><!--/left-->
+            <!--right-->
+            {% endif %}
+          <div class="col-md-10">
                 {% block body %}{% endblock %}
-            </div>
-        </div>
-    </div><!-- /.container -->
+          </div><!--/right-->
+        </div><!--/row-->
+    </div><!--/container-->
+        <!-- /#page-content-wrapper -->
+
+   
+    
     <script src="{{ asset('bundles/fonasa-monitor/js/jquery-1.12.1.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.js') }}"></script>

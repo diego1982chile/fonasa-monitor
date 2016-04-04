@@ -8,3 +8,12 @@ services:
     fonasa_monitor.authentication.logout_handler:
         class:  Fonasa\MonitorBundle\EventListener\LogoutHandler
         arguments:  []
+    fonasa_monitor.helper.filters:
+        class:  Fonasa\MonitorBundle\Helper\FiltersHelper
+        arguments: ["@form.factory", "@service_container"]
+    fonasa_monitor.twig.GlobalFiltersExtension:
+        class: Fonasa\MonitorBundle\Twig\GlobalFiltersExtension
+        arguments:  ["@service_container"]
+        tags:
+            - { name: twig.extension }         
+            

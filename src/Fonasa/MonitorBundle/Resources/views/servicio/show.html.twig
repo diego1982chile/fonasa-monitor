@@ -1,23 +1,14 @@
 {% extends 'base.html.twig' %}  
 {% block stylesheets %}
-<link href="{{ asset('bundles/fonasa-monitor/js/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
         {% for flash_message in app.session.flashbag.get('notice') %}            
-    <div id="panel" class="flash-notice ui-state-highlight collapse in" style="padding:5px">
-        <table width="100%">
-            <tr>
-                <td width="3%">
-                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:20px;width:20px" />
-                </td>
-                <td width="94%">
-                    <h3 style="margin:0px">Operación realizada con éxito</h3>        
-                </td>
-                <td width="3%">
-                    <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/close_3.png') }}" data-toggle="collapse" style="height:20px;width:20px;cursor:pointer" />        
-                </td>
-            </tr>
-        </table>
+    <div class="alert alert-success alert-dismissible" role="alert">                
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 style="margin:0px">
+            <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:24px;width:24px" />
+            &nbspOperación realizada con éxito
+        </h3>
         <div>
             <ul>
                 {% set foo = flash_message|split('|') %}
@@ -28,7 +19,7 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
+    </div>                    
     {% endfor %}
     <h1>Servicio</h1>
     <div style="width:100%">
