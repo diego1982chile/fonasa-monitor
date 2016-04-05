@@ -3,7 +3,7 @@
 {% endblock %}
 {% block body %}
         {% for flash_message in app.session.flashbag.get('notice') %}            
-    <div class="alert alert-success alert-dismissible" role="alert">                
+    <div class="alert alert-info alert-dismissible" role="alert">                
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h3 style="margin:0px">
             <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:24px;width:24px" />

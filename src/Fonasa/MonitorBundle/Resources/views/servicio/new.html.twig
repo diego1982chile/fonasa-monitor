@@ -149,12 +149,12 @@ $validar.click(function(){
         var css;
         if(data.error){          
             src="{{ asset('bundles/fonasa-monitor/images/exclamation_2.png') }}";
-            css='ui-state-error';
+            css='alert alert-danger';
             $('#servicio_codigoInterno').focus();                    
         } 
         else{
             src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}";            
-            css='ui-state-highlight';
+            css='alert alert-success';
         }
         $('#servicio_codigoInterno').qtip({ // Grab some elements to apply the tooltip to
             content: {
@@ -200,7 +200,7 @@ $('#validate_form').click(function(){
                     delay: 50
                 },
                 style: {
-                    classes: 'ui-state-error',
+                    classes: 'alert alert-danger',
                     def: false,                    
                 },            
                 position: {
@@ -231,7 +231,7 @@ $('#validate_form').click(function(){
                     delay: 50
                 },
                 style: {
-                    classes: 'ui-state-error',
+                    classes: 'alert alert-danger',
                     def: false,                    
                 },            
                 position: {

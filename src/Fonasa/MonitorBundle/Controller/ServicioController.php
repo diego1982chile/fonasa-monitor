@@ -208,6 +208,7 @@ class ServicioController extends Controller
     {                                           
         
         $em = $this->getDoctrine()->getManager();
+        $fechaTerminado=new\DateTime('now');       
         
         $servicio= $em->getRepository('MonitorBundle:Servicio')
             ->createQueryBuilder('s')                                
@@ -224,21 +225,22 @@ class ServicioController extends Controller
             ->getResult();                    
 
         $servicio[0]->setEstado($estado[0]);
-        $servicio[0]->setIdEstado($estado[0]->getId());                
+        $servicio[0]->setIdEstado($estado[0]->getId()); 
+        $servicio[0]->setFechaSalida($fechaTerminado);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($servicio[0]);
         $em->flush();
 
         // Guardar el historial del cambio de estado               
-        $fechaTerminado=new\DateTime('now');            
+        $fechaInicio=new\DateTime('now');            
         $historial = new Historial();
 
         $historial->setServicio($servicio[0]);                     
         $historial->setIdServicio($servicio[0]->getId());
         $historial->setEstado($estado[0]);
         $historial->setIdEstado($estado[0]->getId());            
-        $historial->setInicio($fechaTerminado);                   
+        $historial->setInicio($fechaInicio);                   
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($historial);
@@ -425,6 +427,8 @@ class ServicioController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
+        $fechaTerminado=new\DateTime('now');      
+        
         $servicios= $em->getRepository('MonitorBundle:Servicio')
             ->createQueryBuilder('s')                             
             ->join('s.estado', 'e')            
@@ -443,20 +447,21 @@ class ServicioController extends Controller
         foreach($servicios as $servicio){
             $servicio->setEstado($estado[0]);
             $servicio->setIdEstado($estado[0]->getId());                
+            $servicio->setFechaSalida($fechaTerminado);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($servicio);
             $em->flush();
 
             // Guardar el historial del cambio de estado               
-            $fechaTerminado=new\DateTime('now');            
+            $fechaInicio=new\DateTime('now');            
             $historial = new Historial();
 
             $historial->setServicio($servicio);                     
             $historial->setIdServicio($servicio->getId());
             $historial->setEstado($estado[0]);
             $historial->setIdEstado($estado[0]->getId());            
-            $historial->setInicio($fechaTerminado);                   
+            $historial->setInicio($fechaInicio);                   
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($historial);
