@@ -1,6 +1,6 @@
 <?php
 
-namespace Cadem\ReporteBundle\EventListener;
+namespace Fonasa\MonitorBundle\EventListener;
 
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,8 +16,8 @@ class LogoutHandler implements LogoutHandlerInterface
 	
 	public function logout(Request $request, Response $response, TokenInterface $token)
 	{
-		$request->getSession()->clear();
-		$request->getSession()->invalidate();
-	}
+            $request->getSession()->clear();
+            $request->getSession()->invalidate();         
+        }
 	
 }

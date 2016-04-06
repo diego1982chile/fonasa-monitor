@@ -652,8 +652,10 @@ class ServicioController extends Controller
             array_push($fila,$servicio->getCodigoInterno());
             array_push($fila,$servicio->getFechaReporte()->format('d/m/Y H:i'));
             //array_push($fila,$servicio->getComponente()->getNombre());
-            array_push($fila,$servicio->getOrigen()->getNombre());
-            array_push($fila,$servicio->getTipoServicio()->getTipo()->getNombre());
+            //array_push($fila,$servicio->getOrigen()->getNombre());
+            //array_push($fila,$servicio->getTipoServicio()->getTipo()->getNombre());
+            array_push($fila,$servicio->getHhEstimadas());
+            array_push($fila,$servicio->getHhEfectivas());
             array_push($fila,$servicio->getPrioridad()->getNombre());                                                
                         
             switch($servicio->getEstado()->getNombre()){

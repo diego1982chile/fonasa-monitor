@@ -69,3 +69,8 @@ servicio_complete:
     path:   /complete
     defaults: { _controller: "MonitorBundle:Servicio:complete" }
     methods:  [GET,POST]      
+
+dashboard_index:
+    path:  /dashboard
+    defaults: { _controller: "MonitorBundle:Dashboard:index" } 
+    methods:  [GET,POST] 

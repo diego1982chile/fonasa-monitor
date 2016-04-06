@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% form_theme GlobalFilters 'bootstrap_3_layout.html.twig' %}
+{% block stylesheets %}    
+{% endblock %}
+{% block title %}Monitor Fonasa{% endblock %}
+{% block body %}
+    {% for flash_message in app.session.flashbag.get('notice') %}            
+    <div class="alert alert-info alert-dismissible" role="alert">                
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 style="margin:0px">
+            <img data-target="#panel" src="{{ asset('bundles/fonasa-monitor/images/circle_1.png') }}" data-toggle="collapse" style="height:24px;width:24px" />
+            &nbspOperación realizada con éxito
+        </h3>
+        <div>
+            <ul>
+                {% set foo = flash_message|split('|') %}
+                {% for var in foo %}                            
+                <li style="margin:10px">                    
+                    {{ var }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>                    
+    {% endfor %}
+    <h1>Tablero de Monitoreo</h1>
+    
+    <div class="span9">
+        <div class="container-fluid well" style="padding-top:0">
+            <h4>Incidencias por Componente</h4>
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                        <div class="row-fluid">
+                        </div>
+                </div>
+                {#% for ev in estudios[0].getEstudiovariables %#}
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                    
+                </div>
+                {#% endfor %#}						
+        </div>	
+        <div class="container-fluid well" style="padding-top:0">
+            <h4>Incidencias por Estado</h4>
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                        <div class="row-fluid">
+                        </div>
+                </div>
+                {#% for ev in estudios[0].getEstudiovariables %#}
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                    
+                </div>
+                {#% endfor %#}						
+        </div>	  
+        <div class="container-fluid well" style="padding-top:0">
+            <h4>Tiempos de Resolución de Incidencias</h4>
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                        <div class="row-fluid">
+                        </div>
+                </div>
+                {#% for ev in estudios[0].getEstudiovariables %#}
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
+                    
+                </div>
+                {#% endfor %#}						
+        </div>	        
+    </div>
+{% endblock %}
