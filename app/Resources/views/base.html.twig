@@ -29,6 +29,8 @@
             
             .cols {
                 text-align: center;
+                /*font-size:13px;
+                font-family: Arial, Helvetica, sans-serif;*/
             }
             
             /**
@@ -57,7 +59,10 @@
             .toolbar{
                 float: right;                
             }
-                          
+                  
+            th:after {
+                content: none !important;
+             }
         </style>
   </head>
 
@@ -101,6 +106,7 @@
     <div class="container">
 	<div class="row">
             <!--left-->
+            
             {% if app.request.attributes.get('_route') in ['servicio_index'] %}
             <div class="col-md-2" id="leftCol">
                   {% block filtro %}                      
@@ -108,14 +114,13 @@
             </div><!--/left-->
             <!--right-->
             {% endif %}
-          <div class="col-md-10">
-                {% block body %}{% endblock %}
-          </div><!--/right-->
+            <div class="col-md-12">
+                  {% block body %}
+                  {% endblock %}
+            </div><!--/right-->
         </div><!--/row-->
     </div><!--/container-->
-        <!-- /#page-content-wrapper -->
-
-   
+        <!-- /#page-content-wrapper -->   
     
     <script src="{{ asset('bundles/fonasa-monitor/js/jquery-1.12.1.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/bootstrap.min.js') }}"></script>
@@ -126,6 +131,9 @@
     <script src="{{ asset('bundles/fonasa-monitor/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/dataTables.jqueryui.min.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/fonasa-monitor/js/highcharts.js') }}"></script>
+    <script src="{{ asset('bundles/fonasa-monitor/js/highcharts-3d.js') }}"></script>
+    <script src="{{ asset('bundles/fonasa-monitor/js/modules/exporting.js') }}"></script>
     {% block javascripts %}
     {% endblock %}
   

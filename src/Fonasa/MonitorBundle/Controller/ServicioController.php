@@ -45,13 +45,26 @@ class ServicioController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $codigoInterno=$request->request->get('servicio')['codigoInterno'];
             $fechaIngreso=new\DateTime('now');
-            $estado= $em->getRepository('MonitorBundle:Estado')
-                ->createQueryBuilder('e')                                
-                ->where('e.nombre = ?1')
-                ->setParameter(1, 'En Cola')
-                ->getQuery()
-                ->getResult();
             
+            if($servicio->getTipoServicio()->getTipo()->getNombre() == 'Resolución Incidencia'){            
+                // Si es Incidencia, por defecto se crea con estado 'En Gestión FONASA'
+                $estado= $em->getRepository('MonitorBundle:Estado')
+                    ->createQueryBuilder('e')                                
+                    ->where('e.nombre = ?1')
+                    ->setParameter(1, 'En Gestión FONASA')
+                    ->getQuery()
+                    ->getResult();
+            }            
+            else{
+                // Si es Mantención, por defecto se crea con estado 'En Cola'
+                $estado= $em->getRepository('MonitorBundle:Estado')
+                    ->createQueryBuilder('e')                                
+                    ->where('e.nombre = ?1')
+                    ->setParameter(1, 'En Cola')
+                    ->getQuery()
+                    ->getResult();
+            }
+                                    
             $servicio->setEstado($estado[0]);
             $servicio->setIdEstado($estado[0]->getId());
             $servicio->setCodigoInterno($codigoInterno);
@@ -64,7 +77,7 @@ class ServicioController extends Controller
             if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
                 $this->addFlash(
                     'notice',
-                    'Se ha ingresado un nuevo servicio de tipo Resolución de Incidencia.| El servicio ha sido encolado y puede ser asignado en el panel principal.'
+                    'Se ha ingresado un nuevo servicio de tipo Resolución de Incidencia.| El servicio está en Gestión FONASA y puede ser asignado en el panel principal.'
                 );   
             }   
             else{
@@ -138,11 +151,11 @@ class ServicioController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             if($servicio->getTipoServicio()->getTipo()->getNombre()=='Resolución Incidencia'){
-            // Por defecto un servicio de tipo resolucion incidencia es asignado al area de analisis
+            // Por defecto un servicio de tipo resolucion incidencia queda en estado Pendiente MT
                 $estado= $em->getRepository('MonitorBundle:Estado')
                     ->createQueryBuilder('e')                                
                     ->where('e.nombre = ?1')
-                    ->setParameter(1, 'Análisis')
+                    ->setParameter(1, 'Pendiente MT')
                     ->getQuery()
                     ->getResult();
             }
@@ -220,7 +233,7 @@ class ServicioController extends Controller
         $estado= $em->getRepository('MonitorBundle:Estado')
             ->createQueryBuilder('e')                                
             ->where('e.nombre = ?1')
-            ->setParameter(1, 'Terminada')
+            ->setParameter(1, 'Resuelta MT')
             ->getQuery()
             ->getResult();                    
 
@@ -588,9 +601,9 @@ class ServicioController extends Controller
         $parameters[2] = $mes;
         
         if($estado == 1)
-            $parameters[3]=['En Cola','Análisis','Desa','Test','PaP'];
+            $parameters[3]=['En Cola','Análisis','Desa','Test','PaP','En Gestión FONASA','Pendiente MT'];
         else
-            $parameters[3]=['Terminada'];
+            $parameters[3]=['Terminada','Resuelta MT'];
     
         if($sSearch != null){            
             $qb->andWhere(
@@ -661,12 +674,14 @@ class ServicioController extends Controller
             switch($servicio->getEstado()->getNombre()){
 
                 case 'En Cola':
+                case 'En Gestión FONASA':
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="black-font">'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');                                        
                     break;
-                case 'Análisis':                        
+                case 'Análisis':       
+                case 'Pendiente MT':
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-warning">Finalizar</button>');                    
+                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Finalizar</button>');                    
                     break;
                 case 'Desa':
                 case 'Test':
@@ -688,7 +703,7 @@ class ServicioController extends Controller
                     array_push($fila,$html);                        
 
                     break;
-                case 'Terminada':
+                case 'Terminada':                
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     $html='<div class="btn-group">';
                     foreach($estados as $estado)                        
@@ -700,6 +715,13 @@ class ServicioController extends Controller
                     $html=$html.'</div>';
 
                     array_push($fila,$html);                        
+                    
+                    break;
+                case 'Resuelta MT':                                    
+                    array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
+                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');                                        
+                    
+                    break;
             }                   
             
             array_push($fila,'<ul><li><a href="'.$this->generateUrl('servicio_show', array('id' => $servicio->getId())).'">ver</a></li><li><a href="'.$this->generateUrl('servicio_edit', array('id' => $servicio->getId())).'">editar</a></li></ul>');

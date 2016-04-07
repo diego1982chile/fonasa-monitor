@@ -30,7 +30,7 @@
     {% endfor %}
     <h1>Servicio list</h1>
 
-    <table id="servicios" class="display table-striped">
+    <table id="servicios" class="display table-striped" style="display:none">
         <thead>
             <tr>                
                 <th width="10%">N°Servicio</th>                                
@@ -38,7 +38,7 @@
                 <th width="10%">HH Estimadas</th>
                 <th width="12%">HH Efectivas</th>                
                 <th width="8%">Prioridad</th>
-                <th width="8%">Estado</th>
+                <th width="12%">Estado</th>
                 <th width="20%">Acciones</th>
                 <th width="4%">Show/Edit</th>                
             </tr>
@@ -55,7 +55,8 @@
 {% block javascripts %}
 <script>
     $(function() {
-        $('#servicios th').removeClass('ui-state-default');                                    
+        $('#servicios th').removeClass('ui-state-default');    
+        $('#servicios').show();
     }); 
     
     var $anio = $('#form_Anio');

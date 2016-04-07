@@ -23,44 +23,168 @@
         </div>
     </div>                    
     {% endfor %}
-    <h1>Tablero de Monitoreo</h1>
+    <h1>Tablero de Monitoreo</h1>    
     
-    <div class="span9">
-        <div class="container-fluid well" style="padding-top:0">
-            <h4>Incidencias por Componente</h4>
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                        <div class="row-fluid">
-                        </div>
-                </div>
-                {#% for ev in estudios[0].getEstudiovariables %#}
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                    
-                </div>
-                {#% endfor %#}						
-        </div>	
-        <div class="container-fluid well" style="padding-top:0">
-            <h4>Incidencias por Estado</h4>
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                        <div class="row-fluid">
-                        </div>
-                </div>
-                {#% for ev in estudios[0].getEstudiovariables %#}
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                    
-                </div>
-                {#% endfor %#}						
-        </div>	  
-        <div class="container-fluid well" style="padding-top:0">
-            <h4>Tiempos de Resolución de Incidencias</h4>
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                        <div class="row-fluid">
-                        </div>
-                </div>
-                {#% for ev in estudios[0].getEstudiovariables %#}
-                <div class="hero-unit" style="padding:15px;margin-bottom:10px">
-                    
-                </div>
-                {#% endfor %#}						
-        </div>	        
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#home">Incidencias</a></li>
+      <li><a data-toggle="tab" href="#menu1">Mantenciones</a></li>      
+    </ul>
+    <div class="tab-content">      
+        <div id="home" class="tab-pane fade in active">
+            <div class="col-md-6">                
+                <div class="hero-unit" style="padding:15px;margin-bottom:0px">                
+                    <div id="incidencias_por_componente" style="min-width: 310px; height: 400px; margin: 0 auto">
+                    </div>                
+                </div>					            
+            </div>
+            <div class="col-md-6">                    
+                <div class="hero-unit" style="padding:15px;margin-bottom:0px">                
+                    <div id="incidencias_por_estado" style="min-width: 310px; height: 400px; margin: 0 auto">
+                    </div>                
+                </div>                						            
+            </div>
+            <div class="col-md-12">                    
+                <div class="hero-unit" style="padding:15px;margin-bottom:10px">                
+                    <div id="tiempos_resolucion_incidencias" style="min-width: 310px; height: 400px; margin: 0 auto">
+                    </div>                
+                </div>                
+            </div>            
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Some content in menu 1.</p>
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>    
+$(function () {    
+    
+    $( "#tabs" ).tabs();
+    
+    $('#incidencias_por_componente').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: {{ chartIncidenciasComponente.title|raw }}
+        },
+        xAxis: {
+            categories: {{ chartIncidenciasComponente.categories|raw }}
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: {{ chartIncidenciasComponente.yAxis|raw }}
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        legend: {
+            align: 'right',
+            x: -30,
+            verticalAlign: 'top',
+            y: 25,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        series: {{ chartIncidenciasComponente.series|raw }}
+    });
+    
+    $('#incidencias_por_estado').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: {{ chartIncidenciasEstado.title|raw }}   
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: {{ chartIncidenciasEstado.series|raw }}
+    });
+    
+    $('#tiempos_resolucion_incidencias').highcharts({
+        title: {
+            text: {{ chartTiemposResIncidencias.title|raw }},
+            x: -20 //center
+        },
+        /*
+        subtitle: {
+            text: 'Source: WorldClimate.com',
+            x: -20
+        },
+        */
+        xAxis: {
+            categories: {{ chartTiemposResIncidencias.categories|raw }}            
+        },
+        yAxis: {
+            title: {
+                text: {{ chartTiemposResIncidencias.yAxis|raw }}
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: {{ chartTiemposResIncidencias.series|raw }}
+    });
+});
+</script>
 {% endblock %}

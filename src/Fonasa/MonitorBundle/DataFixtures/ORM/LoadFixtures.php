@@ -64,47 +64,68 @@ class LoadFixtures extends Controller implements FixtureInterface
         $manager->persist($estado1);
         $manager->flush();   
         
-        $estado1 = new Estado();                
-        $estado1->setNombre("Análisis");
-        $estado1->setDescripcion("en resolución");                
-        
-        $manager->persist($estado1);
-        $manager->flush();           
-        
-        $estado2 = new Estado();              
-        $estado2->setNombre("Desa");
-        $estado2->setDescripcion("en desarrollo");                
+        $estado2 = new Estado();                
+        $estado2->setNombre("Análisis");
+        $estado2->setDescripcion("en resolución");                
         
         $manager->persist($estado2);
-        $manager->flush();               
-                
+        $manager->flush();           
+        
         $estado3 = new Estado();              
-        $estado3->setNombre("Test");
-        $estado3->setDescripcion("en testing");                
+        $estado3->setNombre("Desa");
+        $estado3->setDescripcion("en desarrollo");                
         
         $manager->persist($estado3);
-        $manager->flush();                 
+        $manager->flush();               
                 
         $estado4 = new Estado();              
-        $estado4->setNombre("Explotación");
-        $estado4->setDescripcion("en certificación");                
+        $estado4->setNombre("Test");
+        $estado4->setDescripcion("en testing");                
         
         $manager->persist($estado4);
-        $manager->flush();                       
+        $manager->flush();                 
                 
         $estado5 = new Estado();              
-        $estado5->setNombre("PaP");
-        $estado5->setDescripcion("pendiente PaP");                
+        $estado5->setNombre("Explotación");
+        $estado5->setDescripcion("en certificación");                
         
         $manager->persist($estado5);
-        $manager->flush();           
+        $manager->flush();                       
                 
         $estado6 = new Estado();              
-        $estado6->setNombre("Terminada");
-        $estado6->setDescripcion("Terminada");                
+        $estado6->setNombre("PaP");
+        $estado6->setDescripcion("pendiente PaP");                
         
         $manager->persist($estado6);
+        $manager->flush();           
+                
+        $estado7 = new Estado();              
+        $estado7->setNombre("Cerrada");
+        $estado7->setDescripcion("Cerrada");                
+        
+        $manager->persist($estado7);
         $manager->flush();     
+        
+        $estado8 = new Estado();              
+        $estado8->setNombre("en gestión FONASA");
+        $estado8->setDescripcion("En Gestión FONASA");                
+        
+        $manager->persist($estado8);
+        $manager->flush();     
+        
+        $estado9 = new Estado();              
+        $estado9->setNombre("pendiente MT");
+        $estado9->setDescripcion("Pendiente MT");                
+        
+        $manager->persist($estado9);
+        $manager->flush();             
+        
+        $estado10 = new Estado();              
+        $estado10->setNombre("resuelta MT");
+        $estado10->setDescripcion("Resuelta MT");                
+        
+        $manager->persist($estado10);
+        $manager->flush();    
         
         $connection->exec("ALTER TABLE origen AUTO_INCREMENT = 1;");
         
