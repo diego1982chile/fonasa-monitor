@@ -27,8 +27,10 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 	}
 	
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token)
-	{                                    
+	{                                           
             
+            //session_start();            
+                        
             if ($this->security->isGranted('ROLE_SUPER_ADMIN'))
             {
                     // $response = new RedirectResponse($this->router->generate('algo'));

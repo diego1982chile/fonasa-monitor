@@ -27,12 +27,12 @@ class ResponseListener
         
         $routeName = $request->attributes->get('_route');                
 
-        if($routeName == "fos_user_security_login"){//EL LOGIN NO SE CACHEA NUNCA             
+        //if($routeName == "fos_user_security_login"){//EL LOGIN NO SE CACHEA NUNCA             
             $response = $event->getResponse();
             $response->headers->addCacheControlDirective('must-revalidate', true);
             $response->headers->addCacheControlDirective('no-store', true);
             $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('max-age', 0);             
-        }
+            $response->headers->addCacheControlDirective('max-age', 0);                  
+        //}
     }
 }

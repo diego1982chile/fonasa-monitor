@@ -17,7 +17,7 @@ class LogoutHandler implements LogoutHandlerInterface
 	public function logout(Request $request, Response $response, TokenInterface $token)
 	{
             $request->getSession()->clear();
-            $request->getSession()->invalidate();         
+            $request->getSession()->invalidate();                         
         }
 	
 }

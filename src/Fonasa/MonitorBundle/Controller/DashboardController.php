@@ -4,6 +4,7 @@ namespace Fonasa\MonitorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+
 class DashboardController extends Controller
 {
     public function indexAction()
@@ -12,7 +13,7 @@ class DashboardController extends Controller
         //$anio= $request->query->get('anio');
         //$mes= $request->query->get('mes');
         //$estado= $request->query->get('estado');        
-        //////////////////                
+        //////////////////                                        
         
         $em = $this->getDoctrine()->getManager();                
         
