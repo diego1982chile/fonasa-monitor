@@ -3,10 +3,27 @@
 {% block stylesheets %}    
 {% endblock %}
 {% block title %}Monitor Fonasa{% endblock %}
-{% block filtro %}
-    <form id="filtros" action="" method="post" >      
-        <h3>Filtros</h3>
-        {{ form_widget(GlobalFilters) }}              
+{% block filtro %}        
+    <ul class="nav navbar-nav"> 
+        <li class="divider-vertical"></li>
+        <li class="active"> 
+            <form id="filtros" action="" method="post" class="navbar-form navbar-left">                 
+                {{ form_start(GlobalFilters) }}        
+                {{ form_errors(GlobalFilters) }}                
+                {{ form_widget(GlobalFilters.Anio) }}                
+                {{ form_widget(GlobalFilters.Mes) }}                                                 
+                <div id="form_Estado" class="btn-group" data-toggle="buttons">
+                {% for child in GlobalFilters.Estado %}
+                    {{ form_label(child) }} 
+                    <label class="btn btn-sm btn-default {% if loop.index == 1 %}active{% endif %}">                                       
+                    {{ form_widget(child) }}
+                    </label>
+                {% endfor %}
+                </div>
+            </form>
+        </li>
+        <li class="divider-vertical"></li>                    
+    </ul>                 
 {% endblock %}
 {% block body %}
     {% for flash_message in app.session.flashbag.get('notice') %}            
@@ -28,7 +45,7 @@
         </div>
     </div>                    
     {% endfor %}
-    <h1>Servicio list</h1>
+    <h2>Servicios Activos Abril 2016</h2>
 
     <table id="servicios" class="display table-striped" style="display:none">
         <thead>
@@ -56,7 +73,7 @@
 <script>
     $(function() {
         $('#servicios th').removeClass('ui-state-default');    
-        $('#servicios').show();
+        $('#servicios').show();        
     }); 
     
     var $anio = $('#form_Anio');

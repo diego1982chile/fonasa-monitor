@@ -45,14 +45,14 @@ class FiltersHelper {
                     'Diciembre' => 12);
         
         $estados = array(            
-                    'Activas' => 1,
-                    'Finalizadas' => 2                    
+                    'Activos' => 1,
+                    'Finalizados' => 2                    
         );                
         
         return $form_filtros = $this->formFactory->createBuilder()
             ->add('Anio', ChoiceType::class, array('choices' => $anyos, 'data' => intval(date("Y"))))
             ->add('Mes', ChoiceType::class, array('choices' => $meses, 'choices_as_values' => true, 'data' => intval(date("m"))))
-            ->add('Estado', ChoiceType::class, array('choices' => $estados, 'expanded' => true, 'data' => 1))
+            ->add('Estado', ChoiceType::class, array('choices' => $estados, 'expanded' => true, 'data' => 1, 'attr' => array('class' => 'btn-group','data-toggle' => 'buttons')))
             ->getForm()->createView();                    
     }
 }

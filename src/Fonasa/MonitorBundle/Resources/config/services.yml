@@ -19,7 +19,7 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse  }   
     fonasa_monitor.controller_listener:
          class: Fonasa\MonitorBundle\EventListener\ControllerListener
-         arguments: ["@router", "@security.authorization_checker", "@debug.controller_resolver", "@security.token_storage"]
+         arguments: ["@router", "@security.authorization_checker", "@debug.controller_resolver", "@security.token_storage", "@session"]
          tags:	
              - { name: kernel.event_listener, event: kernel.controller, method: onKernelController  }		                    
     fonasa_monitor.helper.filters:

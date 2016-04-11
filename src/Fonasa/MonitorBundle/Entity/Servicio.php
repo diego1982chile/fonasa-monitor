@@ -69,16 +69,23 @@ class Servicio
      * @ORM\Column(name="fecha_salida", type="datetime", nullable=true)
      */
     private $fechaSalida;   
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_ult_hh", type="datetime", nullable=true)
+     */
+    private $fechaUltHH;   
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="hh_estimadas", type="integer", nullable=true)
      */
     private $hhEstimadas;
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="hh_efectivas", type="integer", nullable=true)
      */
@@ -349,6 +356,30 @@ class Servicio
     public function setFechaReporte($fechaReporte)
     {
         $this->fechaReporte = $fechaReporte;
+
+        return $this;
+    }
+    
+    /**
+     * Get fechaUltHH
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltHH()
+    {
+        return $this->fechaUltHH;
+    }    
+    
+    /**
+     * Set fechaUltHH
+     *
+     * @param \DateTime $fechaUltHH
+     *
+     * @return Servicio
+     */
+    public function setFechaUltHH($fechaUltHH)
+    {
+        $this->fechaUltHH = $fechaUltHH;
 
         return $this;
     }

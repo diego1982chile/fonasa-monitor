@@ -145,7 +145,9 @@ class ServicioController extends Controller
     public function assignAction(Request $request, Servicio $servicio)
     {                       
         $editForm = $this->createForm('Fonasa\MonitorBundle\Form\ServicioType', $servicio, array('assign' => true));                        
-        $editForm->handleRequest($request);                
+        $editForm->handleRequest($request);          
+        
+        $fechaUltHH=new\DateTime('now');      
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {  
             $em = $this->getDoctrine()->getManager();
@@ -171,6 +173,8 @@ class ServicioController extends Controller
                                                 
             $servicio->setEstado($estado[0]);
             $servicio->setIdEstado($estado[0]->getId());                
+            $servicio->setHhEfectivas(0);
+            $servicio->setFechaUltHH($fechaUltHH);
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($servicio);
@@ -669,19 +673,19 @@ class ServicioController extends Controller
             //array_push($fila,$servicio->getTipoServicio()->getTipo()->getNombre());
             array_push($fila,$servicio->getHhEstimadas());
             array_push($fila,$servicio->getHhEfectivas());
-            array_push($fila,$servicio->getPrioridad()->getNombre());                                                
+            array_push($fila,$servicio->getPrioridad()->getNombre());                                                                        
                         
             switch($servicio->getEstado()->getNombre()){
 
                 case 'En Cola':
-                case 'En Gestión FONASA':
+                case 'en gestión FONASA':
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="black-font">'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');                                        
+                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-default btn-sm">Asignar</button>');                                        
                     break;
                 case 'Análisis':       
-                case 'Pendiente MT':
+                case 'pendiente MT':
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Finalizar</button>');                    
+                    array_push($fila,'<a href="'.$this->generateUrl('servicio_finish', array('id' => $servicio->getId())).'" role="button" class="btn btn-default btn-sm">Finalizar</button>');                    
                     break;
                 case 'Desa':
                 case 'Test':
@@ -717,9 +721,9 @@ class ServicioController extends Controller
                     array_push($fila,$html);                        
                     
                     break;
-                case 'Resuelta MT':                                    
+                case 'resuelta MT':                                    
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
-                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-primary">Asignar</button>');                                        
+                    array_push($fila,'<a id="'.$servicio->getId().'" href="'.$this->generateUrl('servicio_assign', array('id' => $servicio->getId())).'" role="button" class="btn btn-default btn-sm">Asignar</button>');                                        
                     
                     break;
             }                   

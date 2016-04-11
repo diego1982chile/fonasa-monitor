@@ -4,7 +4,6 @@ namespace Fonasa\MonitorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-
 class DashboardController extends Controller
 {
     public function indexAction()
@@ -163,7 +162,7 @@ class DashboardController extends Controller
                 
         $series2['data'] = $data;
         
-        ///////////// 2° CHART: TIEMPOS DE RESOLUCIÓN DE INCIDENCIAS/////////////////
+        ///////////// 3er CHART: TIEMPOS DE RESOLUCIÓN DE INCIDENCIAS/////////////////
         
         $categories2 = $categories1;
         

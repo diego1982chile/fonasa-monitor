@@ -49,7 +49,7 @@ class RequestListener
             $url = $this->router->generate('fos_user_security_login');
             $event->setResponse(new RedirectResponse($url));
         }
-        */
+        */                
         
         if($routeName === "fos_user_security_login" && $this->security->isGranted('ROLE_USER')){
             $url = $this->router->generate('dashboard_index');
