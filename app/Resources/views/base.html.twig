@@ -90,6 +90,16 @@
                 font-size: 14px;                                
                 font-weight: normal;
             }
+            
+            .tab-content .tab-pane .highcharts-container {
+                border: 1px solid red;
+            }
+
+            .tab-content > .tab-pane:not(.active) {
+                display: block;
+                height: 0;
+                overflow-y: hidden;
+            }
            
         </style>
   </head>
@@ -159,6 +169,7 @@
     <script src="{{ asset('bundles/fonasa-monitor/js/highcharts.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/highcharts-3d.js') }}"></script>
     <script src="{{ asset('bundles/fonasa-monitor/js/modules/exporting.js') }}"></script>
+    <script src="{{ asset('bundles/fonasa-monitor/js/modules/drilldown.js') }}"></script>
     {% block javascripts %}
     <script>            
     $(function() {                        

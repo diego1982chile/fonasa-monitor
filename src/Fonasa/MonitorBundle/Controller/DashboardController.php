@@ -250,8 +250,194 @@ class DashboardController extends Controller
                 }                
             }
             $series3[]=array('name' => $categoria, 'data' => $data_);
-        }                                
-                                
+        }       
+        
+        ////////////////////// 4o CHART: HH Mantenciones////////////////////////
+                
+        // Obtener mantenciones del mes                 
+        $qb = $em->getRepository('MonitorBundle:Servicio')                
+                ->createQueryBuilder('s')                
+                ->select('s.codigoInterno as nombre, s.hhEstimadas as hhEstimadas, s.hhEfectivas as hhReales')
+                ->join('s.tipoServicio', 'ts')
+                ->join('ts.tipo', 't')
+                ->join('s.estado', 'e')
+                ->join('s.componente', 'c')
+                ->join('s.prioridad', 'p')
+                ->join('s.origen', 'o')
+                ->where('t.nombre in (?1)')                
+                ->andWhere('e.nombre in (?2)');                        
+        
+        $parameters = array();
+        
+        $parameters[1] = ['Mantención Correctiva','Mantención Evolutiva'];                
+                
+        $parameters[2] = ['Cerrada'];
+        
+        $mantenciones= $qb->setParameters($parameters)
+            ->getQuery()    
+            ->getResult(); 
+        
+        $mantenciones_ = array();
+        
+        foreach($mantenciones as $mantencion)
+            $mantenciones_[$mantencion['nombre']]=[$mantencion['hhEstimadas'],$mantencion['hhReales']];                                        
+                        
+        // Preparar respuesta para HighCharts 
+        $series4 = array();                       
+        $categories4 = array_keys($mantenciones_);
+        $data_ = array();                                
+        $data__ = array();                                
+                
+        foreach($mantenciones_ as $mantencion){  
+            $data_[] = $mantencion[0];
+            $data__[] = $mantencion[1];                                
+        }
+            
+        $series4[] = array('name' => 'Estimadas', 'data' => $data_);
+        $series4[] = array('name' => 'Efectivas', 'data' => $data__);                                                             
+        
+        
+        //////////////////////////// 5o Chart: Mantenciones por estado a la fecha //////////////////////////////////
+        
+        //Obtener Data
+        // Obtener stacks
+        $estados = $em->getRepository('MonitorBundle:Estado')
+        ->createQueryBuilder('e')                                
+        ->where('e.nombre in (?1)')
+        ->setParameter(1, ['Desa','Test','PaP','Cerrada'])
+        ->getQuery()
+        ->getResult();   
+        
+        //Obtener total incidencias
+        $qb = $em->getRepository('MonitorBundle:Servicio')                
+                ->createQueryBuilder('s')                
+                ->select('count(s.id) as total')
+                ->join('s.tipoServicio', 'ts')
+                ->join('ts.tipo', 't')
+                ->join('s.estado', 'e')
+                ->join('s.componente', 'c')
+                ->join('s.prioridad', 'p')
+                ->join('s.origen', 'o')
+                ->where('t.nombre in (?1)')                
+                ->andWhere('e.nombre in (?2)');
+        
+        $parameters[1] = ['Mantención Correctiva','Mantención Evolutiva'];        
+        $parameters[2] = ['Desa','Test','PaP','Cerrada'];
+        
+        $totals= $qb->setParameters($parameters)
+                    ->getQuery()    
+                    ->getResult();            
+        
+        $total= $totals[0]['total'];
+        
+        $parameters = array();                
+
+        $qb = $em->getRepository('MonitorBundle:Servicio')                
+                ->createQueryBuilder('s')                
+                ->select('e.nombre estado, count(s.id) as cantidad')
+                ->join('s.tipoServicio', 'ts')
+                ->join('ts.tipo', 't')
+                ->join('s.estado', 'e')
+                ->join('s.componente', 'c')
+                ->join('s.prioridad', 'p')
+                ->join('s.origen', 'o')
+                ->where('t.nombre in (?1)')                
+                ->andWhere('e.nombre in (?2)');
+                
+        $qb->groupBy('e.nombre');
+        
+        $parameters[1] = ['Mantención Correctiva','Mantención Evolutiva'];        
+        
+        $parameters[2] = ['Desa','Test','PaP','Cerrada'];                
+                        
+        $mantenciones= $qb->setParameters($parameters)
+                    ->getQuery()    
+                    ->getResult();                   
+        
+        $mantenciones_= array();
+        
+        foreach($mantenciones as $mantencion)
+            $mantenciones_[$mantencion['estado']]=$mantencion['cantidad'];
+        
+        // Preparar respuesta para HighCharts 
+        $series5 = array('name' => 'Brands', 'colorByPoint' => true);                               
+        
+        $data = array();
+        
+        foreach($estados as $estado){                    
+            $data_ = array();                                 
+            if(array_key_exists($estado->getNombre(), $mantenciones_)){
+                $mantenciones__=$mantenciones_[$estado->getNombre()];
+                array_push($data_,$mantenciones_[$estado->getNombre()]);
+            }
+            else {
+                array_push($data_, 0);
+            }                        
+            $data[]=array('name' => $estado->getNombre(), 'y' => intval($data_[0]));            
+        }   
+                
+        $series5['data'] = $data;
+        
+        //////////////////////////// 6o Chart: Mantenciones Correctivas por Componente a la fecha //////////////////////////////////
+        
+        // Obtener stacks
+        $tiposMantencion = $em->getRepository('MonitorBundle:Tipo')
+        ->createQueryBuilder('t')                                
+        ->where('t.nombre in (?1)')
+        ->setParameter(1, ['Mantencion Correctiva','Mantencion Evolutiva'])
+        ->getQuery()
+        ->getResult();  
+        
+        $parameters = array();                
+
+        $qb = $em->getRepository('MonitorBundle:Servicio')                
+                ->createQueryBuilder('s')                
+                ->select('c.nombre componente, t.nombre tipo_mantencion, count(s.id) as cantidad')
+                ->join('s.tipoServicio', 'ts')
+                ->join('ts.tipo', 't')
+                ->join('s.estado', 'e')
+                ->join('s.componente', 'c')
+                ->join('s.prioridad', 'p')
+                ->join('s.origen', 'o')
+                ->where('t.nombre in (?1)')                
+                ->andWhere('e.nombre in (?2)');
+                
+        $qb->groupBy('c.nombre');
+        
+        $parameters[1] = ['Mantención Correctiva','Mantención Evolutiva'];        
+        
+        $parameters[2] = ['Cerrada'];                
+                        
+        $mantenciones= $qb->setParameters($parameters)
+                    ->getQuery()    
+                    ->getResult();                   
+        
+        $mantenciones_= array();
+        
+        foreach($mantenciones as $mantencion)
+            $mantenciones_[$mantencion['tipo_mantencion']][$mantencion['componente']]=$mantencion['cantidad'];                                   
+        
+        // Preparar respuesta para HighCharts 
+        $series6 = array();                       
+        
+        foreach($tiposMantencion as $tipoMantencion){        
+            $data_ = array();            
+            $categories6 = array();
+            foreach($componentes as $componente){     
+                array_push($categories6, $componente->getNombre());
+                if(array_key_exists($tipoMantencion->getNombre(), $mantenciones_)){
+                    $mantenciones__=$mantenciones_[$tipoMantencion->getNombre()];
+                    if(array_key_exists($componente->getNombre(), $mantenciones__))                            
+                        array_push($data_,intval($mantenciones__[$componente->getNombre()]));                        
+                    else
+                        array_push($data_, 0);
+                }
+                else 
+                    array_push($data_, 0);                                    
+            }
+            $series6[]=array('name' => $tipoMantencion->getNombre(), 'data' => $data_);
+        }            
+                                                                
         return $this->render('MonitorBundle:Dashboard:index.html.twig',
         array(
             'chartIncidenciasComponente' => array('title'      => json_encode('Incidencias por Componente/Fecha de Hoy'),
@@ -262,10 +448,22 @@ class DashboardController extends Controller
                                                   //'yAxis'      => json_encode('Total Incidencias'),
                                                   //'categories' => json_encode($categories), 
                                                   'series'     => json_encode([$series2])),
-            'chartTiemposResIncidencias' => array('title' => json_encode('Tiempos de Resolución Incidencias/Semanal'),
+            'chartHHIncidencias'         => array('title' => json_encode('Tiempos de Resolución Incidencias/Semanal'),
                                                   'yAxis'      => json_encode('Cantidad de Incidencias'),
                                                   'categories' => json_encode($categories3), 
-                                                  'series'     => json_encode($series3))
+                                                  'series'     => json_encode($series3)),
+            'chartHHMantenciones'        => array('title' => json_encode('HH Mantenciones/Mensual'),
+                                                  'yAxis'      => json_encode('Cantidad de HHs'),
+                                                  'categories' => json_encode($categories4), 
+                                                  'series'     => json_encode($series4)),
+            'chartMantencionesEstado'    => array('title' => json_encode('Mantenciones por Estado a la Fecha'),
+                                                   'yAxis'     => json_encode('Cantidad de Mantenciones'),
+                                                   //'categories' => json_encode($categories4), 
+                                                   'series'    => json_encode([$series5])),                        
+            'chartMantencionesComponente' => array('title'     => json_encode('Mantenciones por Componente/Fecha de Hoy'),
+                                                  'yAxis'      => json_encode('Total Mantenciones'),
+                                                  'categories' => json_encode($categories6), 
+                                                  'series'     => json_encode($series6))
         ));                                        
     }
 }

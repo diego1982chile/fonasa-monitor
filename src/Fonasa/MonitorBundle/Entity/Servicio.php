@@ -80,14 +80,14 @@ class Servicio
     /**
      * @var float
      *
-     * @ORM\Column(name="hh_estimadas", type="integer", nullable=true)
+     * @ORM\Column(name="hh_estimadas", type="float", nullable=true)
      */
     private $hhEstimadas;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="hh_efectivas", type="integer", nullable=true)
+     * @ORM\Column(name="hh_efectivas", type="float", nullable=true)
      */
     private $hhEfectivas;
     

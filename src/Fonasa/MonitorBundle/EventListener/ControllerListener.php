@@ -69,6 +69,19 @@ class ControllerListener
             $this->tokenStorage->setToken(null);
             $request->getSession()->invalidate();
         }
-                       
+          
+        /*
+        if ($this->tokenStorage->getToken() != null && in_array(explode('/',$routeName)[1],["servicio","new","assign","edit"]) &&
+            !$this->security->isGranted('ROLE_ADMIN')) {
+            $this->tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
+        }
+        
+        if ($this->tokenStorage->getToken() != null && in_array(explode('/',$routeName)[1],["dashboard"]) &&
+            $this->security->isGranted('ROLE_ADMIN')) {
+            $this->tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
+        }
+        */
     }
 }

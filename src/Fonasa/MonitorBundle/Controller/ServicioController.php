@@ -457,7 +457,7 @@ class ServicioController extends Controller
         $estado= $em->getRepository('MonitorBundle:Estado')
             ->createQueryBuilder('e')                                
             ->where('e.nombre = ?1')
-            ->setParameter(1, 'Terminada')
+            ->setParameter(1, 'Cerrada')
             ->getQuery()
             ->getResult();        
         
@@ -607,7 +607,7 @@ class ServicioController extends Controller
         if($estado == 1)
             $parameters[3]=['En Cola','Análisis','Desa','Test','PaP','En Gestión FONASA','Pendiente MT'];
         else
-            $parameters[3]=['Terminada','Resuelta MT'];
+            $parameters[3]=['Cerrada','Resuelta MT'];
     
         if($sSearch != null){            
             $qb->andWhere(
@@ -674,6 +674,8 @@ class ServicioController extends Controller
             array_push($fila,$servicio->getHhEstimadas());
             array_push($fila,$servicio->getHhEfectivas());
             array_push($fila,$servicio->getPrioridad()->getNombre());                                                                        
+            
+            $fillRatio = intval(100*$servicio->getHhEfectivas()/$servicio->getHhEstimadas());
                         
             switch($servicio->getEstado()->getNombre()){
 
@@ -707,7 +709,7 @@ class ServicioController extends Controller
                     array_push($fila,$html);                        
 
                     break;
-                case 'Terminada':                
+                case 'Cerrada':                
                     array_push($fila,'<div class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"><span>'.$servicio->getEstado()->getDescripcion().'</span></div></div>');
                     $html='<div class="btn-group">';
                     foreach($estados as $estado)                        

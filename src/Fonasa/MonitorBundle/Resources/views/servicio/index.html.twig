@@ -45,7 +45,7 @@
         </div>
     </div>                    
     {% endfor %}
-    <h2>Servicios Activos Abril 2016</h2>
+    <h1 id="title"></h1>
 
     <table id="servicios" class="display table-striped" style="display:none">
         <thead>
@@ -71,14 +71,22 @@
 {% endblock %}
 {% block javascripts %}
 <script>
-    $(function() {
-        $('#servicios th').removeClass('ui-state-default');    
-        $('#servicios').show();        
-    }); 
-    
     var $anio = $('#form_Anio');
     var $mes = $('#form_Mes');
     var $estado = $('#form_Estado');
+    
+    function updateTitle(){
+        $('#title').html("Servicios "+
+                         $estado.find(':checked').parent().text()+" "+
+                         $mes.find('option:selected').text()+" "+
+                         $anio.val());        
+    }
+    
+    $(function() {
+        $('#servicios th').removeClass('ui-state-default');    
+        $('#servicios').show();                        
+        updateTitle();
+    });     
     
     var oTable = $('#servicios').dataTable({
             bPaginate: false,
@@ -112,16 +120,23 @@
         });        
         
         $anio.change(function() {
-            oTable.fnDraw();
+            updateTitle();
+            oTable.fnDraw();            
         });
         
         $mes.change(function() {
-            oTable.fnDraw();
+            updateTitle();
+            oTable.fnDraw();            
         });
         
         $estado.change(function() {
-            oTable.fnDraw();
+            updateTitle();
+            oTable.fnDraw();            
         });
+        
+        setInterval( function () {
+            oTable.fnDraw();
+        }, 30000 );
     
 </script>
 {% endblock %}
